@@ -1,122 +1,183 @@
 <!DOCTYPE html>
+<!--
+  ============================================================================
+  ECONOMIC SIGNAL DASHBOARD
+  Original work created, compiled, and maintained by Brian W. Malone.
+  Copyright (c) 2026 Brian W. Malone. All rights reserved.
+  This file and its design are the original work of Brian W. Malone.
+  Unauthorized copying, redistribution, or representation of this work as
+  one's own is prohibited.
+  ============================================================================
+-->
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Economic Signal Dashboard — July 14, 2026</title>
+<meta name="description" content="US macroeconomic signal dashboard — yield curve, inflation, credit, equity valuation, and Fed monitoring." />
+<meta name="author" content="Brian W. Malone" />
+<meta name="copyright" content="© 2026 Brian W. Malone. All rights reserved." />
+<meta name="dcterms.creator" content="Brian W. Malone" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23c8102e'/%3E%3Cpath d='M4 21 L12 15 L18 18 L28 8' stroke='white' fill='none' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+<title>Signal Dashboard — Economic Monitoring · July 14, 2026</title>
 <style>
   :root{
-    --clear-bg:#f0faf4; --clear-c:#1e7c45; --clear-b:#a8dfc0; --clear-d:#27ae60;
-    --watch-bg:#fffbf0; --watch-c:#b7650a; --watch-b:#f5d99a; --watch-d:#f39c12;
-    --alert-bg:#fff0f0; --alert-c:#c0392b; --alert-b:#f5aaaa; --alert-d:#e24b4b;
+    --paper:#f5f4ef; --card:#ffffff;
+    --ink:#1b1b18; --body:#333029; --muted:#77746b; --faint:#a4a199;
+    --rule:#e6e3da; --rule-strong:#dcd8cd;
+    --accent:#c8102e; --accent-deep:#9e0c22;
+    --clear-c:#1e6b40; --clear-bg:#eef6f0; --clear-b:#cfe4d6; --clear-d:#2e9e5b;
+    --watch-c:#8a5a10; --watch-bg:#fbf4e6; --watch-b:#ecdcb8; --watch-d:#dd9128;
+    --alert-c:#b3241f; --alert-bg:#fbeeec; --alert-b:#edcbc7; --alert-d:#cf3a30;
+    --serif:Georgia,"Times New Roman",Times,serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
   }
   *{box-sizing:border-box;}
-  html,body{margin:0;padding:0;background:#f8f9fa;}
-  body{font-family:Arial,Helvetica,sans-serif;color:#1a1a2e;}
-  .wrap{padding:18px;max-width:1100px;margin:0 auto;}
-  .hdr{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:10px;}
-  .kicker{font-size:11px;color:#6366f1;letter-spacing:.12em;font-weight:700;text-transform:uppercase;margin-bottom:3px;}
-  .title{font-size:20px;font-weight:700;}
-  .rt{text-align:right;}
-  .rt .lbl{font-size:11px;color:#888;}
-  .rt .val{font-size:13px;color:#444;font-weight:600;}
+  html,body{margin:0;padding:0;background:var(--paper);}
+  body{font-family:var(--sans);color:var(--body);border-top:3px solid var(--accent);-webkit-font-smoothing:antialiased;}
+  .num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1;}
+  .wrap{padding:22px 20px 40px;max-width:1080px;margin:0 auto;}
 
-  .card{background:#fff;border:1px solid #dee2e6;border-radius:8px;}
-  .read{margin-bottom:12px;border-left:4px solid #6366f1;border-radius:8px;padding:11px 14px;background:#fff;border:1px solid #dee2e6;border-left:4px solid #6366f1;}
-  .read-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;flex-wrap:wrap;gap:4px;}
-  .read-h{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#4f46e5;}
-  .read-sub{font-size:10px;color:#aaa;}
-  .chain{display:flex;gap:10px;padding:6px 0;border-bottom:1px solid #f1f3f5;}
+  /* MASTHEAD */
+  .masthead{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;padding-bottom:14px;border-bottom:2px solid var(--ink);margin-bottom:2px;}
+  .mh-left{display:flex;align-items:center;gap:13px;}
+  .mh-mark{width:38px;height:38px;background:var(--accent);color:#fff;font-family:var(--serif);font-weight:700;font-size:23px;display:flex;align-items:center;justify-content:center;border-radius:3px;flex-shrink:0;}
+  .mh-kicker{font-size:10.5px;color:var(--accent);letter-spacing:.18em;font-weight:700;text-transform:uppercase;margin-bottom:2px;}
+  .mh-title{font-family:var(--serif);font-size:29px;font-weight:700;color:var(--ink);line-height:1;letter-spacing:-.01em;}
+  .mh-date{text-align:right;padding-bottom:2px;}
+  .mh-date-lbl{font-size:10px;color:var(--faint);text-transform:uppercase;letter-spacing:.14em;}
+  .mh-date-val{font-family:var(--serif);font-size:14px;color:var(--muted);font-style:italic;margin-top:2px;}
+  .mh-strap{font-size:11px;color:var(--faint);letter-spacing:.02em;margin:6px 0 20px;font-style:italic;font-family:var(--serif);}
+
+  /* STATUS BAND */
+  .statusband{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:14px 20px;margin-bottom:18px;}
+  .sb-stats{display:flex;gap:0;}
+  .sb-item{display:flex;flex-direction:column;align-items:center;padding:0 22px;border-right:1px solid var(--rule);}
+  .sb-item:last-child{border-right:none;padding-right:6px;}
+  .sb-item:first-child{padding-left:6px;}
+  .sb-n{font-family:var(--serif);font-size:34px;font-weight:700;line-height:1;}
+  .sb-n.clear{color:var(--clear-c);} .sb-n.watch{color:var(--watch-c);} .sb-n.alert{color:var(--alert-c);}
+  .sb-l{font-size:10px;text-transform:uppercase;letter-spacing:.13em;color:var(--muted);margin-top:6px;font-weight:600;}
+  .sb-posture{flex:1;min-width:240px;font-size:13px;color:var(--body);line-height:1.55;text-align:right;}
+  .sb-posture .pp{display:block;font-family:var(--serif);font-style:italic;color:var(--alert-c);font-size:11px;text-transform:uppercase;letter-spacing:.1em;font-weight:700;margin-bottom:2px;font-style:normal;}
+
+  /* THE READ (leader) */
+  .read{background:var(--card);border:1px solid var(--rule);border-left:3px solid var(--accent);border-radius:8px;padding:16px 20px;margin-bottom:16px;}
+  .read-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;flex-wrap:wrap;gap:4px;border-bottom:1px solid var(--rule);padding-bottom:9px;}
+  .read-h{font-family:var(--serif);font-size:17px;font-weight:700;color:var(--ink);}
+  .read-h .b{color:var(--accent);}
+  .read-sub{font-size:10.5px;color:var(--faint);text-transform:uppercase;letter-spacing:.08em;}
+  .chain{display:flex;gap:12px;padding:9px 0;border-bottom:1px solid var(--rule);}
   .chain:last-of-type{border-bottom:none;}
-  .chain .dot{flex-shrink:0;width:7px;height:7px;border-radius:50%;margin-top:5px;}
-  .chain .q{font-size:12.5px;color:#222;}
-  .chain .where{color:#999;font-size:11px;}
-  .chain .ans{font-size:12px;font-weight:600;margin:1px 0;}
-  .chain .det{font-size:11px;color:#777;line-height:1.45;}
-  .bottom{margin-top:9px;padding:8px 11px;background:#f5f5ff;border:1px solid #d9d9f5;border-radius:6px;font-size:12px;color:#2a2a5a;line-height:1.5;}
-  .bottom strong{color:#4f46e5;}
+  .chain .qn{font-family:var(--serif);font-size:20px;font-weight:700;color:var(--faint);line-height:1;width:20px;flex-shrink:0;}
+  .chain .q{font-size:13px;color:var(--ink);font-weight:600;}
+  .chain .where{color:var(--faint);font-size:10.5px;font-weight:400;font-style:italic;}
+  .chain .ans{font-size:12.5px;font-weight:700;margin:2px 0;}
+  .chain .det{font-size:12px;color:var(--muted);line-height:1.5;}
+  .bottom{margin-top:11px;padding:11px 13px;background:var(--paper);border:1px solid var(--rule);border-radius:6px;font-size:12.5px;color:var(--body);line-height:1.55;}
+  .bottom .bl{font-family:var(--serif);font-weight:700;color:var(--ink);font-style:italic;}
 
-  .decision{margin-bottom:16px;padding:9px 13px;background:var(--alert-bg);border:1px solid #f5c6c6;border-left:4px solid var(--alert-d);border-radius:6px;font-size:12px;color:#7a1a1a;}
-  .decision strong{color:var(--alert-c);}
+  /* DECISION */
+  .decision{margin-bottom:20px;padding:11px 15px;background:var(--alert-bg);border:1px solid var(--alert-b);border-left:3px solid var(--alert-d);border-radius:6px;font-size:12px;color:#7a1a1a;line-height:1.55;}
+  .decision .dh{font-family:var(--serif);font-weight:700;color:var(--alert-c);}
 
-  .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;}
-  .tile{border-radius:8px;padding:12px 14px;text-align:center;border:1px solid;}
-  .tile .n{font-size:28px;font-weight:700;line-height:1;}
-  .tile .t{font-size:11px;font-weight:600;margin-top:3px;letter-spacing:.05em;}
-  .bar{margin-top:7px;background:rgba(0,0,0,.08);border-radius:4px;height:4px;overflow:hidden;}
-  .bar > div{height:100%;border-radius:4px;}
-
-  .tabs{display:flex;gap:4px;background:#e9ecef;border-radius:8px;padding:4px;margin-bottom:14px;}
-  .tabbtn{flex:1;padding:7px 0;border-radius:6px;border:none;cursor:pointer;font-size:12px;font-weight:600;font-family:inherit;background:transparent;color:#888;}
-  .tabbtn.active{background:#fff;color:#3b5bdb;box-shadow:0 1px 4px rgba(0,0,0,.1);}
+  /* TABS */
+  .tabs{display:flex;gap:26px;border-bottom:1px solid var(--rule-strong);margin-bottom:18px;}
+  .tabbtn{padding:9px 1px;border:none;background:none;cursor:pointer;font-family:var(--sans);font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .15s,border-color .15s;}
+  .tabbtn:hover{color:var(--ink);}
+  .tabbtn.active{color:var(--ink);border-bottom-color:var(--accent);}
   .panel{display:none;}
-  .panel.active{display:block;}
+  .panel.active{display:block;animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(3px);}to{opacity:1;transform:none;}}
 
-  .note{margin-bottom:10px;padding:9px 13px;border-radius:6px;font-size:12px;line-height:1.5;}
-  .note-green{background:var(--clear-bg);border:1px solid var(--clear-b);border-left:4px solid var(--clear-c);color:#1a4a2a;}
-  .note-green strong.h{color:var(--clear-c);}
+  /* DAILY NOTE + SPOTLIGHTS */
+  .note{margin-bottom:12px;padding:11px 15px;border-radius:6px;font-size:12.5px;line-height:1.6;}
+  .note-green{background:var(--clear-bg);border:1px solid var(--clear-b);border-left:3px solid var(--clear-c);color:#1a4a2a;}
+  .note-green .h{font-family:var(--serif);font-weight:700;color:var(--clear-c);}
 
-  .spot{padding:11px 14px;border-radius:8px;margin-bottom:10px;border:1px solid;}
-  .spot .lab{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;}
-  .spot .badge{font-size:9px;background:var(--alert-d);color:#fff;padding:1px 6px;border-radius:3px;font-weight:700;margin-left:8px;vertical-align:middle;}
-  .spot .mgrid{display:grid;gap:8px;margin-top:8px;}
-  .spot .mnote{margin-top:8px;font-size:11px;color:#666;line-height:1.5;}
-  .mtile{background:#fff;border-radius:6px;padding:9px 11px;border:1px solid #e9ecef;}
-  .mtile .ml{font-size:10px;color:#888;margin-bottom:3px;}
-  .mtile .mv{font-size:20px;font-weight:700;line-height:1;}
-  .mtile .ms{font-size:10px;color:#888;margin-top:3px;}
+  .spot{padding:14px 16px;border-radius:8px;margin-bottom:12px;border:1px solid;background:var(--card);}
+  .spot .lab{font-family:var(--serif);font-size:14px;font-weight:700;}
+  .spot .badge{font-size:8.5px;color:#fff;padding:2px 6px;border-radius:3px;font-weight:700;margin-left:8px;vertical-align:middle;letter-spacing:.09em;}
+  .spot .mgrid{display:grid;gap:9px;margin-top:11px;}
+  .mgrid.g3{grid-template-columns:repeat(3,1fr);}
+  .mgrid.g4{grid-template-columns:repeat(4,1fr);}
+  .spot .mnote{margin-top:11px;font-size:11.5px;color:var(--muted);line-height:1.6;}
+  .mtile{background:var(--paper);border-radius:6px;padding:10px 12px;border:1px solid var(--rule);}
+  .mtile .ml{font-size:9.5px;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.07em;font-weight:600;}
+  .mtile .mv{font-family:var(--serif);font-size:22px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums;}
+  .mtile .ms{font-size:10px;color:var(--muted);margin-top:5px;line-height:1.35;}
 
-  details.sec{margin-bottom:8px;background:#fff;border:1px solid #dee2e6;border-radius:8px;overflow:hidden;}
-  details.sec > summary{list-style:none;cursor:pointer;padding:10px 14px;background:#f8f9fa;display:flex;align-items:center;justify-content:space-between;}
+  /* SECTIONS */
+  details.sec{margin-bottom:9px;background:var(--card);border:1px solid var(--rule);border-radius:8px;overflow:hidden;}
+  details.sec > summary{list-style:none;cursor:pointer;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;transition:background .12s;}
+  details.sec > summary:hover{background:#fcfbf8;}
   details.sec > summary::-webkit-details-marker{display:none;}
-  details.sec[open] > summary{border-bottom:1px solid #dee2e6;}
-  .sec-title{font-weight:700;font-size:12px;letter-spacing:.05em;color:#444;text-transform:uppercase;}
-  .sec-pills{display:flex;align-items:center;gap:5px;}
-  .pill{font-size:11px;border-radius:4px;padding:1px 7px;font-weight:700;border:1px solid;}
-  .chev{color:#aaa;font-size:16px;margin-left:4px;display:inline-block;transition:transform .2s;}
+  details.sec[open] > summary{border-bottom:1px solid var(--rule);}
+  .sec-title{font-family:var(--serif);font-weight:700;font-size:14.5px;color:var(--ink);}
+  .sec-pills{display:flex;align-items:center;gap:6px;}
+  .pill{font-size:11px;border-radius:4px;padding:1px 7px;font-weight:700;border:1px solid;font-variant-numeric:tabular-nums;}
+  .chev{color:var(--faint);font-size:17px;margin-left:5px;display:inline-block;transition:transform .2s;}
   details.sec[open] .chev{transform:rotate(90deg);}
 
-  table{width:100%;border-collapse:collapse;font-size:13px;}
   .tblwrap{overflow-x:auto;}
-  th{text-align:left;padding:6px 12px;color:#888;font-weight:600;font-size:11px;white-space:nowrap;background:#f8f9fa;text-transform:uppercase;letter-spacing:.04em;}
-  td{padding:8px 12px;white-space:nowrap;}
-  tbody tr{border-bottom:1px solid #f1f3f5;}
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  th{text-align:left;padding:8px 14px;color:var(--muted);font-weight:600;font-size:10px;white-space:nowrap;background:#faf9f5;text-transform:uppercase;letter-spacing:.07em;border-bottom:1px solid var(--rule);}
+  td{padding:9px 14px;white-space:nowrap;vertical-align:top;}
+  tbody tr{border-bottom:1px solid #f2f0ea;}
   tbody tr:last-child{border-bottom:none;}
-  tbody tr:hover{background:#f8f9fa;}
-  .ind{color:#222;font-weight:500;white-space:normal;}
-  .val{color:#1a1a2e;font-weight:700;}
-  .prev{color:#888;font-size:12px;}
-  .dir{color:#555;font-size:12px;}
-  .upd{margin-left:6px;font-size:9px;background:var(--alert-d);color:#fff;padding:1px 5px;border-radius:3px;font-weight:700;}
-  .rowdetail{display:none;font-size:10px;color:#aaa;margin-top:2px;white-space:normal;}
+  tbody tr:hover{background:#fcfbf8;}
+  .ind{color:var(--ink);font-weight:600;white-space:normal;font-size:13px;}
+  .val{color:var(--ink);font-weight:700;font-variant-numeric:tabular-nums;}
+  .prev{color:var(--muted);font-size:12px;font-variant-numeric:tabular-nums;}
+  .dir{color:var(--body);font-size:12px;}
+  .upd{margin-left:6px;font-size:8.5px;background:var(--accent);color:#fff;padding:1px 5px;border-radius:3px;font-weight:700;letter-spacing:.05em;vertical-align:middle;}
+  .rowdetail{display:none;font-size:10.5px;color:var(--faint);margin-top:3px;white-space:normal;line-height:1.5;font-style:italic;font-family:var(--serif);}
   tbody tr:hover .rowdetail{display:block;}
 
-  .badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;letter-spacing:.06em;padding:2px 7px;border-radius:4px;white-space:nowrap;border:1px solid;}
+  .badge{display:inline-flex;align-items:center;gap:4px;font-size:9.5px;font-weight:700;letter-spacing:.07em;padding:2px 7px;border-radius:4px;white-space:nowrap;border:1px solid;}
   .badge .bd{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
 
-  .chartcard{margin-top:16px;padding:12px 14px;}
-  .chart-h{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:2px;}
-  .chart-sub{font-size:11px;color:#aaa;margin-bottom:8px;}
-  .chart-leg{display:flex;gap:16px;margin-bottom:6px;font-size:11px;}
-  .curveread{margin-top:8px;padding:6px 10px;background:var(--clear-bg);border:1px solid var(--clear-b);border-radius:6px;font-size:11px;color:#1a4a2a;}
+  /* CHART */
+  .chartcard{margin-top:18px;padding:16px 18px;background:var(--card);border:1px solid var(--rule);border-radius:8px;}
+  .chart-h{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:3px;flex-wrap:wrap;gap:4px;}
+  .chart-title{font-family:var(--serif);font-weight:700;font-size:15px;color:var(--ink);}
+  .chart-when{font-size:11px;color:var(--faint);font-style:italic;font-family:var(--serif);}
+  .chart-sub{font-size:11px;color:var(--muted);margin-bottom:10px;font-variant-numeric:tabular-nums;}
+  .chart-leg{display:flex;gap:18px;margin-bottom:8px;font-size:11px;color:var(--muted);}
+  .curveread{margin-top:10px;padding:9px 12px;background:var(--clear-bg);border:1px solid var(--clear-b);border-radius:6px;font-size:11.5px;color:#1a4a2a;line-height:1.55;}
 
-  .cal-row{display:flex;align-items:center;gap:12px;padding:9px 13px;background:#fff;border:1px solid #dee2e6;border-radius:6px;margin-bottom:6px;}
-  .cal-date{min-width:52px;font-size:11px;color:#888;font-weight:700;}
-  .cal-name{flex:1;font-size:13px;color:#333;}
-  .cal-pri{font-size:9px;padding:2px 8px;border-radius:4px;font-weight:700;white-space:nowrap;border:1px solid;}
+  /* CALENDAR */
+  .cal-row{display:flex;align-items:center;gap:14px;padding:11px 15px;background:var(--card);border:1px solid var(--rule);border-radius:6px;margin-bottom:7px;}
+  .cal-date{min-width:56px;font-family:var(--serif);font-size:13px;color:var(--ink);font-weight:700;}
+  .cal-name{flex:1;font-size:13px;color:var(--body);}
+  .cal-pri{font-size:9px;padding:2px 8px;border-radius:4px;font-weight:700;white-space:nowrap;border:1px solid;letter-spacing:.06em;}
 
-  .gloss-grp{margin-bottom:8px;background:#fff;border:1px solid #dee2e6;border-radius:8px;overflow:hidden;}
-  .gloss-cat{padding:8px 14px;background:#f8f9fa;border-bottom:1px solid #dee2e6;font-weight:700;font-size:12px;letter-spacing:.05em;color:#444;text-transform:uppercase;}
-  .gloss-item{display:flex;gap:12px;padding:8px 14px;border-bottom:1px solid #f1f3f5;}
+  /* GLOSSARY */
+  .gloss-intro{margin-bottom:12px;padding:11px 15px;background:#f4f6fb;border:1px solid #d6def0;border-left:3px solid #3b5bdb;border-radius:6px;font-size:12.5px;color:#20305e;line-height:1.55;}
+  .gloss-intro .b{font-family:var(--serif);font-weight:700;color:#2a44a8;}
+  .gloss-grp{margin-bottom:9px;background:var(--card);border:1px solid var(--rule);border-radius:8px;overflow:hidden;}
+  .gloss-cat{padding:9px 15px;background:#faf9f5;border-bottom:1px solid var(--rule);font-family:var(--serif);font-weight:700;font-size:13px;color:var(--ink);}
+  .gloss-item{display:flex;gap:14px;padding:9px 15px;border-bottom:1px solid #f2f0ea;}
   .gloss-item:last-child{border-bottom:none;}
-  .gloss-term{min-width:88px;font-weight:700;color:#1a1a2e;font-size:13px;flex-shrink:0;}
-  .gloss-def{flex:1;font-size:12px;color:#555;line-height:1.5;}
-  .gloss-def strong{color:#333;font-weight:600;}
-  .gloss-intro{margin-bottom:10px;padding:9px 13px;background:#f5f8ff;border:1px solid #b3c6f5;border-left:4px solid #3b5bdb;border-radius:6px;font-size:12px;color:#1a2a5a;}
-  .gloss-intro strong{color:#3b5bdb;}
+  .gloss-term{min-width:92px;font-weight:700;color:var(--ink);font-size:13px;flex-shrink:0;}
+  .gloss-def{flex:1;font-size:12px;color:var(--muted);line-height:1.55;}
+  .gloss-def strong{color:var(--body);font-weight:700;}
 
-  .foot{margin-top:14px;font-size:10px;color:#bbb;text-align:center;border-top:1px solid #dee2e6;padding-top:10px;}
-  .foot .disc{margin-top:6px;color:#ccc;}
+  /* FOOTER */
+  .foot{margin-top:22px;font-size:10.5px;color:var(--faint);text-align:center;border-top:2px solid var(--ink);padding-top:12px;line-height:1.7;}
+  .foot .byline{margin-top:9px;font-family:var(--serif);font-weight:700;color:var(--body);font-size:12px;letter-spacing:.01em;}
+  .foot .disc{margin-top:6px;color:#b8b5ac;font-style:italic;font-family:var(--serif);}
+
+  @media (max-width:640px){
+    .mh-title{font-size:24px;} .mh-date{text-align:left;}
+    .statusband{flex-direction:column;align-items:stretch;gap:14px;}
+    .sb-stats{justify-content:space-around;} .sb-posture{text-align:left;}
+    .mgrid.g3,.mgrid.g4{grid-template-columns:1fr 1fr;}
+    .tabs{gap:18px;}
+  }
+  @media print{
+    body{border-top:none;} .tabs{display:none;} .panel{display:block!important;animation:none;}
+    details.sec{break-inside:avoid;} .chev{display:none;} .spot,.read,.chartcard{break-inside:avoid;}
+  }
 </style>
 </head>
 <body>
@@ -132,7 +193,7 @@ const SIG = {
 const PRIORITY = {
   critical:{bg:"var(--alert-bg)",c:"var(--alert-c)",b:"var(--alert-b)",label:"CRITICAL"},
   high:{bg:"var(--watch-bg)",c:"var(--watch-c)",b:"var(--watch-b)",label:"HIGH"},
-  watch:{bg:"#f0f0ff",c:"#3b5bdb",b:"#c5cdf5",label:"WATCH"},
+  watch:{bg:"#f0f2fb",c:"#3b5bdb",b:"#cdd6f2",label:"WATCH"},
 };
 
 const yieldCurveData = [
@@ -277,42 +338,59 @@ function badge(type){
   return `<span class="badge" style="background:${s.bg};color:${s.c};border-color:${s.b};"><span class="bd" style="background:${s.d};"></span>${type.toUpperCase()}</span>`;
 }
 
-/* ---------- RENDER: READ BANNER ---------- */
+/* ---------- MASTHEAD + STATUS ---------- */
+function renderMasthead(){
+  return `<div class="masthead">
+    <div class="mh-left">
+      <span class="mh-mark">S</span>
+      <span class="mh-titlewrap">
+        <span class="mh-kicker">Economic Monitoring</span>
+        <span class="mh-title">Signal Dashboard</span>
+      </span>
+    </div>
+    <div class="mh-date">
+      <div class="mh-date-lbl">As of</div>
+      <div class="mh-date-val">July 14, 2026 · 9:00 PM ET</div>
+    </div>
+  </div>
+  <div class="mh-strap">A running read on U.S. macro conditions — yield curve, inflation, credit, equity valuation, and the Fed.</div>`;
+}
+function renderStatus(counts){
+  return `<div class="statusband">
+    <div class="sb-stats">
+      <div class="sb-item"><span class="sb-n clear num">${counts.clear}</span><span class="sb-l">Clear</span></div>
+      <div class="sb-item"><span class="sb-n watch num">${counts.watch}</span><span class="sb-l">Watch</span></div>
+      <div class="sb-item"><span class="sb-n alert num">${counts.alert}</span><span class="sb-l">Alert</span></div>
+    </div>
+    <div class="sb-posture"><span class="pp">Posture · Risk Elevated</span>${counts.alert} of ${counts.total} signals at alert, concentrated in inflation &amp; rates. Growth cooling; credit calm.</div>
+  </div>`;
+}
+
+/* ---------- THE READ ---------- */
 function renderRead(){
   const rows=TAKEAWAY.chain.map(c=>`
     <div class="chain">
-      <span class="dot" style="background:${SIG[c.tone].d};"></span>
+      <span class="qn">${esc(c.n)}</span>
       <div style="flex:1;">
-        <div class="q"><strong>${esc(c.n)}. ${esc(c.q)}</strong> <span class="where">(${esc(c.where)})</span></div>
+        <div class="q">${esc(c.q)} <span class="where">— ${esc(c.where)}</span></div>
         <div class="ans" style="color:${SIG[c.tone].c};">${esc(c.answer)}</div>
         <div class="det">${esc(c.detail)}</div>
       </div>
     </div>`).join("");
   return `<div class="read">
-    <div class="read-top"><span class="read-h">📋 The Read</span><span class="read-sub">growth → inflation → Fed / rates / risk · ${esc(TAKEAWAY.updated)}</span></div>
+    <div class="read-top"><span class="read-h">The <span class="b">Read</span></span><span class="read-sub">growth → inflation → Fed / rates / risk · ${esc(TAKEAWAY.updated)}</span></div>
     ${rows}
-    <div class="bottom"><strong>Bottom line:</strong> ${esc(TAKEAWAY.bottomLine)}</div>
+    <div class="bottom"><span class="bl">Bottom line.</span> ${esc(TAKEAWAY.bottomLine)}</div>
   </div>`;
 }
 
-/* ---------- RENDER: DECISION + TILES ---------- */
+/* ---------- DECISION ---------- */
 function renderDecision(counts){
-  return `<div class="decision"><strong>⚠ Decision Rule:</strong> If 3+ signals turn red → consider reducing equity exposure. &nbsp;
-    <strong>Currently: ${counts.alert} alerts — down 1 from 11 as June CPI cooled sharply (3.5% headline, 2.6% core), pulling the CPI signal off red and collapsing July hike odds to ~17%. The remaining reds: still-hot PCE/PPI, the 30yr above 5%, an elevated Sept hike (~60%), stretched valuations, and the oil-driven Iran risk. PPI lands tomorrow.</strong></div>`;
-}
-function renderTiles(counts){
-  const items=[["Clear",counts.clear,"clear"],["Watch",counts.watch,"watch"],["Alert",counts.alert,"alert"]];
-  return `<div class="tiles">${items.map(([lbl,n,k])=>{
-    const s=SIG[k];
-    return `<div class="tile" style="background:${s.bg};border-color:${s.b};">
-      <div class="n" style="color:${s.c};">${n}</div>
-      <div class="t" style="color:${s.c};">${lbl.toUpperCase()} / ${counts.total}</div>
-      <div class="bar"><div style="width:${(n/counts.total*100).toFixed(1)}%;background:${s.d};"></div></div>
-    </div>`;
-  }).join("")}</div>`;
+  return `<div class="decision"><span class="dh">Decision rule.</span> If 3+ signals turn red → consider reviewing equity exposure.
+    <strong>Currently ${counts.alert} alerts — down 1 from 11</strong> as June CPI cooled sharply (3.5% headline, 2.6% core), pulling the CPI signal off red and collapsing July hike odds to ~17%. The remaining reds: still-hot PCE/PPI, the 30yr above 5%, an elevated Sept hike (~60%), stretched valuations, and the oil-driven Iran risk. PPI lands tomorrow.</div>`;
 }
 
-/* ---------- RENDER: SECTIONS ---------- */
+/* ---------- SECTIONS ---------- */
 function sectionPills(rows){
   const c={clear:rows.filter(r=>r.signal==="clear").length,watch:rows.filter(r=>r.signal==="watch").length,alert:rows.filter(r=>r.signal==="alert").length};
   let out="";
@@ -325,7 +403,7 @@ function renderRowsTable(rows){
   const body=rows.map(r=>`
     <tr>
       <td class="ind">${esc(r.name)}${r.upd?'<span class="upd">UPDATED</span>':''}
-        <div class="rowdetail">Watch: ${esc(r.watch)}</div>
+        <div class="rowdetail">${esc(r.watch)}</div>
       </td>
       <td class="val">${esc(r.value)}</td>
       <td class="prev">${esc(r.prev)}</td>
@@ -333,9 +411,7 @@ function renderRowsTable(rows){
       <td>${badge(r.signal)}</td>
     </tr>`).join("");
   return `<div class="tblwrap"><table>
-    <thead><tr>
-      <th>Indicator</th><th>Current</th><th>Prev (7/13)</th><th>Direction</th><th>Signal</th>
-    </tr></thead>
+    <thead><tr><th>Indicator</th><th>Current</th><th>Prev (7/13)</th><th>Direction</th><th>Signal</th></tr></thead>
     <tbody>${body}</tbody>
   </table></div>`;
 }
@@ -344,25 +420,22 @@ function renderSections(){
     const rows=SIGNALS[title];
     const open=SECTION_OPEN[title]?"open":"";
     return `<details class="sec" ${open}>
-      <summary>
-        <span class="sec-title">${esc(title)}</span>
-        <span class="sec-pills">${sectionPills(rows)}<span class="chev">›</span></span>
-      </summary>
+      <summary><span class="sec-title">${esc(title)}</span><span class="sec-pills">${sectionPills(rows)}<span class="chev">›</span></span></summary>
       ${renderRowsTable(rows)}
     </details>`;
   }).join("");
 }
 
-/* ---------- RENDER: SPOTLIGHTS ---------- */
+/* ---------- SPOTLIGHTS ---------- */
 function mtile(l,v,s,color){return `<div class="mtile"><div class="ml">${l}</div><div class="mv" style="color:${color};">${v}</div><div class="ms">${s}</div></div>`;}
 function renderSpotlights(){
-  const G="var(--clear-c)",R="var(--alert-c)",O="var(--watch-c)",GY="#555",B="#3b5bdb";
+  const G="var(--clear-c)",R="var(--alert-c)",O="var(--watch-c)",GY="#555";
   return `
-  <div class="note note-green"><strong class="h">📌 July 14 — CPI cools hard, but oil surges on the blockade:</strong> June CPI came in <strong>cool across the board</strong> — headline −0.4% MoM (biggest drop since Apr 2020), 3.5% YoY, and core 2.6%, all below forecasts. That <strong>collapsed July hike odds to ~17%</strong> (from 42%) and pulled yields down (2yr 4.18%, 10yr 4.55%). The catch: the US began <strong>enforcing the Hormuz blockade</strong> today and <strong>Brent pushed above $86</strong> — June predates all of it, so July's data may reverse the relief. Stocks ~flat (cool CPI vs. oil + IBM −22%). <strong>PPI tomorrow.</strong></div>
+  <div class="note note-green"><span class="h">July 14 — CPI cools hard, but oil surges on the blockade.</span> June CPI came in <strong>cool across the board</strong> — headline −0.4% MoM (biggest drop since Apr 2020), 3.5% YoY, and core 2.6%, all below forecasts. That <strong>collapsed July hike odds to ~17%</strong> (from 42%) and pulled yields down (2yr 4.18%, 10yr 4.55%). The catch: the US began <strong>enforcing the Hormuz blockade</strong> today and <strong>Brent pushed above $86</strong> — June predates all of it, so July's data may reverse the relief. Stocks ~flat (cool CPI vs. oil + IBM −22%). <strong>PPI tomorrow.</strong></div>
 
-  <div class="spot" style="background:var(--clear-bg);border-color:var(--clear-b);border-left:4px solid var(--clear-c);">
-    <div><span class="lab" style="color:var(--clear-c);">🎯 June CPI — Cool Across the Board</span><span class="badge">TODAY</span></div>
-    <div class="mgrid" style="grid-template-columns:repeat(4,1fr);">
+  <div class="spot" style="border-color:var(--clear-b);border-left:3px solid var(--clear-c);">
+    <div><span class="lab" style="color:var(--clear-c);">June CPI — Cool Across the Board</span><span class="badge" style="background:var(--clear-d);">TODAY</span></div>
+    <div class="mgrid g4">
       ${mtile("Headline (MoM)","−0.4%","Biggest drop since Apr '20",G)}
       ${mtile("Headline (YoY)","3.5%","↓ from 4.2%; vs 3.8% exp",G)}
       ${mtile("Core (YoY)","2.6%","↓ from 2.9%; vs 2.9% exp",G)}
@@ -371,9 +444,9 @@ function renderSpotlights(){
     <div class="mnote">The relief the doves were waiting for. Headline CPI fell 0.4% on the month — the largest monthly decline since April 2020 — driven by a 5.7% drop in energy as June gasoline prices unwound. That took the annual rate to 3.5%, below the 3.8% expected. More importantly, CORE CPI (the number the Fed actually watches) was flat on the month and eased to 2.6% YoY, below the 2.9% forecast — a genuine step toward target, not just an energy effect. Markets repriced fast: July hike odds collapsed to ~17% from 42%, and the 2yr fell 8bps. The one caveat: this is June data, before the oil re-surge — so it's likely the trough. Source: BLS / CNBC, July 14, 2026.</div>
   </div>
 
-  <div class="spot" style="background:var(--alert-bg);border-color:var(--alert-b);border-left:4px solid var(--alert-c);">
-    <div><span class="lab" style="color:var(--alert-c);">⚠ The Catch — Oil Surges as the Blockade Is Enforced</span><span class="badge">TODAY</span></div>
-    <div class="mgrid" style="grid-template-columns:repeat(3,1fr);">
+  <div class="spot" style="border-color:var(--alert-b);border-left:3px solid var(--alert-c);">
+    <div><span class="lab" style="color:var(--alert-c);">The Catch — Oil Surges as the Blockade Is Enforced</span><span class="badge" style="background:var(--alert-d);">TODAY</span></div>
+    <div class="mgrid g3">
       ${mtile("Brent crude","~$86","1-month high; +9.6% Mon",R)}
       ${mtile("Blockade","Enforced","+20% cargo fee at Hormuz",R)}
       ${mtile("Shows up in","July CPI","Released Aug 12",O)}
@@ -381,9 +454,9 @@ function renderSpotlights(){
     <div class="mnote">Working directly against the CPI relief: the US began enforcing its Strait of Hormuz blockade Tuesday afternoon — adding a 20% fee on all cargo crossing the strait — after a third straight night of strikes on Iran. Brent, which posted its biggest one-day jump in 6+ years Monday (+9.6%), pushed above $86, a one-month high. Because June CPI predates all of this, the energy relief in today's report is essentially backward-looking; the risk is that the surge feeds into the July CPI (out Aug 12) and, if it lingers, into core via shipping and input costs. This is why the inflation cluster stays mostly red even on a cool-CPI day, and why September hike odds held near 60%. Source: Yahoo Finance / Bloomberg, July 14, 2026.</div>
   </div>
 
-  <div class="spot" style="background:#f5f8ff;border-color:#b3c6f5;border-left:4px solid #3b5bdb;">
-    <div><span class="lab" style="color:#3b5bdb;">Q2 Earnings Kick Off — Banks Beat, IBM Cracks</span></div>
-    <div class="mgrid" style="grid-template-columns:repeat(3,1fr);">
+  <div class="spot" style="border-color:#cdd6f2;border-left:3px solid #3b5bdb;">
+    <div><span class="lab" style="color:#2a44a8;">Q2 Earnings Kick Off — Banks Beat, IBM Cracks</span></div>
+    <div class="mgrid g3">
       ${mtile("Big banks","Beat","JPM, WFC, GS strong",G)}
       ${mtile("IBM","−22%","Weak prelim results",R)}
       ${mtile("Q2 consensus","~24%","YoY S&amp;P EPS growth",O)}
@@ -391,9 +464,9 @@ function renderSpotlights(){
     <div class="mnote">Earnings season opened with a split screen. The big banks delivered — JPMorgan, Wells Fargo, and Goldman Sachs all beat on strong trading and profits. But IBM cratered ~22% after preliminary results missed on software and infrastructure weakness, dragging the Dow. With Q2 S&amp;P earnings consensus near a lofty ~24% YoY (heavily concentrated in tech/AI), the bar is high — and single-name misses like IBM show how unforgiving the tape is when expectations are stretched. Source: CNBC / TheStreet, July 14, 2026.</div>
   </div>
 
-  <div class="spot" style="background:var(--watch-bg);border-color:#f5d099;border-left:4px solid var(--watch-c);">
+  <div class="spot" style="border-color:#ecdcb8;border-left:3px solid var(--watch-c);">
     <div><span class="lab" style="color:var(--watch-c);">CAPE Ratio (Shiller P/E)</span></div>
-    <div class="mgrid" style="grid-template-columns:repeat(3,1fr);">
+    <div class="mgrid g3">
       ${mtile("Current CAPE","42.3x","2nd highest ever",R)}
       ${mtile("Historical avg (1881–)","17.3x","Current is 2.4× avg",GY)}
       ${mtile("Dot-com peak (1999)","44.2x","Only higher reading",O)}
@@ -402,89 +475,81 @@ function renderSpotlights(){
   </div>`;
 }
 
-/* ---------- RENDER: YIELD CURVE SVG ---------- */
+/* ---------- YIELD CURVE (polished SVG) ---------- */
 function renderChart(){
-  const W=700,H=200,padL=40,padR=20,padT=10,padB=24;
-  const plotW=W-padL-padR, plotBottom=H-padB, plotTop=padT;
+  const W=720,H=232,padL=48,padR=26,padT=16,padB=44;
+  const plotBottom=H-padB, plotTop=padT, plotW=W-padL-padR;
   const yMin=3.0,yMax=5.5, n=yieldCurveData.length;
   const xAt=i=>padL+i*(plotW/(n-1));
   const yAt=v=>plotTop+(yMax-v)/(yMax-yMin)*(plotBottom-plotTop);
   const cur=yieldCurveData.map((d,i)=>`${xAt(i).toFixed(1)},${yAt(d.current).toFixed(1)}`).join(" ");
   const pri=yieldCurveData.map((d,i)=>`${xAt(i).toFixed(1)},${yAt(d.prior).toFixed(1)}`).join(" ");
-  const dots=yieldCurveData.map((d,i)=>`<circle cx="${xAt(i).toFixed(1)}" cy="${yAt(d.current).toFixed(1)}" r="3" fill="#3266ad" stroke="#fff" stroke-width="1"/>`).join("");
-  const xlabels=yieldCurveData.map((d,i)=>`<text x="${xAt(i).toFixed(1)}" y="${H-8}" font-size="10" fill="#888" text-anchor="middle">${d.maturity}</text>`).join("");
-  const yticks=[3.0,3.5,4.0,4.5,5.0,5.5].map(v=>`<text x="${padL-6}" y="${(yAt(v)+3).toFixed(1)}" font-size="10" fill="#888" text-anchor="end">${v.toFixed(1)}%</text>`).join("");
+  const area=`${padL},${plotBottom} ${cur} ${xAt(n-1).toFixed(1)},${plotBottom}`;
+  const ticks=[3.0,3.5,4.0,4.5,5.0,5.5];
+  const grid=ticks.map(v=>`<line x1="${padL}" y1="${yAt(v).toFixed(1)}" x2="${W-padR}" y2="${yAt(v).toFixed(1)}" stroke="#efece4" stroke-width="1"/>`).join("");
+  const yticks=ticks.map(v=>`<text x="${padL-8}" y="${(yAt(v)+3).toFixed(1)}" font-size="10" fill="#a4a199" text-anchor="end" font-family="Georgia,serif">${v.toFixed(1)}</text>`).join("");
+  const dots=yieldCurveData.map((d,i)=>`<circle cx="${xAt(i).toFixed(1)}" cy="${yAt(d.current).toFixed(1)}" r="2.6" fill="#2f5c8f" stroke="#fff" stroke-width="1"/>`).join("");
+  const xlabels=yieldCurveData.map((d,i)=>`<text x="${xAt(i).toFixed(1)}" y="${plotBottom+16}" font-size="10" fill="#77746b" text-anchor="middle">${d.maturity}</text>`).join("");
   const ref5=yAt(5.0).toFixed(1), ref45=yAt(4.5).toFixed(1);
-  return `<div class="card chartcard">
-    <div class="chart-h"><span class="sec-title">U.S. Treasury Yield Curve</span><span style="font-size:11px;color:#888;">July 14, 2026 — post-CPI</span></div>
-    <div class="chart-sub">10–2 spread: +37 bps · 10yr at 4.55% · 2yr at ~4.18% · 30yr above 5% · Hover x-axis for maturity</div>
-    <div class="chart-leg"><span style="color:#3266ad;">— Current</span><span style="color:#bbb;">-- 1yr ago (approx)</span></div>
+  const midY=((plotTop+plotBottom)/2).toFixed(1);
+  return `<div class="chartcard">
+    <div class="chart-h"><span class="chart-title">U.S. Treasury Yield Curve</span><span class="chart-when">July 14, 2026 · post-CPI</span></div>
+    <div class="chart-sub">10–2 spread +37 bps · 10yr 4.55% · 2yr ~4.18% · 30yr above 5%</div>
+    <div class="chart-leg"><span style="color:#2f5c8f;">— Current</span><span style="color:#bbb;">-- 1yr ago (approx)</span><span style="color:var(--alert-c);">·· threshold</span></div>
     <svg viewBox="0 0 ${W} ${H}" width="100%" style="height:auto;display:block;" xmlns="http://www.w3.org/2000/svg">
-      <line x1="${padL}" y1="${ref5}" x2="${W-padR}" y2="${ref5}" stroke="#e24b4b" stroke-dasharray="3 3" stroke-width="1"/>
-      <text x="${W-padR}" y="${(ref5-3)}" font-size="10" fill="#e24b4b" text-anchor="end">5%</text>
-      <line x1="${padL}" y1="${ref45}" x2="${W-padR}" y2="${ref45}" stroke="#f39c12" stroke-dasharray="3 3" stroke-width="1"/>
-      <text x="${W-padR}" y="${(ref45-3)}" font-size="10" fill="#f39c12" text-anchor="end">4.5%</text>
+      ${grid}
+      <line x1="${padL}" y1="${ref5}" x2="${W-padR}" y2="${ref5}" stroke="#cf3a30" stroke-dasharray="4 3" stroke-width="1"/>
+      <text x="${W-padR}" y="${(ref5-4)}" font-size="9.5" fill="#cf3a30" text-anchor="end">5% threshold</text>
+      <line x1="${padL}" y1="${ref45}" x2="${W-padR}" y2="${ref45}" stroke="#dd9128" stroke-dasharray="4 3" stroke-width="1"/>
+      <text x="${W-padR}" y="${(ref45-4)}" font-size="9.5" fill="#c07d1f" text-anchor="end">4.5%</text>
       ${yticks}
-      <polyline points="${pri}" fill="none" stroke="#bbb" stroke-width="1.5" stroke-dasharray="5 3"/>
-      <polyline points="${cur}" fill="none" stroke="#3266ad" stroke-width="2"/>
+      <polygon points="${area}" fill="#2f5c8f" fill-opacity="0.07"/>
+      <polyline points="${pri}" fill="none" stroke="#c3c0b6" stroke-width="1.5" stroke-dasharray="5 3"/>
+      <polyline points="${cur}" fill="none" stroke="#2f5c8f" stroke-width="2.2"/>
       ${dots}
       ${xlabels}
+      <text transform="rotate(-90 14 ${midY})" x="14" y="${midY}" font-size="10" fill="#77746b" text-anchor="middle" font-family="Georgia,serif" font-style="italic">Yield (%)</text>
+      <text x="${(padL+(W-padR))/2}" y="${H-4}" font-size="10" fill="#77746b" text-anchor="middle" font-family="Georgia,serif" font-style="italic">Maturity</text>
     </svg>
-    <div class="curveread"><strong>Curve read:</strong> The cool CPI pulled the whole curve down a notch — 2yr −8bps to 4.18% (July hike off the table), 10yr −6bps to 4.55%. But the 30yr only eased 3bps and held above the red 5% line: the front end rallied on softer near-term inflation while the long end kept its premium against the oil-driven forward risk. Spread steady at +37 bps. PPI tomorrow.</div>
+    <div class="curveread"><strong>Curve read.</strong> The cool CPI pulled the whole curve down a notch — 2yr −8bps to 4.18% (July hike off the table), 10yr −6bps to 4.55%. But the 30yr only eased 3bps and held above the red 5% line: the front end rallied on softer near-term inflation while the long end kept its premium against the oil-driven forward risk. Spread steady at +37 bps.</div>
   </div>`;
 }
 
-/* ---------- RENDER: CALENDAR + GLOSSARY ---------- */
+/* ---------- CALENDAR + GLOSSARY ---------- */
 function renderCalendar(){
   return UPCOMING.map(ev=>{
     const p=PRIORITY[ev.priority];
-    return `<div class="cal-row">
-      <span class="cal-date">${esc(ev.date)}</span>
-      <span class="cal-name">${esc(ev.name)}</span>
-      <span class="cal-pri" style="background:${p.bg};color:${p.c};border-color:${p.b};">${p.label}</span>
-    </div>`;
-  }).join("")+`<div style="margin-top:8px;font-size:11px;color:#aaa;text-align:center;">Sources: BLS.gov · BEA.gov · federalreserve.gov · ISM · Census Bureau · CME FedWatch</div>`;
+    return `<div class="cal-row"><span class="cal-date">${esc(ev.date)}</span><span class="cal-name">${esc(ev.name)}</span><span class="cal-pri" style="background:${p.bg};color:${p.c};border-color:${p.b};">${p.label}</span></div>`;
+  }).join("")+`<div style="margin-top:10px;font-size:10.5px;color:var(--faint);text-align:center;font-style:italic;font-family:var(--serif);">Sources: BLS · BEA · Federal Reserve · ISM · Census Bureau · CME FedWatch</div>`;
 }
 function renderGlossary(){
-  const intro=`<div class="gloss-intro"><strong>Glossary:</strong> Every abbreviation used across the dashboard, grouped by area with a brief definition.</div>`;
-  const grps=GLOSSARY.map(g=>`
-    <div class="gloss-grp">
-      <div class="gloss-cat">${esc(g.category)}</div>
-      ${g.items.map(it=>`<div class="gloss-item"><div class="gloss-term">${esc(it.term)}</div><div class="gloss-def"><strong>${esc(it.full)}</strong> — ${esc(it.def)}</div></div>`).join("")}
-    </div>`).join("");
+  const intro=`<div class="gloss-intro"><span class="b">Glossary.</span> Every abbreviation used across the dashboard, grouped by area with a brief definition.</div>`;
+  const grps=GLOSSARY.map(g=>`<div class="gloss-grp"><div class="gloss-cat">${esc(g.category)}</div>${g.items.map(it=>`<div class="gloss-item"><div class="gloss-term">${esc(it.term)}</div><div class="gloss-def"><strong>${esc(it.full)}</strong> — ${esc(it.def)}</div></div>`).join("")}</div>`).join("");
   return intro+grps;
 }
 
-/* ---------- BUILD APP ---------- */
+/* ---------- BUILD ---------- */
 function build(){
   const counts=countAll();
   const html=`
-    <div class="hdr">
-      <div><div class="kicker">Economic Monitoring</div><div class="title">Signal Dashboard</div></div>
-      <div class="rt"><div class="lbl">Last refreshed</div><div class="val">July 14, 2026 — 9:00 PM</div></div>
-    </div>
+    ${renderMasthead()}
+    ${renderStatus(counts)}
     ${renderRead()}
     ${renderDecision(counts)}
-    ${renderTiles(counts)}
     <div class="tabs">
       <button class="tabbtn active" data-tab="signals">Signals</button>
       <button class="tabbtn" data-tab="calendar">Calendar</button>
       <button class="tabbtn" data-tab="glossary">Glossary</button>
     </div>
-    <div class="panel active" id="panel-signals">
-      ${renderSpotlights()}
-      ${renderSections()}
-      ${renderChart()}
-    </div>
+    <div class="panel active" id="panel-signals">${renderSpotlights()}${renderSections()}${renderChart()}</div>
     <div class="panel" id="panel-calendar">${renderCalendar()}</div>
     <div class="panel" id="panel-glossary">${renderGlossary()}</div>
     <div class="foot">
       CPI: BLS Jul 14 · Yields &amp; Fed odds: CNBC / CME FedWatch Jul 14 · Equity &amp; earnings: CNBC / TheStreet Jul 14 · Oil &amp; Iran: Yahoo / Bloomberg Jul 14 · VIX: Cboe (approx) · CAPE: multpl.com · Margin debt: FINRA
-      <div class="disc">Static snapshot — for monitoring and educational use, not investment advice.</div>
+      <div class="byline">Compiled &amp; maintained by Brian W. Malone · © 2026 Brian W. Malone. All rights reserved.</div>
+      <div class="disc">A static snapshot for monitoring and educational use — not investment advice.</div>
     </div>`;
   document.getElementById("app").innerHTML=html;
-
-  // Tab switching
   document.querySelectorAll(".tabbtn").forEach(btn=>{
     btn.addEventListener("click",()=>{
       document.querySelectorAll(".tabbtn").forEach(b=>b.classList.remove("active"));
