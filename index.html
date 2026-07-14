@@ -215,11 +215,11 @@ const SIGNALS = {
     {name:"2yr note",value:"~4.18%",prev:"4.23%",dir:"↓ fell 8bps on CPI",signal:"watch",watch:"above 4.50% = hike risk. Dropped 8bps after the cool CPI pulled July hike odds off the table. Well below the 4.50% line.",upd:true},
   ],
   "Equity Valuation":[
-    {name:"S&P 500 level",value:"~7,510",prev:"7,515",dir:"→ ~flat",signal:"clear",watch:"Roughly flat (~−0.1%) as the cool-CPI relief was offset by the oil surge (Brent >$86), a 22% plunge in IBM on weak results, and chip jitters. Bank earnings beat. Still within ~1% of its highs. (Approximate close.)",upd:true},
+    {name:"S&P 500 level",value:"~7,535",prev:"7,515",dir:"↑ slightly higher",signal:"clear",watch:"Up ~0.3% intraday, near record highs — the cool CPI and strong bank earnings lifted the tape, while the Dow lagged (−450+ pts) on IBM's ~22% plunge and the Nasdaq led on a semis rally. Brent eased to ~$85 after the Hormuz fee was dropped. (Approximate intraday.)",upd:true},
     {name:"S&P 500 fwd P/E",value:"~19.5x",prev:"~19.5x",dir:"→ stable",signal:"watch",watch:"above 22x = stretched. Still elevated near record highs."},
     {name:"CAPE (Shiller P/E)",value:"42.3x",prev:"42.3x",dir:"→ stable",signal:"alert",watch:"above 30x = stretched; 40x = extreme. Hist. avg ~17x — Source: multpl.com"},
     {name:"Earnings yield vs 10yr",value:"+0.30%",prev:"+0.28%",dir:"→ thin",signal:"watch",watch:"Thin — the 10yr eased to 4.55% but bonds stay competitive with stocks. Q2 consensus ~24% YoY S&P earnings growth (FactSet)."},
-    {name:"S&P 500 earnings growth",value:"+12% YoY",prev:"+12% YoY",dir:"✓ strong",signal:"clear",watch:"negative = contraction risk. Q2 season opened split: big banks beat (JPMorgan, Wells Fargo, Goldman), but IBM cratered −22% on a weak preliminary report."},
+    {name:"S&P 500 earnings growth",value:"+12% YoY",prev:"+12% YoY",dir:"✓ strong",signal:"clear",watch:"negative = contraction risk. Q2 season opened split: big banks beat across the board (JPMorgan, Bank of America, Wells Fargo, Citi, Goldman), but IBM cratered ~22% on a weak preliminary report."},
     {name:"% beating estimates",value:"84%",prev:"84%",dir:"✓ strong",signal:"clear",watch:"below 65% = deteriorating. Very high bar set for this quarter."},
     {name:"VIX fear index",value:"~16",prev:"~17",dir:"→ steady",signal:"clear",watch:"above 25 = Alert. Roughly steady — cool CPI calmed rate fears while oil/geopolitics kept a floor under vol. Still well below 25. (Approximate.)",upd:true},
   ],
@@ -242,9 +242,9 @@ const SIGNALS = {
     {name:"Jobless claims (wk Jul 4)",value:"215K",prev:"215K",dir:"→ stable, below est.",signal:"clear",watch:"Slightly below expectations — labor still stable even as payroll growth has slowed."},
   ],
   "Macro & Fed":[
-    {name:"Iran / Hormuz status",value:"Blockade enforced",prev:"Blockade reinstated",dir:"↓ escalating",signal:"alert",watch:"The US began enforcing its Hormuz blockade Tuesday afternoon, adding a 20% fee on all cargo crossing the strait, after a third straight night of strikes on Iran. Brent pushed above $86 — a one-month high. This is the live upside risk to July inflation.",upd:true},
-    {name:"Oil price (WTI)",value:"~$82",prev:"~$78",dir:"↑ higher",signal:"watch",watch:"Extended Monday's ~9% surge as the blockade took effect. Well above last week's ~$68. The disinflation tailwind has fully reversed — a fresh upside inflation risk for July/August data. (Approximate — volatile.)",upd:true},
-    {name:"Oil price (Brent)",value:"~$86",prev:"~$83",dir:"↑ 1-month high",signal:"watch",watch:"Monday's +9.6% was its biggest one-day gain in 6+ years; pushed above $86 Tuesday. (Approximate.)",upd:true},
+    {name:"Iran / Hormuz status",value:"Blockade at 4pm ET",prev:"Blockade reinstated",dir:"↓ escalating",signal:"alert",watch:"The US Navy reimposes its Iran blockade at 4:00 PM ET today, after a third straight night of strikes on Iran. In a midday reversal, Trump dropped his demand for a 20% Hormuz transit fee — replacing it with pledged Gulf-state trade and investment deals — which eased oil off its session highs. Still the live upside risk to July inflation.",upd:true},
+    {name:"Oil price (WTI)",value:"~$79.50",prev:"$78.14",dir:"↑ off highs",signal:"watch",watch:"Up ~1.8% to ~$79.50, but eased back from above $80 earlier in the session after Trump scrapped the 20% cargo fee. Still well above last week's ~$68 — the disinflation tailwind has reversed, a fresh upside inflation risk for July/August data. (Approximate — volatile.)",upd:true},
+    {name:"Oil price (Brent)",value:"~$85",prev:"$83.30",dir:"↑ 1-month high",signal:"watch",watch:"Up ~2% to ~$85, a one-month high, though off the intraday peak above $85.5 once the 20% fee was dropped. Monday's +9.6% was its biggest one-day gain since 2020. (Approximate.)",upd:true},
     {name:"Fed hike odds — Sept",value:"~60%",prev:"~52%",dir:"↑ Sept; July collapsed",signal:"alert",watch:"The cool CPI collapsed JULY hike odds to ~17% (from 42% Monday) — a near-term hold is now firmly priced. But SEPTEMBER odds are still ~60% given the oil-driven forward inflation risk. Warsh testified he'll make inflation 'a thing of the past.'",upd:true},
     {name:"FOMC minutes / dot plot",value:"3.8% median",prev:"3.8% median",dir:"→ hawkish",signal:"alert",watch:"June minutes: Fed dropped its easing bias, upside inflation risks the core concern, committee split 9-9 on a 2026 hike. Warsh's semiannual testimony today stuck to that hawkish framing with no forward guidance."},
     {name:"PCE headline (May)",value:"4.1% YoY",prev:"4.1% YoY",dir:"→ above 4%",signal:"alert",watch:"Core PCE 3.4%. June PCE (Jul 30) — today's cool CPI suggests June PCE should ease too, though the two measures differ."},
@@ -271,10 +271,10 @@ const TAKEAWAY = {
   updated:"July 14",
   chain:[
     {n:"1",q:"Is the economy still growing?",where:"Demand section",answer:"Yes — cooling, mixed Q2 start",detail:"GDPNow ~1.4% and housing soft. Q2 earnings season opened split — big banks beat, but IBM cratered −22% on a weak preliminary report.",tone:"watch"},
-    {n:"2",q:"Is inflation beaten?",where:"Price cluster",answer:"June cooled sharply — but likely the trough",detail:"Headline CPI 3.5% (−0.4% MoM, biggest drop since 2020), core 2.6% — both below forecasts. But June predates the oil surge; with the Hormuz blockade now enforced (Brent >$86), July's data threatens to reverse it.",tone:"alert"},
+    {n:"2",q:"Is inflation beaten?",where:"Price cluster",answer:"June cooled sharply — but likely the trough",detail:"Headline CPI 3.5% (−0.4% MoM, biggest drop since 2020), core 2.6% — both below forecasts. But June predates the oil surge; with the US reimposing a Hormuz blockade at 4pm ET (Brent ~$85), July's data threatens to reverse it.",tone:"alert"},
     {n:"3",q:"How are rates & markets positioned?",where:"Fed · Curve · Equity · Credit",answer:"Rate pressure eased — July hike off the table",detail:"Cool CPI dropped July hike odds to ~17% (from 42%) and pulled yields down (2yr 4.18%, 10yr 4.55%). But the 30yr held above 5% and Sept hike odds are still ~60%.",tone:"alert"},
   ],
-  bottomLine:"The pivotal June CPI came in cool across the board — headline 3.5%, core 2.6%, both below forecasts and the biggest monthly drop since April 2020 — collapsing July hike odds to ~17% and easing yields. But it's likely the trough: the reading predates the oil surge, and with the US now enforcing a Hormuz blockade (Brent >$86), July's data threatens to undo the relief. Genuine good news for June, a building forward risk for July — September hike odds are still ~60%.",
+  bottomLine:"The pivotal June CPI came in cool across the board — headline 3.5%, core 2.6%, both below forecasts and the biggest monthly drop since April 2020 — collapsing July hike odds to ~17% and easing yields. But it's likely the trough: the reading predates the oil surge, and with the US reimposing a Hormuz blockade at 4pm ET (Brent ~$85, though Trump dropped his 20% transit-fee demand midday), July's data threatens to undo the relief. Genuine good news for June, a building forward risk for July — September hike odds are still ~60%.",
 };
 
 const GLOSSARY = [
@@ -350,7 +350,7 @@ function renderMasthead(){
     </div>
     <div class="mh-date">
       <div class="mh-date-lbl">As of</div>
-      <div class="mh-date-val">July 14, 2026 · 9:00 PM ET</div>
+      <div class="mh-date-val">July 14, 2026 · 3:00 PM ET</div>
     </div>
   </div>
   <div class="mh-strap">A running read on U.S. macro conditions — yield curve, inflation, credit, equity valuation, and the Fed.</div>`;
@@ -431,7 +431,7 @@ function mtile(l,v,s,color){return `<div class="mtile"><div class="ml">${l}</div
 function renderSpotlights(){
   const G="var(--clear-c)",R="var(--alert-c)",O="var(--watch-c)",GY="#555";
   return `
-  <div class="note note-green"><span class="h">July 14 — CPI cools hard, but oil surges on the blockade.</span> June CPI came in <strong>cool across the board</strong> — headline −0.4% MoM (biggest drop since Apr 2020), 3.5% YoY, and core 2.6%, all below forecasts. That <strong>collapsed July hike odds to ~17%</strong> (from 42%) and pulled yields down (2yr 4.18%, 10yr 4.55%). The catch: the US began <strong>enforcing the Hormuz blockade</strong> today and <strong>Brent pushed above $86</strong> — June predates all of it, so July's data may reverse the relief. Stocks ~flat (cool CPI vs. oil + IBM −22%). <strong>PPI tomorrow.</strong></div>
+  <div class="note note-green"><span class="h">July 14 — CPI cools hard, but oil surges on the blockade.</span> June CPI came in <strong>cool across the board</strong> — headline −0.4% MoM (biggest drop since Apr 2020), 3.5% YoY, and core 2.6%, all below forecasts. That <strong>collapsed July hike odds to ~17%</strong> (from 42%) and pulled yields down (2yr 4.18%, 10yr 4.55%). The catch: the US Navy <strong>reimposes its Iran blockade at 4pm ET</strong> and <strong>Brent sits near $85</strong> — June predates all of it, so July's data may reverse the relief. (Trump dropped his 20% Hormuz-fee demand midday, easing oil off its highs.) S&amp;P ~+0.3% near record highs on the cool CPI and bank beats; the Dow lagged on IBM −22%. <strong>PPI tomorrow.</strong></div>
 
   <div class="spot" style="border-color:var(--clear-b);border-left:3px solid var(--clear-c);">
     <div><span class="lab" style="color:var(--clear-c);">June CPI — Cool Across the Board</span><span class="badge" style="background:var(--clear-d);">TODAY</span></div>
@@ -445,23 +445,23 @@ function renderSpotlights(){
   </div>
 
   <div class="spot" style="border-color:var(--alert-b);border-left:3px solid var(--alert-c);">
-    <div><span class="lab" style="color:var(--alert-c);">The Catch — Oil Surges as the Blockade Is Enforced</span><span class="badge" style="background:var(--alert-d);">TODAY</span></div>
+    <div><span class="lab" style="color:var(--alert-c);">The Catch — Oil Elevated as the Blockade Nears</span><span class="badge" style="background:var(--alert-d);">TODAY</span></div>
     <div class="mgrid g3">
-      ${mtile("Brent crude","~$86","1-month high; +9.6% Mon",R)}
-      ${mtile("Blockade","Enforced","+20% cargo fee at Hormuz",R)}
+      ${mtile("Brent crude","~$85","1-month high; +9.6% Mon",R)}
+      ${mtile("Blockade","4pm ET","20% cargo fee dropped",R)}
       ${mtile("Shows up in","July CPI","Released Aug 12",O)}
     </div>
-    <div class="mnote">Working directly against the CPI relief: the US began enforcing its Strait of Hormuz blockade Tuesday afternoon — adding a 20% fee on all cargo crossing the strait — after a third straight night of strikes on Iran. Brent, which posted its biggest one-day jump in 6+ years Monday (+9.6%), pushed above $86, a one-month high. Because June CPI predates all of this, the energy relief in today's report is essentially backward-looking; the risk is that the surge feeds into the July CPI (out Aug 12) and, if it lingers, into core via shipping and input costs. This is why the inflation cluster stays mostly red even on a cool-CPI day, and why September hike odds held near 60%. Source: Yahoo Finance / Bloomberg, July 14, 2026.</div>
+    <div class="mnote">Working directly against the CPI relief: the US Navy reimposes its Strait of Hormuz blockade at 4:00 PM ET today, after a third straight night of strikes on Iran. In a midday reversal, Trump abandoned his demand for a 20% fee on cargo transiting the strait — replacing it with pledged Gulf-state trade and investment deals — which pulled crude back from its session highs (WTI ~$79.50, Brent ~$85). Even so, Brent posted its biggest one-day jump in 6+ years Monday (+9.6%) and holds a one-month high. Because June CPI predates all of this, the energy relief in today's report is essentially backward-looking; the risk is that the surge feeds into July CPI (out Aug 12) and, if it lingers, into core via shipping and input costs. This is why the inflation cluster stays mostly red even on a cool-CPI day, and why September hike odds held near 60%. Source: CNBC / Bloomberg, July 14, 2026.</div>
   </div>
 
   <div class="spot" style="border-color:#cdd6f2;border-left:3px solid #3b5bdb;">
     <div><span class="lab" style="color:#2a44a8;">Q2 Earnings Kick Off — Banks Beat, IBM Cracks</span></div>
     <div class="mgrid g3">
-      ${mtile("Big banks","Beat","JPM, WFC, GS strong",G)}
+      ${mtile("Big banks","Beat","JPM, BAC, WFC, C, GS strong",G)}
       ${mtile("IBM","−22%","Weak prelim results",R)}
       ${mtile("Q2 consensus","~24%","YoY S&amp;P EPS growth",O)}
     </div>
-    <div class="mnote">Earnings season opened with a split screen. The big banks delivered — JPMorgan, Wells Fargo, and Goldman Sachs all beat on strong trading and profits. But IBM cratered ~22% after preliminary results missed on software and infrastructure weakness, dragging the Dow. With Q2 S&amp;P earnings consensus near a lofty ~24% YoY (heavily concentrated in tech/AI), the bar is high — and single-name misses like IBM show how unforgiving the tape is when expectations are stretched. Source: CNBC / TheStreet, July 14, 2026.</div>
+    <div class="mnote">Earnings season opened with a split screen. The big banks delivered — JPMorgan (EPS $6.14 vs. $5.59 est., record revenue), Bank of America, Wells Fargo, Citi, and Goldman Sachs all beat on strong trading and profits. But IBM cratered ~22% after preliminary results missed as enterprise clients shifted spend from software and mainframes toward AI infrastructure, dragging the Dow down 450+ points. With Q2 S&amp;P earnings consensus near a lofty ~24% YoY (heavily concentrated in tech/AI), the bar is high — and single-name misses like IBM show how unforgiving the tape is when expectations are stretched. Source: CNBC / TheStreet, July 14, 2026.</div>
   </div>
 
   <div class="spot" style="border-color:#ecdcb8;border-left:3px solid var(--watch-c);">
