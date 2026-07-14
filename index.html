@@ -5,472 +5,496 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Economic Signal Dashboard — July 14, 2026</title>
 <style>
-  html, body { margin: 0; padding: 0; background: #f8f9fa; }
-  * { box-sizing: border-box; }
+  :root{
+    --clear-bg:#f0faf4; --clear-c:#1e7c45; --clear-b:#a8dfc0; --clear-d:#27ae60;
+    --watch-bg:#fffbf0; --watch-c:#b7650a; --watch-b:#f5d99a; --watch-d:#f39c12;
+    --alert-bg:#fff0f0; --alert-c:#c0392b; --alert-b:#f5aaaa; --alert-d:#e24b4b;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#f8f9fa;}
+  body{font-family:Arial,Helvetica,sans-serif;color:#1a1a2e;}
+  .wrap{padding:18px;max-width:1100px;margin:0 auto;}
+  .hdr{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:10px;}
+  .kicker{font-size:11px;color:#6366f1;letter-spacing:.12em;font-weight:700;text-transform:uppercase;margin-bottom:3px;}
+  .title{font-size:20px;font-weight:700;}
+  .rt{text-align:right;}
+  .rt .lbl{font-size:11px;color:#888;}
+  .rt .val{font-size:13px;color:#444;font-weight:600;}
+
+  .card{background:#fff;border:1px solid #dee2e6;border-radius:8px;}
+  .read{margin-bottom:12px;border-left:4px solid #6366f1;border-radius:8px;padding:11px 14px;background:#fff;border:1px solid #dee2e6;border-left:4px solid #6366f1;}
+  .read-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;flex-wrap:wrap;gap:4px;}
+  .read-h{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#4f46e5;}
+  .read-sub{font-size:10px;color:#aaa;}
+  .chain{display:flex;gap:10px;padding:6px 0;border-bottom:1px solid #f1f3f5;}
+  .chain:last-of-type{border-bottom:none;}
+  .chain .dot{flex-shrink:0;width:7px;height:7px;border-radius:50%;margin-top:5px;}
+  .chain .q{font-size:12.5px;color:#222;}
+  .chain .where{color:#999;font-size:11px;}
+  .chain .ans{font-size:12px;font-weight:600;margin:1px 0;}
+  .chain .det{font-size:11px;color:#777;line-height:1.45;}
+  .bottom{margin-top:9px;padding:8px 11px;background:#f5f5ff;border:1px solid #d9d9f5;border-radius:6px;font-size:12px;color:#2a2a5a;line-height:1.5;}
+  .bottom strong{color:#4f46e5;}
+
+  .decision{margin-bottom:16px;padding:9px 13px;background:var(--alert-bg);border:1px solid #f5c6c6;border-left:4px solid var(--alert-d);border-radius:6px;font-size:12px;color:#7a1a1a;}
+  .decision strong{color:var(--alert-c);}
+
+  .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;}
+  .tile{border-radius:8px;padding:12px 14px;text-align:center;border:1px solid;}
+  .tile .n{font-size:28px;font-weight:700;line-height:1;}
+  .tile .t{font-size:11px;font-weight:600;margin-top:3px;letter-spacing:.05em;}
+  .bar{margin-top:7px;background:rgba(0,0,0,.08);border-radius:4px;height:4px;overflow:hidden;}
+  .bar > div{height:100%;border-radius:4px;}
+
+  .tabs{display:flex;gap:4px;background:#e9ecef;border-radius:8px;padding:4px;margin-bottom:14px;}
+  .tabbtn{flex:1;padding:7px 0;border-radius:6px;border:none;cursor:pointer;font-size:12px;font-weight:600;font-family:inherit;background:transparent;color:#888;}
+  .tabbtn.active{background:#fff;color:#3b5bdb;box-shadow:0 1px 4px rgba(0,0,0,.1);}
+  .panel{display:none;}
+  .panel.active{display:block;}
+
+  .note{margin-bottom:10px;padding:9px 13px;border-radius:6px;font-size:12px;line-height:1.5;}
+  .note-green{background:var(--clear-bg);border:1px solid var(--clear-b);border-left:4px solid var(--clear-c);color:#1a4a2a;}
+  .note-green strong.h{color:var(--clear-c);}
+
+  .spot{padding:11px 14px;border-radius:8px;margin-bottom:10px;border:1px solid;}
+  .spot .lab{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;}
+  .spot .badge{font-size:9px;background:var(--alert-d);color:#fff;padding:1px 6px;border-radius:3px;font-weight:700;margin-left:8px;vertical-align:middle;}
+  .spot .mgrid{display:grid;gap:8px;margin-top:8px;}
+  .spot .mnote{margin-top:8px;font-size:11px;color:#666;line-height:1.5;}
+  .mtile{background:#fff;border-radius:6px;padding:9px 11px;border:1px solid #e9ecef;}
+  .mtile .ml{font-size:10px;color:#888;margin-bottom:3px;}
+  .mtile .mv{font-size:20px;font-weight:700;line-height:1;}
+  .mtile .ms{font-size:10px;color:#888;margin-top:3px;}
+
+  details.sec{margin-bottom:8px;background:#fff;border:1px solid #dee2e6;border-radius:8px;overflow:hidden;}
+  details.sec > summary{list-style:none;cursor:pointer;padding:10px 14px;background:#f8f9fa;display:flex;align-items:center;justify-content:space-between;}
+  details.sec > summary::-webkit-details-marker{display:none;}
+  details.sec[open] > summary{border-bottom:1px solid #dee2e6;}
+  .sec-title{font-weight:700;font-size:12px;letter-spacing:.05em;color:#444;text-transform:uppercase;}
+  .sec-pills{display:flex;align-items:center;gap:5px;}
+  .pill{font-size:11px;border-radius:4px;padding:1px 7px;font-weight:700;border:1px solid;}
+  .chev{color:#aaa;font-size:16px;margin-left:4px;display:inline-block;transition:transform .2s;}
+  details.sec[open] .chev{transform:rotate(90deg);}
+
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  .tblwrap{overflow-x:auto;}
+  th{text-align:left;padding:6px 12px;color:#888;font-weight:600;font-size:11px;white-space:nowrap;background:#f8f9fa;text-transform:uppercase;letter-spacing:.04em;}
+  td{padding:8px 12px;white-space:nowrap;}
+  tbody tr{border-bottom:1px solid #f1f3f5;}
+  tbody tr:last-child{border-bottom:none;}
+  tbody tr:hover{background:#f8f9fa;}
+  .ind{color:#222;font-weight:500;white-space:normal;}
+  .val{color:#1a1a2e;font-weight:700;}
+  .prev{color:#888;font-size:12px;}
+  .dir{color:#555;font-size:12px;}
+  .upd{margin-left:6px;font-size:9px;background:var(--alert-d);color:#fff;padding:1px 5px;border-radius:3px;font-weight:700;}
+  .rowdetail{display:none;font-size:10px;color:#aaa;margin-top:2px;white-space:normal;}
+  tbody tr:hover .rowdetail{display:block;}
+
+  .badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;letter-spacing:.06em;padding:2px 7px;border-radius:4px;white-space:nowrap;border:1px solid;}
+  .badge .bd{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+
+  .chartcard{margin-top:16px;padding:12px 14px;}
+  .chart-h{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:2px;}
+  .chart-sub{font-size:11px;color:#aaa;margin-bottom:8px;}
+  .chart-leg{display:flex;gap:16px;margin-bottom:6px;font-size:11px;}
+  .curveread{margin-top:8px;padding:6px 10px;background:var(--clear-bg);border:1px solid var(--clear-b);border-radius:6px;font-size:11px;color:#1a4a2a;}
+
+  .cal-row{display:flex;align-items:center;gap:12px;padding:9px 13px;background:#fff;border:1px solid #dee2e6;border-radius:6px;margin-bottom:6px;}
+  .cal-date{min-width:52px;font-size:11px;color:#888;font-weight:700;}
+  .cal-name{flex:1;font-size:13px;color:#333;}
+  .cal-pri{font-size:9px;padding:2px 8px;border-radius:4px;font-weight:700;white-space:nowrap;border:1px solid;}
+
+  .gloss-grp{margin-bottom:8px;background:#fff;border:1px solid #dee2e6;border-radius:8px;overflow:hidden;}
+  .gloss-cat{padding:8px 14px;background:#f8f9fa;border-bottom:1px solid #dee2e6;font-weight:700;font-size:12px;letter-spacing:.05em;color:#444;text-transform:uppercase;}
+  .gloss-item{display:flex;gap:12px;padding:8px 14px;border-bottom:1px solid #f1f3f5;}
+  .gloss-item:last-child{border-bottom:none;}
+  .gloss-term{min-width:88px;font-weight:700;color:#1a1a2e;font-size:13px;flex-shrink:0;}
+  .gloss-def{flex:1;font-size:12px;color:#555;line-height:1.5;}
+  .gloss-def strong{color:#333;font-weight:600;}
+  .gloss-intro{margin-bottom:10px;padding:9px 13px;background:#f5f8ff;border:1px solid #b3c6f5;border-left:4px solid #3b5bdb;border-radius:6px;font-size:12px;color:#1a2a5a;}
+  .gloss-intro strong{color:#3b5bdb;}
+
+  .foot{margin-top:14px;font-size:10px;color:#bbb;text-align:center;border-top:1px solid #dee2e6;padding-top:10px;}
+  .foot .disc{margin-top:6px;color:#ccc;}
 </style>
-<!-- React, ReactDOM, PropTypes, Recharts, and Babel loaded from CDN. Requires an internet connection to render. -->
-<script crossorigin src="https://unpkg.com/react@18.2.0/umd/react.production.min.js"></script>
-<script crossorigin src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
-<script crossorigin src="https://unpkg.com/prop-types@15.8.1/prop-types.min.js"></script>
-<script crossorigin src="https://unpkg.com/recharts@2.12.7/umd/Recharts.min.js"></script>
-<script src="https://unpkg.com/@babel/standalone@7.24.7/babel.min.js"></script>
 </head>
 <body>
-<div id="root"></div>
+<div class="wrap" id="app"></div>
 
-<script type="text/babel" data-presets="react">
-const { useState } = React;
-const { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, ReferenceLine } = Recharts;
+<script>
+/* ---------- DATA ---------- */
+const SIG = {
+  clear:{bg:"var(--clear-bg)",c:"var(--clear-c)",b:"var(--clear-b)",d:"var(--clear-d)"},
+  watch:{bg:"var(--watch-bg)",c:"var(--watch-c)",b:"var(--watch-b)",d:"var(--watch-d)"},
+  alert:{bg:"var(--alert-bg)",c:"var(--alert-c)",b:"var(--alert-b)",d:"var(--alert-d)"},
+};
+const PRIORITY = {
+  critical:{bg:"var(--alert-bg)",c:"var(--alert-c)",b:"var(--alert-b)",label:"CRITICAL"},
+  high:{bg:"var(--watch-bg)",c:"var(--watch-c)",b:"var(--watch-b)",label:"HIGH"},
+  watch:{bg:"#f0f0ff",c:"#3b5bdb",b:"#c5cdf5",label:"WATCH"},
+};
 
 const yieldCurveData = [
-  { maturity: "1mo", current: 3.62, prior: 5.20 },
-  { maturity: "3mo", current: 3.76, prior: 5.25 },
-  { maturity: "6mo", current: 3.85, prior: 5.20 },
-  { maturity: "1yr", current: 4.02, prior: 5.00 },
-  { maturity: "2yr", current: 4.18, prior: 4.80 },
-  { maturity: "3yr", current: 4.22, prior: 4.60 },
-  { maturity: "5yr", current: 4.29, prior: 4.40 },
-  { maturity: "7yr", current: 4.42, prior: 4.35 },
-  { maturity: "10yr", current: 4.55, prior: 4.30 },
-  { maturity: "20yr", current: 5.02, prior: 4.55 },
-  { maturity: "30yr", current: 5.06, prior: 4.50 },
+  {maturity:"1mo",current:3.62,prior:5.20},{maturity:"3mo",current:3.76,prior:5.25},
+  {maturity:"6mo",current:3.85,prior:5.20},{maturity:"1yr",current:4.02,prior:5.00},
+  {maturity:"2yr",current:4.18,prior:4.80},{maturity:"3yr",current:4.22,prior:4.60},
+  {maturity:"5yr",current:4.29,prior:4.40},{maturity:"7yr",current:4.42,prior:4.35},
+  {maturity:"10yr",current:4.55,prior:4.30},{maturity:"20yr",current:5.02,prior:4.55},
+  {maturity:"30yr",current:5.06,prior:4.50},
 ];
 
 const SIGNALS = {
-  yieldCurve: [
-    { name: "10yr − 2yr spread", value: "+37 bps", prev: "+37 bps", dir: "→ steep, stable", signal: "watch", watch: "Both ends fell together on the cool CPI — 2yr −8bps to 4.18%, 10yr −6bps to 4.55% — leaving the spread about steady. Still a steep, positive curve.", isUpdated: true },
-    { name: "30yr yield", value: "~5.06%", prev: "~5.09%", dir: "↓ eased, still >5%", signal: "alert", watch: "Eased 3bps on the cool CPI but held above the key 5% threshold. The oil surge is keeping the long-end inflation/fiscal premium in place even as the front end rallies.", isUpdated: true },
-    { name: "20yr − 30yr spread", value: "~4 bps", prev: "~4 bps", dir: "→ compressed", signal: "alert", watch: "should be 20-30 bps; still very compressed with both tenors above 5% — fiscal-stress signal remains. (20yr level approximate.)" },
-    { name: "Curve shape", value: "Normal (+)", prev: "Normal (+)", dir: "→ steep", signal: "clear", watch: "inverted = recession risk. +37 bps and steep — an inflation-premium shape, not a recession signal." },
-    { name: "3mo T-bill", value: "~3.76%", prev: "~3.78%", dir: "→ stable", signal: "clear", watch: "rising = Fed hawkish. Steady — a July hold is now firmly priced (hike odds ~17%)." },
-    { name: "2yr note", value: "~4.18%", prev: "4.23%", dir: "↓ fell 8bps on CPI", signal: "watch", watch: "above 4.50% = hike risk. Dropped 8bps after the cool CPI pulled July hike odds off the table. Well below the 4.50% line.", isUpdated: true },
+  "Yield Curve":[
+    {name:"10yr − 2yr spread",value:"+37 bps",prev:"+37 bps",dir:"→ steep, stable",signal:"watch",watch:"Both ends fell together on the cool CPI — 2yr −8bps to 4.18%, 10yr −6bps to 4.55% — leaving the spread about steady. Still a steep, positive curve.",upd:true},
+    {name:"30yr yield",value:"~5.06%",prev:"~5.09%",dir:"↓ eased, still >5%",signal:"alert",watch:"Eased 3bps on the cool CPI but held above the key 5% threshold. The oil surge is keeping the long-end inflation/fiscal premium in place even as the front end rallies.",upd:true},
+    {name:"20yr − 30yr spread",value:"~4 bps",prev:"~4 bps",dir:"→ compressed",signal:"alert",watch:"should be 20-30 bps; still very compressed with both tenors above 5% — fiscal-stress signal remains. (20yr level approximate.)"},
+    {name:"Curve shape",value:"Normal (+)",prev:"Normal (+)",dir:"→ steep",signal:"clear",watch:"inverted = recession risk. +37 bps and steep — an inflation-premium shape, not a recession signal."},
+    {name:"3mo T-bill",value:"~3.76%",prev:"~3.78%",dir:"→ stable",signal:"clear",watch:"rising = Fed hawkish. Steady — a July hold is now firmly priced (hike odds ~17%)."},
+    {name:"2yr note",value:"~4.18%",prev:"4.23%",dir:"↓ fell 8bps on CPI",signal:"watch",watch:"above 4.50% = hike risk. Dropped 8bps after the cool CPI pulled July hike odds off the table. Well below the 4.50% line.",upd:true},
   ],
-  equity: [
-    { name: "S&P 500 level", value: "~7,510", prev: "7,515", dir: "→ ~flat", signal: "clear", watch: "Roughly flat (~−0.1%) as the cool-CPI relief was offset by the oil surge (Brent >$86), a 22% plunge in IBM on weak results, and chip jitters. Bank earnings beat. Still within ~1% of its highs. (Approximate close.)", isUpdated: true },
-    { name: "S&P 500 fwd P/E", value: "~19.5x", prev: "~19.5x", dir: "→ stable", signal: "watch", watch: "above 22x = stretched. Still elevated near record highs." },
-    { name: "CAPE (Shiller P/E)", value: "42.3x", prev: "42.3x", dir: "→ stable", signal: "alert", watch: "above 30x = stretched; 40x = extreme. Hist. avg ~17x", source: "multpl.com" },
-    { name: "Earnings yield vs 10yr", value: "+0.30%", prev: "+0.28%", dir: "→ thin", signal: "watch", watch: "Thin — the 10yr eased to 4.55% but bonds stay competitive with stocks. Q2 consensus ~24% YoY S&P earnings growth (FactSet)." },
-    { name: "S&P 500 earnings growth", value: "+12% YoY", prev: "+12% YoY", dir: "✓ strong", signal: "clear", watch: "negative = contraction risk. Q2 season opened split: big banks beat (JPMorgan, Wells Fargo, Goldman), but IBM cratered −22% on a weak preliminary report." },
-    { name: "% beating estimates", value: "84%", prev: "84%", dir: "✓ strong", signal: "clear", watch: "below 65% = deteriorating. Very high bar set for this quarter." },
-    { name: "VIX fear index", value: "~16", prev: "~17", dir: "→ steady", signal: "clear", watch: "above 25 = Alert. Roughly steady — cool CPI calmed rate fears while oil/geopolitics kept a floor under vol. Still well below 25. (Approximate.)", isUpdated: true },
+  "Equity Valuation":[
+    {name:"S&P 500 level",value:"~7,510",prev:"7,515",dir:"→ ~flat",signal:"clear",watch:"Roughly flat (~−0.1%) as the cool-CPI relief was offset by the oil surge (Brent >$86), a 22% plunge in IBM on weak results, and chip jitters. Bank earnings beat. Still within ~1% of its highs. (Approximate close.)",upd:true},
+    {name:"S&P 500 fwd P/E",value:"~19.5x",prev:"~19.5x",dir:"→ stable",signal:"watch",watch:"above 22x = stretched. Still elevated near record highs."},
+    {name:"CAPE (Shiller P/E)",value:"42.3x",prev:"42.3x",dir:"→ stable",signal:"alert",watch:"above 30x = stretched; 40x = extreme. Hist. avg ~17x — Source: multpl.com"},
+    {name:"Earnings yield vs 10yr",value:"+0.30%",prev:"+0.28%",dir:"→ thin",signal:"watch",watch:"Thin — the 10yr eased to 4.55% but bonds stay competitive with stocks. Q2 consensus ~24% YoY S&P earnings growth (FactSet)."},
+    {name:"S&P 500 earnings growth",value:"+12% YoY",prev:"+12% YoY",dir:"✓ strong",signal:"clear",watch:"negative = contraction risk. Q2 season opened split: big banks beat (JPMorgan, Wells Fargo, Goldman), but IBM cratered −22% on a weak preliminary report."},
+    {name:"% beating estimates",value:"84%",prev:"84%",dir:"✓ strong",signal:"clear",watch:"below 65% = deteriorating. Very high bar set for this quarter."},
+    {name:"VIX fear index",value:"~16",prev:"~17",dir:"→ steady",signal:"clear",watch:"above 25 = Alert. Roughly steady — cool CPI calmed rate fears while oil/geopolitics kept a floor under vol. Still well below 25. (Approximate.)",upd:true},
   ],
-  credit: [
-    { name: "HY credit spread", value: "~3.5%", prev: "~3.5%", dir: "→ stable", signal: "clear", watch: "above 5.0% = stress. Still tight — credit calm despite the geopolitical noise." },
-    { name: "IG credit spread", value: "~1.1%", prev: "~1.1%", dir: "→ stable", signal: "clear", watch: "above 2.0% = stress" },
-    { name: "Private credit defaults", value: "Record high", prev: "Record high", dir: "↑ rising", signal: "watch", watch: "rising trend = early warn. The gap vs. calm public HY spreads is itself the signal." },
-    { name: "Margin debt (May 2026)", value: "$1.415T", prev: "$1.415T", dir: "→ record high", signal: "alert", watch: "Record $1.415 trillion — +53.7% YoY. June data due mid-July. Source: FINRA." },
-    { name: "Margin debt vs market cap", value: "1.88%", prev: "1.88%", dir: "→ stable", signal: "watch", watch: "50yr historical median: 1.5-2.0%. In range but speed of growth concerning." },
-    { name: "30yr fixed mortgage", value: "~6.72%", prev: "~6.75%", dir: "↓ slight", signal: "alert", watch: "above 6.5% = affordability stress. Eased with the 10yr at 4.55%, but still above the stress line. Housing already softening. (Approximate.)", isUpdated: true },
+  "Credit & Financial Stress":[
+    {name:"HY credit spread",value:"~3.5%",prev:"~3.5%",dir:"→ stable",signal:"clear",watch:"above 5.0% = stress. Still tight — credit calm despite the geopolitical noise."},
+    {name:"IG credit spread",value:"~1.1%",prev:"~1.1%",dir:"→ stable",signal:"clear",watch:"above 2.0% = stress"},
+    {name:"Private credit defaults",value:"Record high",prev:"Record high",dir:"↑ rising",signal:"watch",watch:"rising trend = early warn. The gap vs. calm public HY spreads is itself the signal."},
+    {name:"Margin debt (May 2026)",value:"$1.415T",prev:"$1.415T",dir:"→ record high",signal:"alert",watch:"Record $1.415 trillion — +53.7% YoY. June data due mid-July. Source: FINRA."},
+    {name:"Margin debt vs market cap",value:"1.88%",prev:"1.88%",dir:"→ stable",signal:"watch",watch:"50yr historical median: 1.5-2.0%. In range but speed of growth concerning."},
+    {name:"30yr fixed mortgage",value:"~6.72%",prev:"~6.75%",dir:"↓ slight",signal:"alert",watch:"above 6.5% = affordability stress. Eased with the 10yr at 4.55%, but still above the stress line. Housing already softening. (Approximate.)",upd:true},
   ],
-  demand: [
-    { name: "ISM Services (June)", value: "54.0%", prev: "54.0%", dir: "→ steady", signal: "clear", watch: "Above 50 = expansion. 24th straight expansion month; employment back in expansion (51.2); prices eased to 67.7. Released Jul 6." },
-    { name: "ISM Manufacturing (June)", value: "53.3%", prev: "53.3%", dir: "→ steady", signal: "clear", watch: "Above 50 = expansion. 6th straight expansion month. Released Jul 1." },
-    { name: "ISM Prices (Manuf, June)", value: "73.0%", prev: "73.0%", dir: "→ steady", signal: "watch", watch: "−9.1 ppts vs May. The renewed oil surge threatens that disinflation — watch the July reading." },
-    { name: "Atlanta Fed GDPNow (Q2)", value: "~1.4%", prev: "~1.4%", dir: "→ soft", signal: "watch", watch: "Nowcast — tracking ~1.4% for Q2, well below Q1's 2.0%, with the wider trade deficit, soft housing (existing home sales −2.4%), and a slip in consumer credit adding to the cooling picture. Advance Q2 GDP lands Jul 30." },
-    { name: "Personal spending (May)", value: "+0.7% MoM", prev: "+0.7% MoM", dir: "↑ strong", signal: "clear", watch: "Nominal — beat forecast. Real spending is softer once inflation is stripped out. June data with PCE on Jul 30." },
-    { name: "Personal saving rate", value: "3.0%", prev: "3.0%", dir: "→ low", signal: "watch", watch: "Low saving rate — thin buffer, a late-cycle signal." },
-    { name: "U. Mich Consumer Sentiment (June)", value: "49.5", prev: "49.5", dir: "→ depressed", signal: "watch", watch: "Final June reading — 2nd-lowest in ~50yr history, but improving off May's record low. Diverges from still-solid hard spending. July prelim: Jul 17." },
-    { name: "Jobless claims (wk Jul 4)", value: "215K", prev: "215K", dir: "→ stable, below est.", signal: "clear", watch: "Slightly below expectations — labor still stable even as payroll growth has slowed." },
+  "Consumer & Business Demand":[
+    {name:"ISM Services (June)",value:"54.0%",prev:"54.0%",dir:"→ steady",signal:"clear",watch:"Above 50 = expansion. 24th straight expansion month; employment back in expansion (51.2); prices eased to 67.7. Released Jul 6."},
+    {name:"ISM Manufacturing (June)",value:"53.3%",prev:"53.3%",dir:"→ steady",signal:"clear",watch:"Above 50 = expansion. 6th straight expansion month. Released Jul 1."},
+    {name:"ISM Prices (Manuf, June)",value:"73.0%",prev:"73.0%",dir:"→ steady",signal:"watch",watch:"−9.1 ppts vs May. The renewed oil surge threatens that disinflation — watch the July reading."},
+    {name:"Atlanta Fed GDPNow (Q2)",value:"~1.4%",prev:"~1.4%",dir:"→ soft",signal:"watch",watch:"Nowcast — tracking ~1.4% for Q2, well below Q1's 2.0%, with the wider trade deficit, soft housing (existing home sales −2.4%), and a slip in consumer credit adding to the cooling picture. Advance Q2 GDP lands Jul 30."},
+    {name:"Personal spending (May)",value:"+0.7% MoM",prev:"+0.7% MoM",dir:"↑ strong",signal:"clear",watch:"Nominal — beat forecast. Real spending is softer once inflation is stripped out. June data with PCE on Jul 30."},
+    {name:"Personal saving rate",value:"3.0%",prev:"3.0%",dir:"→ low",signal:"watch",watch:"Low saving rate — thin buffer, a late-cycle signal."},
+    {name:"U. Mich Consumer Sentiment (June)",value:"49.5",prev:"49.5",dir:"→ depressed",signal:"watch",watch:"Final June reading — 2nd-lowest in ~50yr history, but improving off May's record low. Diverges from still-solid hard spending. July prelim: Jul 17."},
+    {name:"Jobless claims (wk Jul 4)",value:"215K",prev:"215K",dir:"→ stable, below est.",signal:"clear",watch:"Slightly below expectations — labor still stable even as payroll growth has slowed."},
   ],
-  macro: [
-    { name: "Iran / Hormuz status", value: "Blockade enforced", prev: "Blockade reinstated", dir: "↓ escalating", signal: "alert", watch: "The US began enforcing its Hormuz blockade Tuesday afternoon, adding a 20% fee on all cargo crossing the strait, after a third straight night of strikes on Iran. Brent pushed above $86 — a one-month high. This is the live upside risk to July inflation.", isUpdated: true },
-    { name: "Oil price (WTI)", value: "~$82", prev: "~$78", dir: "↑ higher", signal: "watch", watch: "Extended Monday's ~9% surge as the blockade took effect. Well above last week's ~$68. The disinflation tailwind has fully reversed — a fresh upside inflation risk for July/August data. (Approximate — volatile.)", isUpdated: true },
-    { name: "Oil price (Brent)", value: "~$86", prev: "~$83", dir: "↑ 1-month high", signal: "watch", watch: "Monday's +9.6% was its biggest one-day gain in 6+ years; pushed above $86 Tuesday. (Approximate.)", isUpdated: true },
-    { name: "Fed hike odds — Sept", value: "~60%", prev: "~52%", dir: "↑ Sept; July collapsed", signal: "alert", watch: "The cool CPI collapsed JULY hike odds to ~17% (from 42% Monday) — a near-term hold is now firmly priced. But SEPTEMBER odds are still ~60% given the oil-driven forward inflation risk. Warsh testified he'll make inflation 'a thing of the past.'", isUpdated: true },
-    { name: "FOMC minutes / dot plot", value: "3.8% median", prev: "3.8% median", dir: "→ hawkish", signal: "alert", watch: "June minutes: Fed dropped its easing bias, upside inflation risks the core concern, committee split 9-9 on a 2026 hike. Warsh's semiannual testimony today stuck to that hawkish framing with no forward guidance." },
-    { name: "PCE headline (May)", value: "4.1% YoY", prev: "4.1% YoY", dir: "→ above 4%", signal: "alert", watch: "Core PCE 3.4%. June PCE (Jul 30) — today's cool CPI suggests June PCE should ease too, though the two measures differ." },
-    { name: "CPI headline (June)", value: "3.5% YoY", prev: "4.2% YoY", dir: "↓ cooled sharply", signal: "watch", watch: "June CPI −0.4% MoM (biggest drop since Apr 2020), 3.5% YoY vs 3.8% expected; CORE 2.6% (vs 2.9% exp), flat on the month — cool across the board. But June predates the oil surge, so July's print threatens to reverse it. This is why the CPI signal comes off red.", isUpdated: true },
-    { name: "PPI headline (May)", value: "6.5% YoY", prev: "6.5% YoY", dir: "→ record surge", signal: "alert", watch: "June PPI TOMORROW (Jul 15). Today's cool CPI raises the odds of a softer PPI too — but the oil surge is a wildcard." },
-    { name: "NY Fed 1yr inflation exp. (June)", value: "3.7%", prev: "3.7%", dir: "→ still elevated", signal: "watch", watch: "Highest since Sep '23; 3yr at 3.3%, 5yr still anchored at 3.0%. The oil surge is a fresh upside risk to near-term expectations. Soft survey data." },
-    { name: "NFP — June 2026", value: "57K", prev: "57K", dir: "→ as reported", signal: "watch", watch: "Sharp miss with −74K of prior revisions and participation at 61.5%. Labor cooling. Next: July report Aug 7." },
-    { name: "Unemployment rate", value: "4.2%", prev: "4.2%", dir: "→ steady", signal: "clear", watch: "above 5.0% = labor weakness. June dip was driven by falling participation, not hiring strength." },
-    { name: "GDP growth (Q1 final)", value: "2.0%", prev: "2.0%", dir: "→ confirmed", signal: "watch", watch: "Q2 advance GDP due Jul 30. GDPNow tracking ~1.4% for Q2 — a step down." },
+  "Macro & Fed":[
+    {name:"Iran / Hormuz status",value:"Blockade enforced",prev:"Blockade reinstated",dir:"↓ escalating",signal:"alert",watch:"The US began enforcing its Hormuz blockade Tuesday afternoon, adding a 20% fee on all cargo crossing the strait, after a third straight night of strikes on Iran. Brent pushed above $86 — a one-month high. This is the live upside risk to July inflation.",upd:true},
+    {name:"Oil price (WTI)",value:"~$82",prev:"~$78",dir:"↑ higher",signal:"watch",watch:"Extended Monday's ~9% surge as the blockade took effect. Well above last week's ~$68. The disinflation tailwind has fully reversed — a fresh upside inflation risk for July/August data. (Approximate — volatile.)",upd:true},
+    {name:"Oil price (Brent)",value:"~$86",prev:"~$83",dir:"↑ 1-month high",signal:"watch",watch:"Monday's +9.6% was its biggest one-day gain in 6+ years; pushed above $86 Tuesday. (Approximate.)",upd:true},
+    {name:"Fed hike odds — Sept",value:"~60%",prev:"~52%",dir:"↑ Sept; July collapsed",signal:"alert",watch:"The cool CPI collapsed JULY hike odds to ~17% (from 42% Monday) — a near-term hold is now firmly priced. But SEPTEMBER odds are still ~60% given the oil-driven forward inflation risk. Warsh testified he'll make inflation 'a thing of the past.'",upd:true},
+    {name:"FOMC minutes / dot plot",value:"3.8% median",prev:"3.8% median",dir:"→ hawkish",signal:"alert",watch:"June minutes: Fed dropped its easing bias, upside inflation risks the core concern, committee split 9-9 on a 2026 hike. Warsh's semiannual testimony today stuck to that hawkish framing with no forward guidance."},
+    {name:"PCE headline (May)",value:"4.1% YoY",prev:"4.1% YoY",dir:"→ above 4%",signal:"alert",watch:"Core PCE 3.4%. June PCE (Jul 30) — today's cool CPI suggests June PCE should ease too, though the two measures differ."},
+    {name:"CPI headline (June)",value:"3.5% YoY",prev:"4.2% YoY",dir:"↓ cooled sharply",signal:"watch",watch:"June CPI −0.4% MoM (biggest drop since Apr 2020), 3.5% YoY vs 3.8% expected; CORE 2.6% (vs 2.9% exp), flat on the month — cool across the board. But June predates the oil surge, so July's print threatens to reverse it. This is why the CPI signal comes off red.",upd:true},
+    {name:"PPI headline (May)",value:"6.5% YoY",prev:"6.5% YoY",dir:"→ record surge",signal:"alert",watch:"June PPI TOMORROW (Jul 15). Today's cool CPI raises the odds of a softer PPI too — but the oil surge is a wildcard."},
+    {name:"NY Fed 1yr inflation exp. (June)",value:"3.7%",prev:"3.7%",dir:"→ still elevated",signal:"watch",watch:"Highest since Sep '23; 3yr at 3.3%, 5yr still anchored at 3.0%. The oil surge is a fresh upside risk to near-term expectations. Soft survey data."},
+    {name:"NFP — June 2026",value:"57K",prev:"57K",dir:"→ as reported",signal:"watch",watch:"Sharp miss with −74K of prior revisions and participation at 61.5%. Labor cooling. Next: July report Aug 7."},
+    {name:"Unemployment rate",value:"4.2%",prev:"4.2%",dir:"→ steady",signal:"clear",watch:"above 5.0% = labor weakness. June dip was driven by falling participation, not hiring strength."},
+    {name:"GDP growth (Q1 final)",value:"2.0%",prev:"2.0%",dir:"→ confirmed",signal:"watch",watch:"Q2 advance GDP due Jul 30. GDPNow tracking ~1.4% for Q2 — a step down."},
   ],
 };
+const SECTION_OPEN = {"Yield Curve":true,"Equity Valuation":true,"Credit & Financial Stress":false,"Consumer & Business Demand":true,"Macro & Fed":true};
 
 const UPCOMING = [
-  { date: "Jul 15",  name: "PPI (June) + ASML earnings + more bank results",            priority: "high" },
-  { date: "Jul 17",  name: "U. Michigan Consumer Sentiment (July prelim)",              priority: "watch" },
-  { date: "Jul 29",  name: "FOMC decision (Jul 28-29) — hold priced (~83%), Sept the hike risk", priority: "critical" },
-  { date: "Jul 30",  name: "Q2 GDP (advance) + PCE (June data)",                        priority: "high" },
-  { date: "Aug 7",   name: "Jobs report (July) — does the cooling continue?",            priority: "high" },
-  { date: "Aug 12",  name: "CPI (July) — first read with the oil surge in it",           priority: "critical" },
+  {date:"Jul 15",name:"PPI (June) + ASML earnings + more bank results",priority:"high"},
+  {date:"Jul 17",name:"U. Michigan Consumer Sentiment (July prelim)",priority:"watch"},
+  {date:"Jul 29",name:"FOMC decision (Jul 28-29) — hold priced (~83%), Sept the hike risk",priority:"critical"},
+  {date:"Jul 30",name:"Q2 GDP (advance) + PCE (June data)",priority:"high"},
+  {date:"Aug 7",name:"Jobs report (July) — does the cooling continue?",priority:"high"},
+  {date:"Aug 12",name:"CPI (July) — first read with the oil surge in it",priority:"critical"},
 ];
 
 const TAKEAWAY = {
-  updated: "July 14",
-  chain: [
-    { n: "1", q: "Is the economy still growing?", where: "Demand section", answer: "Yes — cooling, mixed Q2 start", detail: "GDPNow ~1.4% and housing soft. Q2 earnings season opened split — big banks beat, but IBM cratered −22% on a weak preliminary report.", tone: "watch" },
-    { n: "2", q: "Is inflation beaten?", where: "Price cluster", answer: "June cooled sharply — but likely the trough", detail: "Headline CPI 3.5% (−0.4% MoM, biggest drop since 2020), core 2.6% — both below forecasts. But June predates the oil surge; with the Hormuz blockade now enforced (Brent >$86), July's data threatens to reverse it.", tone: "alert" },
-    { n: "3", q: "How are rates & markets positioned?", where: "Fed · Curve · Equity · Credit", answer: "Rate pressure eased — July hike off the table", detail: "Cool CPI dropped July hike odds to ~17% (from 42%) and pulled yields down (2yr 4.18%, 10yr 4.55%). But the 30yr held above 5% and Sept hike odds are still ~60%.", tone: "alert" },
+  updated:"July 14",
+  chain:[
+    {n:"1",q:"Is the economy still growing?",where:"Demand section",answer:"Yes — cooling, mixed Q2 start",detail:"GDPNow ~1.4% and housing soft. Q2 earnings season opened split — big banks beat, but IBM cratered −22% on a weak preliminary report.",tone:"watch"},
+    {n:"2",q:"Is inflation beaten?",where:"Price cluster",answer:"June cooled sharply — but likely the trough",detail:"Headline CPI 3.5% (−0.4% MoM, biggest drop since 2020), core 2.6% — both below forecasts. But June predates the oil surge; with the Hormuz blockade now enforced (Brent >$86), July's data threatens to reverse it.",tone:"alert"},
+    {n:"3",q:"How are rates & markets positioned?",where:"Fed · Curve · Equity · Credit",answer:"Rate pressure eased — July hike off the table",detail:"Cool CPI dropped July hike odds to ~17% (from 42%) and pulled yields down (2yr 4.18%, 10yr 4.55%). But the 30yr held above 5% and Sept hike odds are still ~60%.",tone:"alert"},
   ],
-  bottomLine: "The pivotal June CPI came in cool across the board — headline 3.5%, core 2.6%, both below forecasts and the biggest monthly drop since April 2020 — collapsing July hike odds to ~17% and easing yields. But it's likely the trough: the reading predates the oil surge, and with the US now enforcing a Hormuz blockade (Brent >$86), July's data threatens to undo the relief. Genuine good news for June, a building forward risk for July — September hike odds are still ~60%.",
+  bottomLine:"The pivotal June CPI came in cool across the board — headline 3.5%, core 2.6%, both below forecasts and the biggest monthly drop since April 2020 — collapsing July hike odds to ~17% and easing yields. But it's likely the trough: the reading predates the oil surge, and with the US now enforcing a Hormuz blockade (Brent >$86), July's data threatens to undo the relief. Genuine good news for June, a building forward risk for July — September hike odds are still ~60%.",
 };
 
 const GLOSSARY = [
-  { category: "Economic Indicators", items: [
-    { term: "GDP", full: "Gross Domestic Product", def: "total value of goods and services produced — the broadest measure of economic output." },
-    { term: "GDPNow", full: "Atlanta Fed GDPNow", def: "a running nowcast estimate of current-quarter GDP growth, updated as data arrives." },
-    { term: "CPI", full: "Consumer Price Index", def: "change in prices paid by consumers; the headline inflation gauge. 'Core' strips out food & energy." },
-    { term: "PPI", full: "Producer Price Index", def: "change in prices received by producers — inflation one step earlier in the pipeline than CPI." },
-    { term: "PCE", full: "Personal Consumption Expenditures", def: "the Fed's preferred inflation measure, broader than CPI." },
-    { term: "NFP", full: "Nonfarm Payrolls", def: "monthly change in jobs excluding farm work — the headline of the jobs report." },
-    { term: "PMI", full: "Purchasing Managers' Index", def: "survey-based activity gauge where above 50 = expansion, below 50 = contraction." },
-    { term: "ISM", full: "Institute for Supply Management", def: "publishes the Manufacturing and Services PMIs from surveys of purchasing managers." },
-    { term: "YoY", full: "Year-over-Year", def: "change versus the same period a year earlier." },
-    { term: "MoM", full: "Month-over-Month", def: "change versus the prior month." },
+  {category:"Economic Indicators",items:[
+    {term:"GDP",full:"Gross Domestic Product",def:"total value of goods and services produced — the broadest measure of economic output."},
+    {term:"GDPNow",full:"Atlanta Fed GDPNow",def:"a running nowcast estimate of current-quarter GDP growth, updated as data arrives."},
+    {term:"CPI",full:"Consumer Price Index",def:"change in prices paid by consumers; the headline inflation gauge. 'Core' strips out food & energy."},
+    {term:"PPI",full:"Producer Price Index",def:"change in prices received by producers — inflation one step earlier in the pipeline than CPI."},
+    {term:"PCE",full:"Personal Consumption Expenditures",def:"the Fed's preferred inflation measure, broader than CPI."},
+    {term:"NFP",full:"Nonfarm Payrolls",def:"monthly change in jobs excluding farm work — the headline of the jobs report."},
+    {term:"PMI",full:"Purchasing Managers' Index",def:"survey-based activity gauge where above 50 = expansion, below 50 = contraction."},
+    {term:"ISM",full:"Institute for Supply Management",def:"publishes the Manufacturing and Services PMIs from surveys of purchasing managers."},
+    {term:"YoY",full:"Year-over-Year",def:"change versus the same period a year earlier."},
+    {term:"MoM",full:"Month-over-Month",def:"change versus the prior month."},
   ]},
-  { category: "The Fed & Interest Rates", items: [
-    { term: "Fed", full: "Federal Reserve", def: "the U.S. central bank; sets interest-rate policy." },
-    { term: "FOMC", full: "Federal Open Market Committee", def: "the Fed committee that votes on rate decisions (8 meetings a year)." },
-    { term: "NY Fed", full: "Federal Reserve Bank of New York", def: "regional Fed bank; runs market operations and the consumer inflation-expectations survey." },
-    { term: "CME", full: "Chicago Mercantile Exchange", def: "derivatives exchange; its FedWatch tool infers rate-move odds from futures pricing." },
-    { term: "bps", full: "basis points", def: "one basis point = 0.01%; 100 bps = 1%. (Used for yields/rates, not P/E multiples.)" },
-    { term: "T-bill", full: "Treasury bill", def: "short-term U.S. government debt (one year or less to maturity)." },
+  {category:"The Fed & Interest Rates",items:[
+    {term:"Fed",full:"Federal Reserve",def:"the U.S. central bank; sets interest-rate policy."},
+    {term:"FOMC",full:"Federal Open Market Committee",def:"the Fed committee that votes on rate decisions (8 meetings a year)."},
+    {term:"NY Fed",full:"Federal Reserve Bank of New York",def:"regional Fed bank; runs market operations and the consumer inflation-expectations survey."},
+    {term:"CME",full:"Chicago Mercantile Exchange",def:"derivatives exchange; its FedWatch tool infers rate-move odds from futures pricing."},
+    {term:"bps",full:"basis points",def:"one basis point = 0.01%; 100 bps = 1%. (Used for yields/rates, not P/E multiples.)"},
+    {term:"T-bill",full:"Treasury bill",def:"short-term U.S. government debt (one year or less to maturity)."},
   ]},
-  { category: "Markets & Valuation", items: [
-    { term: "S&P 500", full: "Standard & Poor's 500", def: "index of 500 large U.S. companies — the main U.S. equity benchmark." },
-    { term: "P/E", full: "Price-to-Earnings ratio", def: "share price divided by earnings per share; moves in 'turns,' not bps." },
-    { term: "fwd P/E", full: "forward P/E", def: "P/E based on expected earnings over the next 12 months." },
-    { term: "CAPE", full: "Cyclically Adjusted P/E (Shiller P/E)", def: "price over 10-yr average inflation-adjusted earnings; smooths out the business cycle." },
-    { term: "VIX", full: "Cboe Volatility Index", def: "expected 30-day S&P 500 volatility — the market's \"fear gauge.\"" },
-    { term: "ETF", full: "Exchange-Traded Fund", def: "a basket of securities that trades on an exchange like a single stock." },
-    { term: "SMH", full: "VanEck Semiconductor ETF (ticker)", def: "used here as a shorthand proxy for the chip-stock sector." },
+  {category:"Markets & Valuation",items:[
+    {term:"S&P 500",full:"Standard & Poor's 500",def:"index of 500 large U.S. companies — the main U.S. equity benchmark."},
+    {term:"P/E",full:"Price-to-Earnings ratio",def:"share price divided by earnings per share; moves in 'turns,' not bps."},
+    {term:"fwd P/E",full:"forward P/E",def:"P/E based on expected earnings over the next 12 months."},
+    {term:"CAPE",full:"Cyclically Adjusted P/E (Shiller P/E)",def:"price over 10-yr average inflation-adjusted earnings; smooths out the business cycle."},
+    {term:"VIX",full:"Cboe Volatility Index",def:"expected 30-day S&P 500 volatility — the market's \"fear gauge.\""},
+    {term:"ETF",full:"Exchange-Traded Fund",def:"a basket of securities that trades on an exchange like a single stock."},
+    {term:"SMH",full:"VanEck Semiconductor ETF (ticker)",def:"used here as a shorthand proxy for the chip-stock sector."},
   ]},
-  { category: "Credit & Financial Stress", items: [
-    { term: "HY", full: "High Yield", def: "below-investment-grade (\"junk\") corporate bonds; spread measured over maturity-matched Treasuries." },
-    { term: "IG", full: "Investment Grade", def: "higher-quality corporate bonds rated BBB-/Baa3 or above." },
-    { term: "FINRA", full: "Financial Industry Regulatory Authority", def: "brokerage-industry regulator; the source of the margin-debt figures." },
+  {category:"Credit & Financial Stress",items:[
+    {term:"HY",full:"High Yield",def:"below-investment-grade (\"junk\") corporate bonds; spread measured over maturity-matched Treasuries."},
+    {term:"IG",full:"Investment Grade",def:"higher-quality corporate bonds rated BBB-/Baa3 or above."},
+    {term:"FINRA",full:"Financial Industry Regulatory Authority",def:"brokerage-industry regulator; the source of the margin-debt figures."},
   ]},
-  { category: "Commodities & Global", items: [
-    { term: "WTI", full: "West Texas Intermediate", def: "the U.S. benchmark crude oil grade." },
-    { term: "Brent", full: "Brent crude (North Sea)", def: "the international benchmark crude oil grade (not an acronym)." },
-    { term: "OPEC+", full: "Org. of the Petroleum Exporting Countries, plus allies", def: "oil-producing bloc (OPEC plus partners such as Russia) that coordinates output." },
-    { term: "b/d", full: "barrels per day", def: "standard unit for oil production or consumption." },
-    { term: "LNG", full: "Liquefied Natural Gas", def: "natural gas cooled to liquid form for shipping by sea." },
-    { term: "BIS", full: "Bank for International Settlements", def: "the \"central bank for central banks\"; publishes global financial-stability research." },
-    { term: "Kospi", full: "Korea Composite Stock Price Index", def: "South Korea's main stock index — chip-heavy, hence relevant to semis." },
+  {category:"Commodities & Global",items:[
+    {term:"WTI",full:"West Texas Intermediate",def:"the U.S. benchmark crude oil grade."},
+    {term:"Brent",full:"Brent crude (North Sea)",def:"the international benchmark crude oil grade (not an acronym)."},
+    {term:"OPEC+",full:"Org. of the Petroleum Exporting Countries, plus allies",def:"oil-producing bloc (OPEC plus partners such as Russia) that coordinates output."},
+    {term:"b/d",full:"barrels per day",def:"standard unit for oil production or consumption."},
+    {term:"LNG",full:"Liquefied Natural Gas",def:"natural gas cooled to liquid form for shipping by sea."},
+    {term:"BIS",full:"Bank for International Settlements",def:"the \"central bank for central banks\"; publishes global financial-stability research."},
+    {term:"Kospi",full:"Korea Composite Stock Price Index",def:"South Korea's main stock index — chip-heavy, hence relevant to semis."},
   ]},
-  { category: "Data Sources", items: [
-    { term: "BLS", full: "Bureau of Labor Statistics", def: "official source for jobs (NFP) and CPI data." },
-    { term: "BEA", full: "Bureau of Economic Analysis", def: "official source for GDP and PCE data." },
+  {category:"Data Sources",items:[
+    {term:"BLS",full:"Bureau of Labor Statistics",def:"official source for jobs (NFP) and CPI data."},
+    {term:"BEA",full:"Bureau of Economic Analysis",def:"official source for GDP and PCE data."},
   ]},
 ];
 
-const SIG = {
-  clear: { bg: "#f0faf4", color: "#1e7c45", border: "#a8dfc0", dot: "#27ae60" },
-  watch: { bg: "#fffbf0", color: "#b7650a", border: "#f5d99a", dot: "#f39c12" },
-  alert: { bg: "#fff0f0", color: "#c0392b", border: "#f5aaaa", dot: "#e24b4b" },
-};
-
-const PRIORITY = {
-  critical: { bg: "#fff0f0", color: "#c0392b", border: "#f5aaaa", label: "CRITICAL" },
-  high:     { bg: "#fffbf0", color: "#b7650a", border: "#f5d99a", label: "HIGH" },
-  watch:    { bg: "#f0f0ff", color: "#3b5bdb", border: "#c5cdf5", label: "WATCH" },
-};
-
-function countAll() {
-  const all = Object.values(SIGNALS).flat();
-  return { clear: all.filter(r=>r.signal==="clear").length, watch: all.filter(r=>r.signal==="watch").length, alert: all.filter(r=>r.signal==="alert").length, total: all.length };
+/* ---------- HELPERS ---------- */
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function countAll(){
+  const all=Object.values(SIGNALS).flat();
+  return {clear:all.filter(r=>r.signal==="clear").length,watch:all.filter(r=>r.signal==="watch").length,alert:all.filter(r=>r.signal==="alert").length,total:all.length};
+}
+function badge(type){
+  const s=SIG[type];
+  return `<span class="badge" style="background:${s.bg};color:${s.c};border-color:${s.b};"><span class="bd" style="background:${s.d};"></span>${type.toUpperCase()}</span>`;
 }
 
-function Badge({ type }) {
-  const s = SIG[type];
-  return (
-    <span style={{ display:"inline-flex", alignItems:"center", gap:4, background:s.bg, color:s.color, border:`1px solid ${s.border}`, fontSize:10, fontWeight:700, letterSpacing:".06em", padding:"2px 7px", borderRadius:4, whiteSpace:"nowrap" }}>
-      <span style={{ width:6, height:6, borderRadius:"50%", background:s.dot, flexShrink:0 }} />{type.toUpperCase()}
-    </span>
-  );
+/* ---------- RENDER: READ BANNER ---------- */
+function renderRead(){
+  const rows=TAKEAWAY.chain.map(c=>`
+    <div class="chain">
+      <span class="dot" style="background:${SIG[c.tone].d};"></span>
+      <div style="flex:1;">
+        <div class="q"><strong>${esc(c.n)}. ${esc(c.q)}</strong> <span class="where">(${esc(c.where)})</span></div>
+        <div class="ans" style="color:${SIG[c.tone].c};">${esc(c.answer)}</div>
+        <div class="det">${esc(c.detail)}</div>
+      </div>
+    </div>`).join("");
+  return `<div class="read">
+    <div class="read-top"><span class="read-h">📋 The Read</span><span class="read-sub">growth → inflation → Fed / rates / risk · ${esc(TAKEAWAY.updated)}</span></div>
+    ${rows}
+    <div class="bottom"><strong>Bottom line:</strong> ${esc(TAKEAWAY.bottomLine)}</div>
+  </div>`;
 }
 
-function Section({ title, rows, defaultOpen=false }) {
-  const [open, setOpen] = useState(defaultOpen);
-  const [hovered, setHovered] = useState(null);
-  const c = { clear: rows.filter(r=>r.signal==="clear").length, watch: rows.filter(r=>r.signal==="watch").length, alert: rows.filter(r=>r.signal==="alert").length };
-  const pill = (bg, color, border) => ({ fontSize:11, borderRadius:4, padding:"1px 7px", fontWeight:700, background:bg, color, border:`1px solid ${border}` });
-  return (
-    <div style={{ marginBottom:8, background:"#fff", border:"1px solid #dee2e6", borderRadius:8, overflow:"hidden" }}>
-      <button onClick={()=>setOpen(!open)} style={{ width:"100%", display:"flex", alignItems:"center", justifyContent:"space-between", padding:"10px 14px", background:"#f8f9fa", border:"none", borderBottom:open?"1px solid #dee2e6":"none", cursor:"pointer", fontFamily:"inherit" }}>
-        <span style={{ fontWeight:700, fontSize:12, letterSpacing:".05em", color:"#444", textTransform:"uppercase" }}>{title}</span>
-        <div style={{ display:"flex", alignItems:"center", gap:5 }}>
-          {c.alert>0 && <span style={pill("#fff0f0","#c0392b","#f5aaaa")}>{c.alert} 🔴</span>}
-          {c.watch>0 && <span style={pill("#fffbf0","#b7650a","#f5d99a")}>{c.watch} 🟡</span>}
-          {c.clear>0 && <span style={pill("#f0faf4","#1e7c45","#a8dfc0")}>{c.clear} 🟢</span>}
-          <span style={{ color:"#aaa", fontSize:16, marginLeft:4, display:"inline-block", transform:open?"rotate(90deg)":"none", transition:"transform .2s" }}>›</span>
-        </div>
-      </button>
-      {open && (
-        <div style={{ overflowX:"auto" }}>
-          <table style={{ width:"100%", borderCollapse:"collapse", fontSize:13 }}>
-            <thead>
-              <tr style={{ borderBottom:"1px solid #dee2e6" }}>
-                {["Indicator","Current","Prev (7/13)","Direction","Signal"].map(h=>(
-                  <th key={h} style={{ textAlign:"left", padding:"6px 12px", color:"#888", fontWeight:600, fontSize:11, whiteSpace:"nowrap", background:"#f8f9fa", textTransform:"uppercase", letterSpacing:".04em" }}>{h}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {rows.map((row,i) => (
-                <tr key={i} onMouseEnter={()=>setHovered(i)} onMouseLeave={()=>setHovered(null)}
-                  style={{ borderBottom:i<rows.length-1?"1px solid #f1f3f5":"none", background:hovered===i?"#f8f9fa":"#fff", cursor:"default" }}>
-                  <td style={{ padding:"8px 12px", color:"#222", fontWeight:500 }}>
-                    {row.name}
-                    {row.isUpdated && <span style={{ marginLeft:6, fontSize:9, background:"#e24b4b", color:"#fff", padding:"1px 5px", borderRadius:3, fontWeight:700 }}>UPDATED</span>}
-                    {hovered===i && (
-                      <div style={{ fontSize:10, color:"#aaa", marginTop:2 }}>
-                        Watch: {row.watch}
-                        {row.source && <span style={{ display:"block", marginTop:1 }}>Source: {row.source}</span>}
-                      </div>
-                    )}
-                  </td>
-                  <td style={{ padding:"8px 12px", color:"#1a1a2e", fontWeight:700, whiteSpace:"nowrap" }}>{row.value}</td>
-                  <td style={{ padding:"8px 12px", color:"#888", fontSize:12, whiteSpace:"nowrap" }}>{row.prev}</td>
-                  <td style={{ padding:"8px 12px", color:"#555", fontSize:12, whiteSpace:"nowrap" }}>{row.dir}</td>
-                  <td style={{ padding:"8px 12px" }}><Badge type={row.signal} /></td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+/* ---------- RENDER: DECISION + TILES ---------- */
+function renderDecision(counts){
+  return `<div class="decision"><strong>⚠ Decision Rule:</strong> If 3+ signals turn red → consider reducing equity exposure. &nbsp;
+    <strong>Currently: ${counts.alert} alerts — down 1 from 11 as June CPI cooled sharply (3.5% headline, 2.6% core), pulling the CPI signal off red and collapsing July hike odds to ~17%. The remaining reds: still-hot PCE/PPI, the 30yr above 5%, an elevated Sept hike (~60%), stretched valuations, and the oil-driven Iran risk. PPI lands tomorrow.</strong></div>`;
+}
+function renderTiles(counts){
+  const items=[["Clear",counts.clear,"clear"],["Watch",counts.watch,"watch"],["Alert",counts.alert,"alert"]];
+  return `<div class="tiles">${items.map(([lbl,n,k])=>{
+    const s=SIG[k];
+    return `<div class="tile" style="background:${s.bg};border-color:${s.b};">
+      <div class="n" style="color:${s.c};">${n}</div>
+      <div class="t" style="color:${s.c};">${lbl.toUpperCase()} / ${counts.total}</div>
+      <div class="bar"><div style="width:${(n/counts.total*100).toFixed(1)}%;background:${s.d};"></div></div>
+    </div>`;
+  }).join("")}</div>`;
+}
+
+/* ---------- RENDER: SECTIONS ---------- */
+function sectionPills(rows){
+  const c={clear:rows.filter(r=>r.signal==="clear").length,watch:rows.filter(r=>r.signal==="watch").length,alert:rows.filter(r=>r.signal==="alert").length};
+  let out="";
+  if(c.alert>0) out+=`<span class="pill" style="background:var(--alert-bg);color:var(--alert-c);border-color:var(--alert-b);">${c.alert} 🔴</span>`;
+  if(c.watch>0) out+=`<span class="pill" style="background:var(--watch-bg);color:var(--watch-c);border-color:var(--watch-b);">${c.watch} 🟡</span>`;
+  if(c.clear>0) out+=`<span class="pill" style="background:var(--clear-bg);color:var(--clear-c);border-color:var(--clear-b);">${c.clear} 🟢</span>`;
+  return out;
+}
+function renderRowsTable(rows){
+  const body=rows.map(r=>`
+    <tr>
+      <td class="ind">${esc(r.name)}${r.upd?'<span class="upd">UPDATED</span>':''}
+        <div class="rowdetail">Watch: ${esc(r.watch)}</div>
+      </td>
+      <td class="val">${esc(r.value)}</td>
+      <td class="prev">${esc(r.prev)}</td>
+      <td class="dir">${esc(r.dir)}</td>
+      <td>${badge(r.signal)}</td>
+    </tr>`).join("");
+  return `<div class="tblwrap"><table>
+    <thead><tr>
+      <th>Indicator</th><th>Current</th><th>Prev (7/13)</th><th>Direction</th><th>Signal</th>
+    </tr></thead>
+    <tbody>${body}</tbody>
+  </table></div>`;
+}
+function renderSections(){
+  return Object.keys(SIGNALS).map(title=>{
+    const rows=SIGNALS[title];
+    const open=SECTION_OPEN[title]?"open":"";
+    return `<details class="sec" ${open}>
+      <summary>
+        <span class="sec-title">${esc(title)}</span>
+        <span class="sec-pills">${sectionPills(rows)}<span class="chev">›</span></span>
+      </summary>
+      ${renderRowsTable(rows)}
+    </details>`;
+  }).join("");
+}
+
+/* ---------- RENDER: SPOTLIGHTS ---------- */
+function mtile(l,v,s,color){return `<div class="mtile"><div class="ml">${l}</div><div class="mv" style="color:${color};">${v}</div><div class="ms">${s}</div></div>`;}
+function renderSpotlights(){
+  const G="var(--clear-c)",R="var(--alert-c)",O="var(--watch-c)",GY="#555",B="#3b5bdb";
+  return `
+  <div class="note note-green"><strong class="h">📌 July 14 — CPI cools hard, but oil surges on the blockade:</strong> June CPI came in <strong>cool across the board</strong> — headline −0.4% MoM (biggest drop since Apr 2020), 3.5% YoY, and core 2.6%, all below forecasts. That <strong>collapsed July hike odds to ~17%</strong> (from 42%) and pulled yields down (2yr 4.18%, 10yr 4.55%). The catch: the US began <strong>enforcing the Hormuz blockade</strong> today and <strong>Brent pushed above $86</strong> — June predates all of it, so July's data may reverse the relief. Stocks ~flat (cool CPI vs. oil + IBM −22%). <strong>PPI tomorrow.</strong></div>
+
+  <div class="spot" style="background:var(--clear-bg);border-color:var(--clear-b);border-left:4px solid var(--clear-c);">
+    <div><span class="lab" style="color:var(--clear-c);">🎯 June CPI — Cool Across the Board</span><span class="badge">TODAY</span></div>
+    <div class="mgrid" style="grid-template-columns:repeat(4,1fr);">
+      ${mtile("Headline (MoM)","−0.4%","Biggest drop since Apr '20",G)}
+      ${mtile("Headline (YoY)","3.5%","↓ from 4.2%; vs 3.8% exp",G)}
+      ${mtile("Core (YoY)","2.6%","↓ from 2.9%; vs 2.9% exp",G)}
+      ${mtile("July hike odds","~17%","↓ from 42% Monday",G)}
     </div>
-  );
+    <div class="mnote">The relief the doves were waiting for. Headline CPI fell 0.4% on the month — the largest monthly decline since April 2020 — driven by a 5.7% drop in energy as June gasoline prices unwound. That took the annual rate to 3.5%, below the 3.8% expected. More importantly, CORE CPI (the number the Fed actually watches) was flat on the month and eased to 2.6% YoY, below the 2.9% forecast — a genuine step toward target, not just an energy effect. Markets repriced fast: July hike odds collapsed to ~17% from 42%, and the 2yr fell 8bps. The one caveat: this is June data, before the oil re-surge — so it's likely the trough. Source: BLS / CNBC, July 14, 2026.</div>
+  </div>
+
+  <div class="spot" style="background:var(--alert-bg);border-color:var(--alert-b);border-left:4px solid var(--alert-c);">
+    <div><span class="lab" style="color:var(--alert-c);">⚠ The Catch — Oil Surges as the Blockade Is Enforced</span><span class="badge">TODAY</span></div>
+    <div class="mgrid" style="grid-template-columns:repeat(3,1fr);">
+      ${mtile("Brent crude","~$86","1-month high; +9.6% Mon",R)}
+      ${mtile("Blockade","Enforced","+20% cargo fee at Hormuz",R)}
+      ${mtile("Shows up in","July CPI","Released Aug 12",O)}
+    </div>
+    <div class="mnote">Working directly against the CPI relief: the US began enforcing its Strait of Hormuz blockade Tuesday afternoon — adding a 20% fee on all cargo crossing the strait — after a third straight night of strikes on Iran. Brent, which posted its biggest one-day jump in 6+ years Monday (+9.6%), pushed above $86, a one-month high. Because June CPI predates all of this, the energy relief in today's report is essentially backward-looking; the risk is that the surge feeds into the July CPI (out Aug 12) and, if it lingers, into core via shipping and input costs. This is why the inflation cluster stays mostly red even on a cool-CPI day, and why September hike odds held near 60%. Source: Yahoo Finance / Bloomberg, July 14, 2026.</div>
+  </div>
+
+  <div class="spot" style="background:#f5f8ff;border-color:#b3c6f5;border-left:4px solid #3b5bdb;">
+    <div><span class="lab" style="color:#3b5bdb;">Q2 Earnings Kick Off — Banks Beat, IBM Cracks</span></div>
+    <div class="mgrid" style="grid-template-columns:repeat(3,1fr);">
+      ${mtile("Big banks","Beat","JPM, WFC, GS strong",G)}
+      ${mtile("IBM","−22%","Weak prelim results",R)}
+      ${mtile("Q2 consensus","~24%","YoY S&amp;P EPS growth",O)}
+    </div>
+    <div class="mnote">Earnings season opened with a split screen. The big banks delivered — JPMorgan, Wells Fargo, and Goldman Sachs all beat on strong trading and profits. But IBM cratered ~22% after preliminary results missed on software and infrastructure weakness, dragging the Dow. With Q2 S&amp;P earnings consensus near a lofty ~24% YoY (heavily concentrated in tech/AI), the bar is high — and single-name misses like IBM show how unforgiving the tape is when expectations are stretched. Source: CNBC / TheStreet, July 14, 2026.</div>
+  </div>
+
+  <div class="spot" style="background:var(--watch-bg);border-color:#f5d099;border-left:4px solid var(--watch-c);">
+    <div><span class="lab" style="color:var(--watch-c);">CAPE Ratio (Shiller P/E)</span></div>
+    <div class="mgrid" style="grid-template-columns:repeat(3,1fr);">
+      ${mtile("Current CAPE","42.3x","2nd highest ever",R)}
+      ${mtile("Historical avg (1881–)","17.3x","Current is 2.4× avg",GY)}
+      ${mtile("Dot-com peak (1999)","44.2x","Only higher reading",O)}
+    </div>
+    <div class="mnote">With the index still near record highs, valuations remain at historic extremes. Even after the cool CPI eased the 10yr to 4.55%, the equity risk premium is thin (~+0.30%) — bonds stay competitive with stocks. Source: multpl.com</div>
+  </div>`;
 }
 
-function Spotlight({ borderColor, bg, labelColor, label, badge, children, note }) {
-  return (
-    <div style={{ padding:"11px 14px", borderRadius:8, marginBottom:10, background:bg, border:`1px solid ${borderColor}`, borderLeft:`4px solid ${labelColor}` }}>
-      <div style={{ marginBottom:8 }}>
-        <span style={{ fontSize:12, fontWeight:700, textTransform:"uppercase", letterSpacing:".06em", color:labelColor }}>{label}</span>
-        {badge && <span style={{ fontSize:9, background:"#e24b4b", color:"#fff", padding:"1px 6px", borderRadius:3, fontWeight:700, marginLeft:8, verticalAlign:"middle" }}>{badge}</span>}
-      </div>
-      {children}
-      {note && <div style={{ marginTop:8, fontSize:11, color:"#666", lineHeight:1.5 }}>{note}</div>}
-    </div>
-  );
+/* ---------- RENDER: YIELD CURVE SVG ---------- */
+function renderChart(){
+  const W=700,H=200,padL=40,padR=20,padT=10,padB=24;
+  const plotW=W-padL-padR, plotBottom=H-padB, plotTop=padT;
+  const yMin=3.0,yMax=5.5, n=yieldCurveData.length;
+  const xAt=i=>padL+i*(plotW/(n-1));
+  const yAt=v=>plotTop+(yMax-v)/(yMax-yMin)*(plotBottom-plotTop);
+  const cur=yieldCurveData.map((d,i)=>`${xAt(i).toFixed(1)},${yAt(d.current).toFixed(1)}`).join(" ");
+  const pri=yieldCurveData.map((d,i)=>`${xAt(i).toFixed(1)},${yAt(d.prior).toFixed(1)}`).join(" ");
+  const dots=yieldCurveData.map((d,i)=>`<circle cx="${xAt(i).toFixed(1)}" cy="${yAt(d.current).toFixed(1)}" r="3" fill="#3266ad" stroke="#fff" stroke-width="1"/>`).join("");
+  const xlabels=yieldCurveData.map((d,i)=>`<text x="${xAt(i).toFixed(1)}" y="${H-8}" font-size="10" fill="#888" text-anchor="middle">${d.maturity}</text>`).join("");
+  const yticks=[3.0,3.5,4.0,4.5,5.0,5.5].map(v=>`<text x="${padL-6}" y="${(yAt(v)+3).toFixed(1)}" font-size="10" fill="#888" text-anchor="end">${v.toFixed(1)}%</text>`).join("");
+  const ref5=yAt(5.0).toFixed(1), ref45=yAt(4.5).toFixed(1);
+  return `<div class="card chartcard">
+    <div class="chart-h"><span class="sec-title">U.S. Treasury Yield Curve</span><span style="font-size:11px;color:#888;">July 14, 2026 — post-CPI</span></div>
+    <div class="chart-sub">10–2 spread: +37 bps · 10yr at 4.55% · 2yr at ~4.18% · 30yr above 5% · Hover x-axis for maturity</div>
+    <div class="chart-leg"><span style="color:#3266ad;">— Current</span><span style="color:#bbb;">-- 1yr ago (approx)</span></div>
+    <svg viewBox="0 0 ${W} ${H}" width="100%" style="height:auto;display:block;" xmlns="http://www.w3.org/2000/svg">
+      <line x1="${padL}" y1="${ref5}" x2="${W-padR}" y2="${ref5}" stroke="#e24b4b" stroke-dasharray="3 3" stroke-width="1"/>
+      <text x="${W-padR}" y="${(ref5-3)}" font-size="10" fill="#e24b4b" text-anchor="end">5%</text>
+      <line x1="${padL}" y1="${ref45}" x2="${W-padR}" y2="${ref45}" stroke="#f39c12" stroke-dasharray="3 3" stroke-width="1"/>
+      <text x="${W-padR}" y="${(ref45-3)}" font-size="10" fill="#f39c12" text-anchor="end">4.5%</text>
+      ${yticks}
+      <polyline points="${pri}" fill="none" stroke="#bbb" stroke-width="1.5" stroke-dasharray="5 3"/>
+      <polyline points="${cur}" fill="none" stroke="#3266ad" stroke-width="2"/>
+      ${dots}
+      ${xlabels}
+    </svg>
+    <div class="curveread"><strong>Curve read:</strong> The cool CPI pulled the whole curve down a notch — 2yr −8bps to 4.18% (July hike off the table), 10yr −6bps to 4.55%. But the 30yr only eased 3bps and held above the red 5% line: the front end rallied on softer near-term inflation while the long end kept its premium against the oil-driven forward risk. Spread steady at +37 bps. PPI tomorrow.</div>
+  </div>`;
 }
 
-function MetricTile({ label, value, sub, valueColor="#c0392b" }) {
-  return (
-    <div style={{ background:"#fff", borderRadius:6, padding:"9px 11px", border:"1px solid #e9ecef" }}>
-      <div style={{ fontSize:10, color:"#888", marginBottom:3 }}>{label}</div>
-      <div style={{ fontSize:20, fontWeight:700, color:valueColor, lineHeight:1 }}>{value}</div>
-      {sub && <div style={{ fontSize:10, color:"#888", marginTop:3 }}>{sub}</div>}
-    </div>
-  );
+/* ---------- RENDER: CALENDAR + GLOSSARY ---------- */
+function renderCalendar(){
+  return UPCOMING.map(ev=>{
+    const p=PRIORITY[ev.priority];
+    return `<div class="cal-row">
+      <span class="cal-date">${esc(ev.date)}</span>
+      <span class="cal-name">${esc(ev.name)}</span>
+      <span class="cal-pri" style="background:${p.bg};color:${p.c};border-color:${p.b};">${p.label}</span>
+    </div>`;
+  }).join("")+`<div style="margin-top:8px;font-size:11px;color:#aaa;text-align:center;">Sources: BLS.gov · BEA.gov · federalreserve.gov · ISM · Census Bureau · CME FedWatch</div>`;
+}
+function renderGlossary(){
+  const intro=`<div class="gloss-intro"><strong>Glossary:</strong> Every abbreviation used across the dashboard, grouped by area with a brief definition.</div>`;
+  const grps=GLOSSARY.map(g=>`
+    <div class="gloss-grp">
+      <div class="gloss-cat">${esc(g.category)}</div>
+      ${g.items.map(it=>`<div class="gloss-item"><div class="gloss-term">${esc(it.term)}</div><div class="gloss-def"><strong>${esc(it.full)}</strong> — ${esc(it.def)}</div></div>`).join("")}
+    </div>`).join("");
+  return intro+grps;
 }
 
-const CustomTooltip = ({ active, payload, label }) => {
-  if (!active || !payload?.length) return null;
-  return (
-    <div style={{ background:"#fff", border:"1px solid #dee2e6", borderRadius:6, padding:"8px 12px", fontSize:12, boxShadow:"0 2px 8px rgba(0,0,0,.08)" }}>
-      <div style={{ fontWeight:700, color:"#444", marginBottom:4 }}>{label}</div>
-      {payload.map((p,i) => <div key={i} style={{ color:p.color, marginBottom:2 }}>{p.name}: <strong>{p.value.toFixed(2)}%</strong></div>)}
+/* ---------- BUILD APP ---------- */
+function build(){
+  const counts=countAll();
+  const html=`
+    <div class="hdr">
+      <div><div class="kicker">Economic Monitoring</div><div class="title">Signal Dashboard</div></div>
+      <div class="rt"><div class="lbl">Last refreshed</div><div class="val">July 14, 2026 — 9:00 PM</div></div>
     </div>
-  );
-};
-
-function Dashboard() {
-  const [tab, setTab] = useState("signals");
-  const counts = countAll();
-
-  return (
-    <div style={{ background:"#f8f9fa", minHeight:"100vh", fontFamily:"Arial, sans-serif", padding:18, color:"#1a1a2e" }}>
-
-      <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", flexWrap:"wrap", gap:8, marginBottom:10 }}>
-        <div>
-          <div style={{ fontSize:11, color:"#6366f1", letterSpacing:".12em", fontWeight:700, textTransform:"uppercase", marginBottom:3 }}>Economic Monitoring</div>
-          <div style={{ fontSize:20, fontWeight:700 }}>Signal Dashboard</div>
-        </div>
-        <div style={{ textAlign:"right" }}>
-          <div style={{ fontSize:11, color:"#888" }}>Last refreshed</div>
-          <div style={{ fontSize:13, color:"#444", fontWeight:600 }}>July 14, 2026 — 9:00 PM</div>
-        </div>
-      </div>
-
-      <div style={{ marginBottom:12, background:"#fff", border:"1px solid #dee2e6", borderLeft:"4px solid #6366f1", borderRadius:8, padding:"11px 14px" }}>
-        <div style={{ display:"flex", justifyContent:"space-between", alignItems:"baseline", marginBottom:8, flexWrap:"wrap", gap:4 }}>
-          <span style={{ fontSize:12, fontWeight:700, textTransform:"uppercase", letterSpacing:".06em", color:"#4f46e5" }}>📋 The Read</span>
-          <span style={{ fontSize:10, color:"#aaa" }}>growth → inflation → Fed / rates / risk · {TAKEAWAY.updated}</span>
-        </div>
-        {TAKEAWAY.chain.map((c,i) => (
-          <div key={i} style={{ display:"flex", gap:10, padding:"6px 0", borderBottom: i<TAKEAWAY.chain.length-1 ? "1px solid #f1f3f5" : "none" }}>
-            <span style={{ flexShrink:0, width:7, height:7, borderRadius:"50%", background:SIG[c.tone].dot, marginTop:5 }} />
-            <div style={{ flex:1 }}>
-              <div style={{ fontSize:12.5, color:"#222" }}><strong style={{ fontWeight:700 }}>{c.n}. {c.q}</strong> <span style={{ color:"#999", fontSize:11 }}>({c.where})</span></div>
-              <div style={{ fontSize:12, color:SIG[c.tone].color, fontWeight:600, margin:"1px 0" }}>{c.answer}</div>
-              <div style={{ fontSize:11, color:"#777", lineHeight:1.45 }}>{c.detail}</div>
-            </div>
-          </div>
-        ))}
-        <div style={{ marginTop:9, padding:"8px 11px", background:"#f5f5ff", border:"1px solid #d9d9f5", borderRadius:6, fontSize:12, color:"#2a2a5a", lineHeight:1.5 }}>
-          <strong style={{ color:"#4f46e5" }}>Bottom line:</strong> {TAKEAWAY.bottomLine}
-        </div>
-      </div>
-
-      <div style={{ marginBottom:16, padding:"9px 13px", background:"#fff0f0", border:"1px solid #f5c6c6", borderLeft:"4px solid #e24b4b", borderRadius:6, fontSize:12, color:"#7a1a1a" }}>
-        <strong style={{ color:"#c0392b" }}>⚠ Decision Rule:</strong> If 3+ signals turn red → consider reducing equity exposure. &nbsp;
-        <strong style={{ color:"#c0392b" }}>Currently: {counts.alert} alerts — down 1 from 11 as June CPI cooled sharply (3.5% headline, 2.6% core), pulling the CPI signal off red and collapsing July hike odds to ~17%. The remaining reds: still-hot PCE/PPI, the 30yr above 5%, an elevated Sept hike (~60%), stretched valuations, and the oil-driven Iran risk. PPI lands tomorrow.</strong>
-      </div>
-
-      <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:10, marginBottom:16 }}>
-        {[
-          { label:"Clear", count:counts.clear, ...SIG.clear },
-          { label:"Watch", count:counts.watch, ...SIG.watch },
-          { label:"Alert", count:counts.alert, ...SIG.alert },
-        ].map(c => (
-          <div key={c.label} style={{ background:c.bg, border:`1px solid ${c.border}`, borderRadius:8, padding:"12px 14px", textAlign:"center" }}>
-            <div style={{ fontSize:28, fontWeight:700, color:c.color, lineHeight:1 }}>{c.count}</div>
-            <div style={{ fontSize:11, color:c.color, fontWeight:600, marginTop:3, letterSpacing:".05em" }}>{c.label.toUpperCase()} / {counts.total}</div>
-            <div style={{ marginTop:7, background:"rgba(0,0,0,.08)", borderRadius:4, height:4, overflow:"hidden" }}>
-              <div style={{ width:`${(c.count/counts.total)*100}%`, height:"100%", background:c.dot, borderRadius:4 }} />
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <div style={{ display:"flex", gap:4, background:"#e9ecef", borderRadius:8, padding:4, marginBottom:14 }}>
-        {[["signals","Signals"],["calendar","Calendar"],["glossary","Glossary"]].map(([id,label]) => (
-          <button key={id} onClick={()=>setTab(id)} style={{ flex:1, padding:"7px 0", borderRadius:6, border:"none", cursor:"pointer", fontSize:12, fontWeight:600, fontFamily:"inherit", background:tab===id?"#fff":"transparent", color:tab===id?"#3b5bdb":"#888", boxShadow:tab===id?"0 1px 4px rgba(0,0,0,.1)":"none", transition:"all .15s" }}>{label}</button>
-        ))}
-      </div>
-
-      {tab === "signals" && (
-        <div>
-          <div style={{ marginBottom:10, padding:"9px 13px", background:"#f0faf4", border:"1px solid #a8dfc0", borderLeft:"4px solid #1e7c45", borderRadius:6, fontSize:12, color:"#1a4a2a" }}>
-            <strong style={{ color:"#1e7c45" }}>📌 July 14 — CPI cools hard, but oil surges on the blockade:</strong> June CPI came in <strong>cool across the board</strong> — headline −0.4% MoM (biggest drop since Apr 2020), 3.5% YoY, and core 2.6%, all below forecasts. That <strong>collapsed July hike odds to ~17%</strong> (from 42%) and pulled yields down (2yr 4.18%, 10yr 4.55%). The catch: the US began <strong>enforcing the Hormuz blockade</strong> today and <strong>Brent pushed above $86</strong> — June predates all of it, so July's data may reverse the relief. Stocks ~flat (cool CPI vs. oil + IBM −22%). <strong>PPI tomorrow.</strong>
-          </div>
-
-          <Spotlight borderColor="#a8dfc0" bg="#f0faf4" labelColor="#1e7c45" label="🎯 June CPI — Cool Across the Board" badge="TODAY"
-            note="The relief the doves were waiting for. Headline CPI fell 0.4% on the month — the largest monthly decline since April 2020 — driven by a 5.7% drop in energy as June gasoline prices unwound. That took the annual rate to 3.5%, below the 3.8% expected. More importantly, CORE CPI (the number the Fed actually watches) was flat on the month and eased to 2.6% YoY, below the 2.9% forecast — a genuine step toward target, not just an energy effect. Markets repriced fast: July hike odds collapsed to ~17% from 42%, and the 2yr fell 8bps. The one caveat, and it's important: this is June data, before the oil re-surge — so it's likely the trough. Source: BLS / CNBC, July 14, 2026.">
-            <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr 1fr", gap:8 }}>
-              <MetricTile label="Headline (MoM)" value="−0.4%" sub="Biggest drop since Apr '20" valueColor="#1e7c45" />
-              <MetricTile label="Headline (YoY)" value="3.5%" sub="↓ from 4.2%; vs 3.8% exp" valueColor="#1e7c45" />
-              <MetricTile label="Core (YoY)" value="2.6%" sub="↓ from 2.9%; vs 2.9% exp" valueColor="#1e7c45" />
-              <MetricTile label="July hike odds" value="~17%" sub="↓ from 42% Monday" valueColor="#1e7c45" />
-            </div>
-          </Spotlight>
-
-          <Spotlight borderColor="#f5aaaa" bg="#fff5f5" labelColor="#c0392b" label="⚠ The Catch — Oil Surges as the Blockade Is Enforced" badge="TODAY"
-            note="Working directly against the CPI relief: the US began enforcing its Strait of Hormuz blockade Tuesday afternoon — adding a 20% fee on all cargo crossing the strait — after a third straight night of strikes on Iran. Brent, which posted its biggest one-day jump in 6+ years Monday (+9.6%), pushed above $86, a one-month high. Because June CPI predates all of this, the energy relief in today's report is essentially backward-looking; the risk is that the surge feeds into the July CPI (out Aug 12) and, if it lingers, into core via shipping and input costs. This is why the inflation cluster stays mostly red even on a cool-CPI day, and why September hike odds held near 60%. Source: Yahoo Finance / Bloomberg, July 14, 2026.">
-            <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:8 }}>
-              <MetricTile label="Brent crude" value="~$86" sub="1-month high; +9.6% Mon" valueColor="#c0392b" />
-              <MetricTile label="Blockade" value="Enforced" sub="+20% cargo fee at Hormuz" valueColor="#c0392b" />
-              <MetricTile label="Shows up in" value="July CPI" sub="Released Aug 12" valueColor="#b7650a" />
-            </div>
-          </Spotlight>
-
-          <Spotlight borderColor="#b3c6f5" bg="#f5f8ff" labelColor="#3b5bdb" label="Q2 Earnings Kick Off — Banks Beat, IBM Cracks"
-            note="Earnings season opened with a split screen. The big banks delivered — JPMorgan, Wells Fargo, and Goldman Sachs all beat on strong trading and profits, a healthy read on the financial sector. But IBM cratered ~22% after preliminary results missed on software and infrastructure weakness, dragging the Dow. With Q2 S&P earnings consensus near a lofty ~24% YoY (heavily concentrated in tech/AI), the bar is high — and single-name misses like IBM show how unforgiving the tape is when expectations are stretched. Source: CNBC / TheStreet, July 14, 2026.">
-            <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:8 }}>
-              <MetricTile label="Big banks" value="Beat" sub="JPM, WFC, GS strong" valueColor="#1e7c45" />
-              <MetricTile label="IBM" value="−22%" sub="Weak prelim results" valueColor="#c0392b" />
-              <MetricTile label="Q2 consensus" value="~24%" sub="YoY S&P EPS growth" valueColor="#b7650a" />
-            </div>
-          </Spotlight>
-
-          <Spotlight borderColor="#f5d099" bg="#fff8f0" labelColor="#b7650a" label="CAPE Ratio (Shiller P/E)"
-            note="With the index still near record highs, valuations remain at historic extremes. Even after the cool CPI eased the 10yr to 4.55%, the equity risk premium is thin (~+0.30%) — bonds stay competitive with stocks. Source: multpl.com">
-            <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:8 }}>
-              <MetricTile label="Current CAPE" value="42.3x" sub="2nd highest ever" valueColor="#c0392b" />
-              <MetricTile label="Historical avg (1881–)" value="17.3x" sub="Current is 2.4× avg" valueColor="#555" />
-              <MetricTile label="Dot-com peak (1999)" value="44.2x" sub="Only higher reading" valueColor="#b7650a" />
-            </div>
-            <div style={{ marginTop:10 }}>
-              <div style={{ display:"flex", justifyContent:"space-between", fontSize:10, color:"#888", marginBottom:3 }}>
-                <span>0</span><span style={{ color:"#27ae60" }}>Avg 17x</span><span style={{ color:"#f39c12" }}>30x</span><span style={{ color:"#e24b4b" }}>40x</span><span>50x</span>
-              </div>
-              <div style={{ position:"relative", height:8, background:"#e9ecef", borderRadius:4 }}>
-                <div style={{ position:"absolute", left:0, width:"34%", height:"100%", background:"rgba(39,174,96,.25)", borderRadius:"4px 0 0 4px" }} />
-                <div style={{ position:"absolute", left:"34%", width:"26%", height:"100%", background:"rgba(243,156,18,.25)" }} />
-                <div style={{ position:"absolute", left:"60%", width:"40%", height:"100%", background:"rgba(226,75,75,.2)", borderRadius:"0 4px 4px 0" }} />
-                <div style={{ position:"absolute", left:"34.6%", top:-2, width:2, height:12, background:"#27ae60", borderRadius:2 }} />
-                <div style={{ position:"absolute", left:"84.6%", top:-3, transform:"translateX(-50%)", width:4, height:14, background:"#e24b4b", borderRadius:2 }} />
-              </div>
-            </div>
-          </Spotlight>
-
-          <Section title="Yield Curve" rows={SIGNALS.yieldCurve} defaultOpen={true} />
-          <Section title="Equity Valuation" rows={SIGNALS.equity} defaultOpen={true} />
-          <Section title="Credit & Financial Stress" rows={SIGNALS.credit} />
-          <Section title="Consumer & Business Demand" rows={SIGNALS.demand} defaultOpen={true} />
-          <Section title="Macro & Fed" rows={SIGNALS.macro} defaultOpen={true} />
-
-          <div style={{ marginTop:16, background:"#fff", border:"1px solid #dee2e6", borderRadius:8, padding:"12px 14px" }}>
-            <div style={{ display:"flex", justifyContent:"space-between", alignItems:"baseline", marginBottom:2 }}>
-              <span style={{ fontSize:12, fontWeight:700, textTransform:"uppercase", letterSpacing:".06em", color:"#444" }}>U.S. Treasury Yield Curve</span>
-              <span style={{ fontSize:11, color:"#888" }}>July 14, 2026 — post-CPI</span>
-            </div>
-            <div style={{ fontSize:11, color:"#aaa", marginBottom:8 }}>10–2 spread: +37 bps · 10yr at 4.55% · 2yr at ~4.18% · 30yr above 5% · Hover for details</div>
-            <div style={{ display:"flex", gap:16, marginBottom:6, fontSize:11 }}>
-              <span style={{ color:"#3266ad" }}>— Current</span>
-              <span style={{ color:"#bbb" }}>-- 1yr ago (approx)</span>
-            </div>
-            <ResponsiveContainer width="100%" height={160}>
-              <LineChart data={yieldCurveData} margin={{ top:4, right:16, bottom:4, left:0 }}>
-                <XAxis dataKey="maturity" tick={{ fontSize:11, fill:"#888" }} axisLine={false} tickLine={false} />
-                <YAxis domain={[3.0, 5.5]} tickFormatter={v=>v.toFixed(1)+"%"} tick={{ fontSize:11, fill:"#888" }} axisLine={false} tickLine={false} width={40} />
-                <Tooltip content={<CustomTooltip />} />
-                <ReferenceLine y={5.0} stroke="#e24b4b" strokeDasharray="3 3" strokeWidth={1} label={{ value:"5%", position:"insideRight", fontSize:10, fill:"#e24b4b" }} />
-                <ReferenceLine y={4.5} stroke="#f39c12" strokeDasharray="3 3" strokeWidth={1} label={{ value:"4.5%", position:"insideRight", fontSize:10, fill:"#f39c12" }} />
-                <Line type="monotone" dataKey="current" name="Current" stroke="#3266ad" strokeWidth={2} dot={{ r:3, fill:"#3266ad", stroke:"#fff", strokeWidth:1 }} activeDot={{ r:5 }} />
-                <Line type="monotone" dataKey="prior" name="1yr ago" stroke="#bbb" strokeWidth={1.5} strokeDasharray="5 3" dot={false} activeDot={{ r:4 }} />
-              </LineChart>
-            </ResponsiveContainer>
-            <div style={{ marginTop:8, padding:"6px 10px", background:"#f0faf4", border:"1px solid #a8dfc0", borderRadius:6, fontSize:11, color:"#1a4a2a" }}>
-              <strong>Curve read:</strong> The cool CPI pulled the whole curve down a notch — 2yr −8bps to 4.18% (July hike off the table), 10yr −6bps to 4.55%. But the 30yr only eased 3bps and held above the red 5% line: the front end rallied on softer near-term inflation while the long end kept its premium against the oil-driven forward risk. Spread steady at +37 bps. PPI tomorrow.
-            </div>
-          </div>
-        </div>
-      )}
-
-      {tab === "calendar" && (
-        <div style={{ display:"flex", flexDirection:"column", gap:6 }}>
-          {UPCOMING.map((ev,i) => {
-            const p = PRIORITY[ev.priority];
-            return (
-              <div key={i} style={{ display:"flex", alignItems:"center", gap:12, padding:"9px 13px", background:"#fff", border:"1px solid #dee2e6", borderRadius:6 }}>
-                <span style={{ minWidth:52, fontSize:11, color:"#888", fontWeight:700 }}>{ev.date}</span>
-                <span style={{ flex:1, fontSize:13, color:"#333" }}>{ev.name}</span>
-                <span style={{ fontSize:9, padding:"2px 8px", borderRadius:4, fontWeight:700, whiteSpace:"nowrap", background:p.bg, color:p.color, border:`1px solid ${p.border}` }}>{p.label}</span>
-              </div>
-            );
-          })}
-          <div style={{ marginTop:8, fontSize:11, color:"#aaa", textAlign:"center" }}>Sources: BLS.gov · BEA.gov · federalreserve.gov · ISM · Census Bureau · CME FedWatch</div>
-        </div>
-      )}
-
-      {tab === "glossary" && (
-        <div>
-          <div style={{ marginBottom:10, padding:"9px 13px", background:"#f5f8ff", border:"1px solid #b3c6f5", borderLeft:"4px solid #3b5bdb", borderRadius:6, fontSize:12, color:"#1a2a5a" }}>
-            <strong style={{ color:"#3b5bdb" }}>Glossary:</strong> Every abbreviation used across the dashboard, grouped by area with a brief definition.
-          </div>
-          {GLOSSARY.map((grp,gi) => (
-            <div key={gi} style={{ marginBottom:8, background:"#fff", border:"1px solid #dee2e6", borderRadius:8, overflow:"hidden" }}>
-              <div style={{ padding:"8px 14px", background:"#f8f9fa", borderBottom:"1px solid #dee2e6", fontWeight:700, fontSize:12, letterSpacing:".05em", color:"#444", textTransform:"uppercase" }}>{grp.category}</div>
-              <div>
-                {grp.items.map((it,ii) => (
-                  <div key={ii} style={{ display:"flex", gap:12, padding:"8px 14px", borderBottom: ii<grp.items.length-1 ? "1px solid #f1f3f5" : "none" }}>
-                    <div style={{ minWidth:88, fontWeight:700, color:"#1a1a2e", fontSize:13, flexShrink:0 }}>{it.term}</div>
-                    <div style={{ flex:1, fontSize:12, color:"#555", lineHeight:1.5 }}><strong style={{ color:"#333", fontWeight:600 }}>{it.full}</strong> — {it.def}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-
-      <div style={{ marginTop:14, fontSize:10, color:"#bbb", textAlign:"center", borderTop:"1px solid #dee2e6", paddingTop:10 }}>
-        CPI: BLS Jul 14 · Yields & Fed odds: CNBC / CME FedWatch Jul 14 · Equity & earnings: CNBC / TheStreet Jul 14 · Oil & Iran: Yahoo / Bloomberg Jul 14 · VIX: Cboe (approx) · CAPE: multpl.com · Margin debt: FINRA
-        <div style={{ marginTop:6, color:"#ccc" }}>Static snapshot — for monitoring and educational use, not investment advice.</div>
-      </div>
+    ${renderRead()}
+    ${renderDecision(counts)}
+    ${renderTiles(counts)}
+    <div class="tabs">
+      <button class="tabbtn active" data-tab="signals">Signals</button>
+      <button class="tabbtn" data-tab="calendar">Calendar</button>
+      <button class="tabbtn" data-tab="glossary">Glossary</button>
     </div>
-  );
+    <div class="panel active" id="panel-signals">
+      ${renderSpotlights()}
+      ${renderSections()}
+      ${renderChart()}
+    </div>
+    <div class="panel" id="panel-calendar">${renderCalendar()}</div>
+    <div class="panel" id="panel-glossary">${renderGlossary()}</div>
+    <div class="foot">
+      CPI: BLS Jul 14 · Yields &amp; Fed odds: CNBC / CME FedWatch Jul 14 · Equity &amp; earnings: CNBC / TheStreet Jul 14 · Oil &amp; Iran: Yahoo / Bloomberg Jul 14 · VIX: Cboe (approx) · CAPE: multpl.com · Margin debt: FINRA
+      <div class="disc">Static snapshot — for monitoring and educational use, not investment advice.</div>
+    </div>`;
+  document.getElementById("app").innerHTML=html;
+
+  // Tab switching
+  document.querySelectorAll(".tabbtn").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      document.querySelectorAll(".tabbtn").forEach(b=>b.classList.remove("active"));
+      document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
+      btn.classList.add("active");
+      document.getElementById("panel-"+btn.dataset.tab).classList.add("active");
+    });
+  });
 }
-
-const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<Dashboard />);
+build();
 </script>
 </body>
 </html>
