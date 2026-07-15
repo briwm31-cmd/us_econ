@@ -18,7 +18,7 @@
 <meta name="copyright" content="© 2026 Brian W. Malone. All rights reserved." />
 <meta name="dcterms.creator" content="Brian W. Malone" />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23c8102e'/%3E%3Cpath d='M4 21 L12 15 L18 18 L28 8' stroke='white' fill='none' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
-<title>Signal Dashboard — Economic Monitoring · July 14, 2026</title>
+<title>Signal Dashboard — Economic Monitoring · July 15, 2026</title>
 <style>
 
   /* ============ SHARED TOKENS + BASE ============ */
@@ -589,7 +589,7 @@ const SIGNALS = {
     {name:"S&P 500 fwd P/E",value:"~19.5x",prev:"~19.5x",dir:"→ stable",signal:"watch",watch:"above 22x = stretched. Still elevated near record highs."},
     {name:"CAPE (Shiller P/E)",value:"42.3x",prev:"42.3x",dir:"→ stable",signal:"alert",watch:"above 30x = stretched; 40x = extreme. Hist. avg ~17x — Source: multpl.com"},
     {name:"Earnings yield vs 10yr",value:"~+0.28%",prev:"+0.30%",dir:"→ thinner",signal:"watch",watch:"Thin — the 10yr firmed to ~4.60% while equities rose, compressing the risk premium. Bonds stay competitive with stocks. Q2 consensus ~24% YoY S&P earnings growth (FactSet).",upd:true},
-    {name:"S&P 500 earnings growth",value:"+12% YoY",prev:"+12% YoY",dir:"✓ strong",signal:"clear",watch:"negative = contraction risk. Q2 season strong so far: big banks beat across the board, with Morgan Stanley, J&amp;J and BlackRock adding results. IBM (−22% on 7/14) the notable crack."},
+    {name:"S&P 500 earnings growth",value:"+12% YoY",prev:"+12% YoY",dir:"✓ strong",signal:"clear",watch:"negative = contraction risk. Q2 season strong so far: big banks beat across the board, with Morgan Stanley, J&J and BlackRock adding results. IBM (−22% on 7/14) the notable crack."},
     {name:"% beating estimates",value:"84%",prev:"84%",dir:"✓ strong",signal:"clear",watch:"below 65% = deteriorating. Very high bar set for this quarter."},
     {name:"VIX fear index",value:"~16",prev:"~16",dir:"→ low",signal:"clear",watch:"above 25 = Alert. Near a weekly low (~16) — the back-to-back cool CPI/PPI calmed rate fears while oil kept a floor under vol. Well below 25. (Approximate.)"},
   ],
@@ -639,9 +639,9 @@ const UPCOMING = [
 const TAKEAWAY = {
   updated:"July 15",
   chain:[
-    {n:"1",q:"Is the economy still growing?",where:"Demand section",answer:"Yes — cooling, solid Q2 earnings",detail:"GDPNow ~1.4% and housing soft, but Q2 earnings are strong — big banks beat, with Morgan Stanley, J&amp;J and BlackRock adding results. IBM (−22% on 7/14) the notable crack.",tone:"watch"},
+    {n:"1",q:"Is the economy still growing?",where:"Demand section",answer:"Yes — cooling, solid Q2 earnings",detail:"GDPNow ~1.4% and housing soft, but Q2 earnings are strong — big banks beat, with Morgan Stanley, J&J and BlackRock adding results. IBM (−22% on 7/14) the notable crack.",tone:"watch"},
     {n:"2",q:"Is inflation beaten?",where:"Price cluster",answer:"June cooled on both CPI and PPI — but likely the trough",detail:"June CPI 3.5% (core 2.6%) and now June PPI −0.3% MoM (5.5% YoY, down from 6.5%), both below forecasts — a clean disinflation read. But June predates the oil surge; with the US blockade of Iran in force and Brent ~$85, July's data threatens to reverse it.",tone:"alert"},
-    {n:"3",q:"How are rates & markets positioned?",where:"Fed · Curve · Equity · Credit",answer:"July hike off the table; Oct still the risk",detail:"The cool CPI/PPI keep July as a firmly-priced hold (hike odds ~15%), but the 10yr firmed to ~4.60%, the 30yr held above 5%, and ~60% of a hike is priced by October. S&amp;P closed at a record 7,572.",tone:"alert"},
+    {n:"3",q:"How are rates & markets positioned?",where:"Fed · Curve · Equity · Credit",answer:"July hike off the table; Oct still the risk",detail:"The cool CPI/PPI keep July as a firmly-priced hold (hike odds ~15%), but the 10yr firmed to ~4.60%, the 30yr held above 5%, and ~60% of a hike is priced by October. S&P closed at a record 7,572.",tone:"alert"},
   ],
   bottomLine:"June PPI confirmed the message of Tuesday's cool CPI — wholesale prices fell 0.3% on the month and the annual rate dropped to 5.5% from 6.5%, beating the flat consensus. Two clean disinflation reads in two days took the July hike firmly off the table (~15%). But it's likely the trough: both prints predate the oil surge, and with the US blockade of Iran still in force (Brent ~$85) and Chair Warsh telling Congress he has 'no tolerance' for inflation, July's data is the risk. Genuine good news for June, a building forward risk for July — October hike odds are still ~60% and the 30yr holds above 5%.",
 };
@@ -756,7 +756,7 @@ function renderRead(){
 /* ---------- DECISION ---------- */
 function renderDecision(counts){
   return `<div class="decision"><span class="dh">Decision rule.</span> If 3+ signals turn red → consider reviewing equity exposure.
-    <strong>Currently ${counts.alert} alerts — down 1 from 11</strong> as June CPI cooled sharply (3.5% headline, 2.6% core), pulling the CPI signal off red and collapsing July hike odds to ~17%. The remaining reds: still-hot PCE/PPI, the 30yr above 5%, an elevated Sept hike (~60%), stretched valuations, and the oil-driven Iran risk. PPI lands tomorrow.</div>`;
+    <strong>Currently ${counts.alert} alerts — down 1 from 10</strong> as June PPI confirmed the CPI cooling (−0.3% MoM, annual rate 5.5% from 6.5%), pulling the PPI signal off red and leaving the July hold firmly priced (hike odds ~15%). The remaining reds: still-hot PCE, the 30yr above 5%, an elevated Oct hike (~60%), stretched valuations, record margin debt, and the oil-driven Iran blockade risk. Next inflation read: July CPI on Aug 12.</div>`;
 }
 
 /* ---------- SECTIONS ---------- */
