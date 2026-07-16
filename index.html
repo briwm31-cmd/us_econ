@@ -67,8 +67,8 @@
   .otab:hover { color:var(--ink); }
   .otab.active { color:var(--ink); border-bottom-color:var(--accent); }
 
-  #us-root, #nyc-root, #fxdebt-root { display:none; }
-  #us-root.active, #nyc-root.active, #fxdebt-root.active { display:block; animation:fade .25s ease; }
+  #us-root, #nyc-root, #fxdebt-root, #tools-root { display:none; }
+  #us-root.active, #nyc-root.active, #fxdebt-root.active, #tools-root.active { display:block; animation:fade .25s ease; }
 
   /* per-panel "As of" dateline (each dashboard refreshes independently) */
   .pdate { font-family:var(--serif); font-style:italic; font-size:13px;
@@ -88,7 +88,7 @@
   @media print {
     body { border-top:none; }
     .otabs { display:none; }
-    #us-root, #nyc-root, #fxdebt-root { display:block !important; animation:none; }
+    #us-root, #nyc-root, #fxdebt-root, #tools-root { display:block !important; animation:none; }
   }
   @media (max-width:640px) {
     .mast-title { font-size:24px; }
@@ -435,6 +435,45 @@
 #fxdebt-root .dc-dot-now {fill:var(--accent);stroke:var(--accent);stroke-width:2;}
 #fxdebt-root .dc-val {fill:var(--muted);font-family:var(--serif);font-size:11px;font-weight:700;text-anchor:middle;font-variant-numeric:tabular-nums;}
 #fxdebt-root .dc-val-now {fill:var(--accent-deep);}
+
+/* ============ TOOLS DASHBOARD (scoped #tools-root) ============ */
+#tools-root .num {font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1;}
+#tools-root .wrap {padding:22px 20px 40px;max-width:1080px;margin:0 auto;}
+#tools-root .pdate {font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.09em;font-weight:600;margin-bottom:16px;}
+#tools-root .tl-read {background:var(--card);border:1px solid var(--rule);border-left:3px solid var(--accent);border-radius:8px;padding:16px 20px;margin-bottom:22px;}
+#tools-root .tl-read-h {font-family:var(--serif);font-size:18px;font-weight:700;color:var(--ink);margin-bottom:6px;}
+#tools-root .tl-read-b {font-size:13px;color:var(--body);line-height:1.6;}
+#tools-root .fx-h {font-family:var(--serif);font-size:16px;font-weight:700;color:var(--ink);margin:4px 0 12px;padding-bottom:7px;border-bottom:1px solid var(--rule-strong);}
+#tools-root .fx-h-sub {font-family:var(--sans);font-size:10.5px;font-weight:600;color:var(--faint);text-transform:uppercase;letter-spacing:.07em;margin-left:8px;}
+#tools-root .fx-note {margin-top:11px;padding:12px 15px;background:var(--paper);border:1px solid var(--rule);border-radius:6px;font-size:12px;color:var(--body);line-height:1.6;}
+#tools-root .fx-note strong {color:var(--ink);}
+#tools-root .fx-note em {font-style:italic;color:var(--accent-deep);font-weight:600;}
+#tools-root .fx-src {margin-top:8px;font-size:10.5px;color:var(--faint);line-height:1.5;}
+#tools-root .bc-card {background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:18px 20px;}
+#tools-root .bc-inputs {display:grid;grid-template-columns:1.7fr 1fr 1fr 1fr;gap:12px;margin-bottom:16px;}
+#tools-root .bc-field {display:flex;flex-direction:column;gap:5px;}
+#tools-root .bc-lab {font-size:9.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;font-weight:600;}
+#tools-root .bc-field input {font-family:var(--sans);font-size:14px;padding:8px 10px;border:1px solid var(--rule-strong);border-radius:6px;background:var(--paper);color:var(--ink);font-variant-numeric:tabular-nums;width:100%;box-sizing:border-box;}
+#tools-root .bc-field input:focus {outline:none;border-color:var(--accent);background:var(--card);}
+#tools-root .bc-field input[readonly] {color:var(--body);background:#f0eee8;}
+#tools-root .bc-slider-row {display:flex;align-items:center;gap:14px;padding:6px 0 4px;}
+#tools-root .bc-slab {font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;font-weight:700;white-space:nowrap;}
+#tools-root .bc-slider-row input[type=range] {flex:1;accent-color:var(--accent);height:4px;}
+#tools-root .bc-bps {font-family:var(--serif);font-size:17px;font-weight:700;color:var(--accent-deep);min-width:80px;text-align:right;}
+#tools-root .bc-scenario {font-size:12.5px;color:var(--muted);font-style:italic;margin:6px 0 14px;font-family:var(--serif);}
+#tools-root .bc-results {display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+#tools-root .bc-result {background:var(--paper);border:1px solid var(--rule);border-radius:7px;padding:13px 15px;}
+#tools-root .bc-rlab {display:block;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:600;margin-bottom:7px;}
+#tools-root .bc-rlab-note {text-transform:none;letter-spacing:0;font-weight:400;font-style:italic;color:var(--faint);}
+#tools-root .bc-big {font-family:var(--serif);font-size:26px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--ink);}
+#tools-root .bc-pct {font-size:13px;font-weight:600;color:var(--muted);margin-left:6px;font-variant-numeric:tabular-nums;}
+#tools-root .bc-pos {color:var(--clear-c);}
+#tools-root .bc-neg {color:var(--alert-c);}
+#tools-root .bc-read {margin-top:14px;padding:12px 15px;background:var(--paper);border-left:3px solid var(--accent);border-radius:6px;font-size:12.5px;color:var(--body);line-height:1.6;}
+@media (max-width:640px){
+  #tools-root .bc-inputs {grid-template-columns:1fr 1fr;}
+  #tools-root .bc-results {grid-template-columns:1fr;}
+}
 </style>
 </head>
 <body>
@@ -452,6 +491,7 @@
 <nav class="otabs"><div class="otabs-in">
   <button class="otab active" data-dash="us">United States</button>
   <button class="otab" data-dash="fxdebt">FX &amp; Debt</button>
+  <button class="otab" data-dash="tools">Tools</button>
   <button class="otab" data-dash="nyc">New York City</button>
 </div></nav>
 
@@ -554,6 +594,60 @@
     <strong>Total public debt outstanding is $39.42 trillion</strong> as of July 13, 2026 &mdash; about <strong>123% of GDP</strong>. The debt has risen every fiscal year since 2001, adding roughly $2 trillion or more annually since FY2022, and is on pace to close FY2026 near $39.9 trillion. Note this is the <em>cumulative</em> total &mdash; the running tab of all past borrowing &mdash; not the single-year <em>deficit</em>, which is running about $1.4 trillion so far this fiscal year. Each year&rsquo;s deficit is what gets added to this line.
   </div>
   <div class="fx-src">Debt: U.S. Treasury &mdash; Debt to the Penny (fiscal years end Sept 30); current figure as of July 13, 2026. Debt-to-GDP via Treasury / BEA.</div>
+</div>
+</section>
+
+<section id="tools-root">
+<div class="wrap">
+  <div class="pdate">As of July 16, 2026 · 4:00 PM ET</div>
+
+  <div class="tl-read">
+    <div class="tl-read-h">Interactive tools</div>
+    <div class="tl-read-b">Scenario tools for reasoning about the portfolio, kept separate from the monitoring panels. First up: a duration-based estimator for how a bond fund&rsquo;s value would move if interest rates rise or fall.</div>
+  </div>
+
+  <h2 class="fx-h">Bond fund rate-impact calculator <span class="fx-h-sub">duration-based estimate</span></h2>
+  <div class="bc-card">
+    <div class="bc-inputs">
+      <label class="bc-field">
+        <span class="bc-lab">Fund</span>
+        <input id="bc-fund" type="text" value="FNSOX &mdash; Fidelity Short-Term Bond Index" readonly>
+      </label>
+      <label class="bc-field">
+        <span class="bc-lab">Amount invested ($)</span>
+        <input id="bc-amount" type="number" value="500000" min="0" step="1000">
+      </label>
+      <label class="bc-field">
+        <span class="bc-lab">Eff. duration (yrs)</span>
+        <input id="bc-duration" type="number" value="2.5" min="0" step="0.1">
+      </label>
+      <label class="bc-field">
+        <span class="bc-lab">Current yield (%)</span>
+        <input id="bc-yield" type="number" value="3.4" min="0" step="0.1">
+      </label>
+    </div>
+    <div class="bc-slider-row">
+      <span class="bc-slab">Rate change</span>
+      <input id="bc-slider" type="range" min="-200" max="200" step="25" value="0">
+      <span id="bc-bps" class="bc-bps num">0 bps</span>
+    </div>
+    <div class="bc-scenario" id="bc-scenario">No change &mdash; rates flat</div>
+    <div class="bc-results">
+      <div class="bc-result">
+        <span class="bc-rlab">Instant price impact</span>
+        <span class="bc-big" id="bc-out-price">+$0</span><span class="bc-pct" id="bc-out-price-pct">(+0.00%)</span>
+      </div>
+      <div class="bc-result">
+        <span class="bc-rlab">Est. 1-year total return <span class="bc-rlab-note">price impact + yield</span></span>
+        <span class="bc-big" id="bc-out-tr">+$0</span><span class="bc-pct" id="bc-out-tr-pct">(+0.00%)</span>
+      </div>
+    </div>
+    <div class="bc-read" id="bc-read">Move the slider to model a rate change.</div>
+  </div>
+  <div class="fx-note">
+    <strong>How this works:</strong> instant price impact &asymp; &minus; duration &times; rate change. The 1-year total-return estimate adds roughly one year of the fund&rsquo;s yield to that price move &mdash; which is why a short-duration fund like FNSOX (~2.5 yrs, ~3.4% yield) can still post a positive year when rates rise modestly, yet gives up less than a long fund would. Estimates assume an instantaneous parallel shift in the fund&rsquo;s own yield; they ignore credit-spread moves, convexity (negligible at this duration), and reinvestment. <em>A modelling aid, not investment advice.</em>
+  </div>
+  <div class="fx-src">Fund data: Fidelity fact sheet &mdash; effective duration 2.53 yrs (3/31/2025; stable for this 1&ndash;5yr fund) and 30-day SEC yield ~3.4% (recent; was 4.20% in early 2025 before Fed cuts). Duration and yield are editable &mdash; confirm the latest on Fidelity&rsquo;s fund page.</div>
 </div>
 </section>
 
@@ -685,7 +779,7 @@
 </section>
 
 <footer class="foot-shared"><div class="foot-in">
-  <div class="foot-src"><strong>U.S. sources:</strong> BLS · BEA · Federal Reserve · ISM · Census · CME FedWatch · CNBC · FINRA · multpl.com &nbsp;&nbsp;|&nbsp;&nbsp; <strong>NYC sources:</strong> NY State DOL · NYC Comptroller · Redfin / PropertyShark / StreetEasy / Corcoran · MTA · NYPD CompStat · CBC · UMich / FRED &nbsp;&nbsp;|&nbsp;&nbsp; <strong>FX &amp; Debt sources:</strong> Federal Reserve H.10 · Bloomberg · TradingEconomics · Xe · U.S. Treasury Fiscal Data (Debt to the Penny)</div>
+  <div class="foot-src"><strong>U.S. sources:</strong> BLS · BEA · Federal Reserve · ISM · Census · CME FedWatch · CNBC · FINRA · multpl.com &nbsp;&nbsp;|&nbsp;&nbsp; <strong>NYC sources:</strong> NY State DOL · NYC Comptroller · Redfin / PropertyShark / StreetEasy / Corcoran · MTA · NYPD CompStat · CBC · UMich / FRED &nbsp;&nbsp;|&nbsp;&nbsp; <strong>FX &amp; Debt sources:</strong> Federal Reserve H.10 · Bloomberg · TradingEconomics · Xe · U.S. Treasury Fiscal Data (Debt to the Penny) &nbsp;&nbsp;|&nbsp;&nbsp; <strong>Tools:</strong> Fidelity fund fact sheet (duration &amp; yield)</div>
   <div class="foot-byline">Compiled &amp; maintained by Brian W. Malone · © 2026 Brian W. Malone. All rights reserved.</div>
   <div class="foot-disc">A static snapshot for monitoring and educational use — not investment advice.</div>
 </div></footer>
@@ -1244,10 +1338,68 @@ document.getElementById('nyc-log-add').addEventListener('click', addLog);
 })();
 </script>
 <script>
+/* ---------- TOOLS: BOND FUND RATE-IMPACT CALCULATOR ---------- */
+(function(){
+  if(!document.getElementById('tools-root')) return;
+  const amtEl   = document.getElementById('bc-amount');
+  const durEl   = document.getElementById('bc-duration');
+  const yldEl   = document.getElementById('bc-yield');
+  const slider  = document.getElementById('bc-slider');
+  const bpsLbl  = document.getElementById('bc-bps');
+  const outP    = document.getElementById('bc-out-price');
+  const outPpct = document.getElementById('bc-out-price-pct');
+  const outT    = document.getElementById('bc-out-tr');
+  const outTpct = document.getElementById('bc-out-tr-pct');
+  const outScen = document.getElementById('bc-scenario');
+  const outRead = document.getElementById('bc-read');
+  if(!slider) return;
+
+  const dollars = n => (n<0?'\u2212':'+') + '$' + Math.abs(Math.round(n)).toLocaleString('en-US');
+  const pct = n => (n<0?'\u2212':'+') + Math.abs(n).toFixed(2) + '%';
+  const cls = n => 'bc-big ' + (n<0?'bc-neg':(n>0?'bc-pos':''));
+
+  function update(){
+    const amt = parseFloat(amtEl.value) || 0;
+    const dur = parseFloat(durEl.value) || 0;
+    const yld = (parseFloat(yldEl.value) || 0) / 100;
+    const bps = parseInt(slider.value, 10) || 0;
+    const dy  = bps / 10000;                 // rate change in decimal
+
+    const pricePct = -dur * dy;              // instantaneous price change
+    const priceDol = pricePct * amt;
+    const trPct    = yld + pricePct;         // ~1-year total return
+    const trDol    = trPct * amt;
+
+    bpsLbl.textContent = (bps>0?'+':'') + bps + ' bps';
+    outScen.textContent = bps===0
+      ? 'No change \u2014 rates flat'
+      : 'Rates ' + (bps>0?'rise':'fall') + ' ' + Math.abs(bps/100).toFixed(2) + '%  (' + (bps>0?'+':'\u2212') + Math.abs(bps) + ' bps)';
+
+    outP.textContent = dollars(priceDol);   outP.className = cls(priceDol);
+    outPpct.textContent = '(' + pct(pricePct*100) + ')';
+    outT.textContent = dollars(trDol);      outT.className = cls(trDol);
+    outTpct.textContent = '(' + pct(trPct*100) + ')';
+
+    if(bps===0){
+      outRead.textContent = 'Move the slider to model a rate change. At a flat rate you simply earn the yield \u2014 about ' + pct(yld*100) + ' over a year.';
+    } else if(bps>0){
+      outRead.textContent = 'If rates rise ' + Math.abs(bps/100).toFixed(2) + '%, the price drops about ' + pct(pricePct*100) + ' immediately' +
+        (trPct>=0 ? ', but the ~' + (yld*100).toFixed(1) + '% yield more than offsets it over a year \u2014 an estimated ' + pct(trPct*100) + ' total.'
+                  : '; the ~' + (yld*100).toFixed(1) + '% yield cushions but doesn\u2019t erase it \u2014 an estimated ' + pct(trPct*100) + ' over a year.');
+    } else {
+      outRead.textContent = 'If rates fall ' + Math.abs(bps/100).toFixed(2) + '%, the price rises about ' + pct(pricePct*100) + ' immediately, on top of the ~' + (yld*100).toFixed(1) + '% yield \u2014 an estimated ' + pct(trPct*100) + ' over a year.';
+    }
+  }
+  [amtEl, durEl, yldEl, slider].forEach(el => el && el.addEventListener('input', update));
+  update();
+})();
+</script>
+<script>
 /* ---------- OUTER US / NYC TAB SWITCH ---------- */
 (function(){
   const roots = { us: document.getElementById('us-root'),
                   fxdebt: document.getElementById('fxdebt-root'),
+                  tools: document.getElementById('tools-root'),
                   nyc: document.getElementById('nyc-root') };
   document.querySelectorAll('.otab').forEach(btn => {
     btn.addEventListener('click', () => {
