@@ -456,6 +456,9 @@
 #tools-root .bc-field input {font-family:var(--sans);font-size:14px;padding:8px 10px;border:1px solid var(--rule-strong);border-radius:6px;background:var(--paper);color:var(--ink);font-variant-numeric:tabular-nums;width:100%;box-sizing:border-box;}
 #tools-root .bc-field input:focus {outline:none;border-color:var(--accent);background:var(--card);}
 #tools-root .bc-field input[readonly] {color:var(--body);background:#f0eee8;}
+#tools-root .bc-preset-row {max-width:440px;margin-bottom:14px;}
+#tools-root .bc-field select {font-family:var(--sans);font-size:14px;padding:8px 10px;border:1px solid var(--rule-strong);border-radius:6px;background:var(--paper);color:var(--ink);width:100%;box-sizing:border-box;cursor:pointer;}
+#tools-root .bc-field select:focus {outline:none;border-color:var(--accent);background:var(--card);}
 #tools-root .bc-slider-row {display:flex;align-items:center;gap:14px;padding:6px 0 4px;}
 #tools-root .bc-slab {font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;font-weight:700;white-space:nowrap;}
 #tools-root .bc-slider-row input[type=range] {flex:1;accent-color:var(--accent);height:4px;}
@@ -491,8 +494,8 @@
 <nav class="otabs"><div class="otabs-in">
   <button class="otab active" data-dash="us">United States</button>
   <button class="otab" data-dash="fxdebt">FX &amp; Debt</button>
-  <button class="otab" data-dash="tools">Tools</button>
   <button class="otab" data-dash="nyc">New York City</button>
+  <button class="otab" data-dash="tools">Tools</button>
 </div></nav>
 
 <section id="us-root" class="active">
@@ -594,60 +597,6 @@
     <strong>Total public debt outstanding is $39.42 trillion</strong> as of July 13, 2026 &mdash; about <strong>123% of GDP</strong>. The debt has risen every fiscal year since 2001, adding roughly $2 trillion or more annually since FY2022, and is on pace to close FY2026 near $39.9 trillion. Note this is the <em>cumulative</em> total &mdash; the running tab of all past borrowing &mdash; not the single-year <em>deficit</em>, which is running about $1.4 trillion so far this fiscal year. Each year&rsquo;s deficit is what gets added to this line.
   </div>
   <div class="fx-src">Debt: U.S. Treasury &mdash; Debt to the Penny (fiscal years end Sept 30); current figure as of July 13, 2026. Debt-to-GDP via Treasury / BEA.</div>
-</div>
-</section>
-
-<section id="tools-root">
-<div class="wrap">
-  <div class="pdate">As of July 16, 2026 · 4:00 PM ET</div>
-
-  <div class="tl-read">
-    <div class="tl-read-h">Interactive tools</div>
-    <div class="tl-read-b">Scenario tools for reasoning about the portfolio, kept separate from the monitoring panels. First up: a duration-based estimator for how a bond fund&rsquo;s value would move if interest rates rise or fall.</div>
-  </div>
-
-  <h2 class="fx-h">Bond fund rate-impact calculator <span class="fx-h-sub">duration-based estimate</span></h2>
-  <div class="bc-card">
-    <div class="bc-inputs">
-      <label class="bc-field">
-        <span class="bc-lab">Fund</span>
-        <input id="bc-fund" type="text" value="FNSOX &mdash; Fidelity Short-Term Bond Index" readonly>
-      </label>
-      <label class="bc-field">
-        <span class="bc-lab">Amount invested ($)</span>
-        <input id="bc-amount" type="number" value="500000" min="0" step="1000">
-      </label>
-      <label class="bc-field">
-        <span class="bc-lab">Eff. duration (yrs)</span>
-        <input id="bc-duration" type="number" value="2.5" min="0" step="0.1">
-      </label>
-      <label class="bc-field">
-        <span class="bc-lab">Current yield (%)</span>
-        <input id="bc-yield" type="number" value="3.4" min="0" step="0.1">
-      </label>
-    </div>
-    <div class="bc-slider-row">
-      <span class="bc-slab">Rate change</span>
-      <input id="bc-slider" type="range" min="-200" max="200" step="25" value="0">
-      <span id="bc-bps" class="bc-bps num">0 bps</span>
-    </div>
-    <div class="bc-scenario" id="bc-scenario">No change &mdash; rates flat</div>
-    <div class="bc-results">
-      <div class="bc-result">
-        <span class="bc-rlab">Instant price impact</span>
-        <span class="bc-big" id="bc-out-price">+$0</span><span class="bc-pct" id="bc-out-price-pct">(+0.00%)</span>
-      </div>
-      <div class="bc-result">
-        <span class="bc-rlab">Est. 1-year total return <span class="bc-rlab-note">price impact + yield</span></span>
-        <span class="bc-big" id="bc-out-tr">+$0</span><span class="bc-pct" id="bc-out-tr-pct">(+0.00%)</span>
-      </div>
-    </div>
-    <div class="bc-read" id="bc-read">Move the slider to model a rate change.</div>
-  </div>
-  <div class="fx-note">
-    <strong>How this works:</strong> instant price impact &asymp; &minus; duration &times; rate change. The 1-year total-return estimate adds roughly one year of the fund&rsquo;s yield to that price move &mdash; which is why a short-duration fund like FNSOX (~2.5 yrs, ~3.4% yield) can still post a positive year when rates rise modestly, yet gives up less than a long fund would. Estimates assume an instantaneous parallel shift in the fund&rsquo;s own yield; they ignore credit-spread moves, convexity (negligible at this duration), and reinvestment. <em>A modelling aid, not investment advice.</em>
-  </div>
-  <div class="fx-src">Fund data: Fidelity fact sheet &mdash; effective duration 2.53 yrs (3/31/2025; stable for this 1&ndash;5yr fund) and 30-day SEC yield ~3.4% (recent; was 4.20% in early 2025 before Fed cuts). Duration and yield are editable &mdash; confirm the latest on Fidelity&rsquo;s fund page.</div>
 </div>
 </section>
 
@@ -776,6 +725,73 @@
   </div>
 
 </div><!-- /wrap -->
+</section>
+
+<section id="tools-root">
+<div class="wrap">
+  <div class="pdate">As of July 16, 2026 · 4:00 PM ET</div>
+
+  <div class="tl-read">
+    <div class="tl-read-h">Interactive tools</div>
+    <div class="tl-read-b">Scenario tools for reasoning about the portfolio, kept separate from the monitoring panels. First up: a duration-based estimator for how a bond fund&rsquo;s value would move if interest rates rise or fall.</div>
+  </div>
+
+  <h2 class="fx-h">Bond fund rate-impact calculator <span class="fx-h-sub">duration-based estimate</span></h2>
+  <div class="bc-card">
+    <div class="bc-preset-row">
+      <label class="bc-field">
+        <span class="bc-lab">Preset fund (auto-fills duration &amp; yield)</span>
+        <select id="bc-preset">
+          <option value="sgov">SGOV &mdash; iShares 0&ndash;3 Mo Treasury (ultra-short)</option>
+          <option value="fnsox" selected>FNSOX &mdash; Fidelity Short-Term Bond Index (short)</option>
+          <option value="bnd">BND &mdash; Vanguard Total Bond Market (core)</option>
+          <option value="lqd">LQD &mdash; iShares iBoxx IG Corporate (corp)</option>
+          <option value="tlt">TLT &mdash; iShares 20+ Yr Treasury (long)</option>
+          <option value="custom">Custom &mdash; enter your own below</option>
+        </select>
+      </label>
+    </div>
+    <div class="bc-inputs">
+      <label class="bc-field">
+        <span class="bc-lab">Fund</span>
+        <input id="bc-fund" type="text" value="FNSOX &mdash; Fidelity Short-Term Bond Index" placeholder="Type any bond fund">
+      </label>
+      <label class="bc-field">
+        <span class="bc-lab">Amount invested ($)</span>
+        <input id="bc-amount" type="number" value="500000" min="0" step="1000">
+      </label>
+      <label class="bc-field">
+        <span class="bc-lab">Eff. duration (yrs)</span>
+        <input id="bc-duration" type="number" value="2.5" min="0" step="0.1">
+      </label>
+      <label class="bc-field">
+        <span class="bc-lab">Current yield (%)</span>
+        <input id="bc-yield" type="number" value="3.4" min="0" step="0.1">
+      </label>
+    </div>
+    <div class="bc-slider-row">
+      <span class="bc-slab">Rate change</span>
+      <input id="bc-slider" type="range" min="-200" max="200" step="25" value="0">
+      <span id="bc-bps" class="bc-bps num">0 bps</span>
+    </div>
+    <div class="bc-scenario" id="bc-scenario">No change &mdash; rates flat</div>
+    <div class="bc-results">
+      <div class="bc-result">
+        <span class="bc-rlab">Instant price impact</span>
+        <span class="bc-big" id="bc-out-price">+$0</span><span class="bc-pct" id="bc-out-price-pct">(+0.00%)</span>
+      </div>
+      <div class="bc-result">
+        <span class="bc-rlab">Est. 1-year total return <span class="bc-rlab-note">price impact + yield</span></span>
+        <span class="bc-big" id="bc-out-tr">+$0</span><span class="bc-pct" id="bc-out-tr-pct">(+0.00%)</span>
+      </div>
+    </div>
+    <div class="bc-read" id="bc-read">Move the slider to model a rate change.</div>
+  </div>
+  <div class="fx-note">
+    <strong>How this works:</strong> instant price impact &asymp; &minus; duration &times; rate change. The 1-year total-return estimate adds roughly one year of the fund&rsquo;s yield to that price move &mdash; which is why a short-duration fund like FNSOX (~2.5 yrs, ~3.4% yield) can still post a positive year when rates rise modestly, yet gives up less than a long fund would. Estimates assume an instantaneous parallel shift in the fund&rsquo;s own yield; they ignore credit-spread moves, convexity (negligible at this duration), and reinvestment. <em>A modelling aid, not investment advice.</em>
+  </div>
+  <div class="fx-src">Preset duration &amp; yield figures are representative snapshots as of mid-July 2026 from each fund&rsquo;s fact sheet &mdash; SGOV ~0.1yr / ~3.8%, FNSOX ~2.5yr / ~3.4%, BND ~5.8yr / ~4.6%, LQD ~8.4yr / ~5.0%, TLT ~15.3yr / ~4.9%. They drift with rates, so confirm the current effective duration and 30-day SEC yield on the fund&rsquo;s own page. The Fund box is free-form and every field is editable &mdash; load a preset as a starting point, or type any bond fund and enter its own duration and yield.</div>
+</div>
 </section>
 
 <footer class="foot-shared"><div class="foot-in">
@@ -1352,7 +1368,19 @@ document.getElementById('nyc-log-add').addEventListener('click', addLog);
   const outTpct = document.getElementById('bc-out-tr-pct');
   const outScen = document.getElementById('bc-scenario');
   const outRead = document.getElementById('bc-read');
+  const fundEl  = document.getElementById('bc-fund');
+  const preset  = document.getElementById('bc-preset');
   if(!slider) return;
+
+  // Common bond-fund presets — representative effective duration & 30-day SEC yield
+  // as of mid-July 2026 (fund fact sheets). All editable; verify current values on the fund page.
+  const PRESETS = {
+    sgov:  {name:'SGOV \u2014 iShares 0\u20133 Mo Treasury', dur:'0.1',  yld:'3.8'},
+    fnsox: {name:'FNSOX \u2014 Fidelity Short-Term Bond Index', dur:'2.5', yld:'3.4'},
+    bnd:   {name:'BND \u2014 Vanguard Total Bond Market', dur:'5.8', yld:'4.6'},
+    lqd:   {name:'LQD \u2014 iShares iBoxx IG Corporate', dur:'8.4', yld:'5.0'},
+    tlt:   {name:'TLT \u2014 iShares 20+ Yr Treasury', dur:'15.3', yld:'4.9'},
+  };
 
   const dollars = n => (n<0?'\u2212':'+') + '$' + Math.abs(Math.round(n)).toLocaleString('en-US');
   const pct = n => (n<0?'\u2212':'+') + Math.abs(n).toFixed(2) + '%';
@@ -1391,6 +1419,18 @@ document.getElementById('nyc-log-add').addEventListener('click', addLog);
     }
   }
   [amtEl, durEl, yldEl, slider].forEach(el => el && el.addEventListener('input', update));
+
+  // Preset menu fills in the fund's name, duration, and yield, then recomputes.
+  if(preset){
+    preset.addEventListener('change', () => {
+      const p = PRESETS[preset.value];
+      if(p){ fundEl.value = p.name; durEl.value = p.dur; yldEl.value = p.yld; }
+      update();
+    });
+  }
+  // Editing the fund name, duration, or yield by hand flips the menu to "Custom".
+  [fundEl, durEl, yldEl].forEach(el => el && el.addEventListener('input', () => { if(preset) preset.value = 'custom'; }));
+
   update();
 })();
 </script>
