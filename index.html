@@ -18,7 +18,7 @@
 <meta name="copyright" content="© 2026 Brian W. Malone. All rights reserved." />
 <meta name="dcterms.creator" content="Brian W. Malone" />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23c8102e'/%3E%3Cpath d='M4 21 L12 15 L18 18 L28 8' stroke='white' fill='none' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
-<title>Signal Dashboard — Economic Monitoring · July 16, 2026</title>
+<title>Signal Dashboard — Economic Monitoring · July 17, 2026</title>
 <style>
 
   /* ============ SHARED TOKENS + BASE ============ */
@@ -801,31 +801,31 @@ const PRIORITY = {
 };
 
 const yieldCurveData = [
-  {maturity:"1mo",current:3.62,prior:5.20},{maturity:"3mo",current:3.76,prior:5.25},
-  {maturity:"6mo",current:3.84,prior:5.20},{maturity:"1yr",current:4.01,prior:5.00},
-  {maturity:"2yr",current:4.16,prior:4.80},{maturity:"3yr",current:4.22,prior:4.60},
-  {maturity:"5yr",current:4.31,prior:4.40},{maturity:"7yr",current:4.45,prior:4.35},
-  {maturity:"10yr",current:4.58,prior:4.30},{maturity:"20yr",current:5.04,prior:4.55},
-  {maturity:"30yr",current:5.11,prior:4.50},
+  {maturity:"1mo",current:3.64,prior:5.20},{maturity:"3mo",current:3.79,prior:5.25},
+  {maturity:"6mo",current:3.88,prior:5.20},{maturity:"1yr",current:3.98,prior:5.00},
+  {maturity:"2yr",current:4.15,prior:4.80},{maturity:"3yr",current:4.22,prior:4.60},
+  {maturity:"5yr",current:4.28,prior:4.40},{maturity:"7yr",current:4.42,prior:4.35},
+  {maturity:"10yr",current:4.55,prior:4.30},{maturity:"20yr",current:5.07,prior:4.55},
+  {maturity:"30yr",current:5.08,prior:4.50},
 ];
 
 const SIGNALS = {
   "Yield Curve":[
-    {name:"10yr − 2yr spread",value:"~+42 bps",prev:"~+42 bps",dir:"→ steady",signal:"watch",watch:"Both ends firmed ~2-3bps intraday (10yr ~4.58%, 2yr ~4.16%), leaving the spread near ~+42bps. A steep, positive curve — the long end still pricing inflation/fiscal premium, not recession."},
-    {name:"30yr yield",value:"~5.11%",prev:"~5.10%",dir:"↑ firm, >5%",signal:"alert",watch:"Ticked up ~2bps to ~5.11% intraday as continued Iran strikes lifted the long end; still above the key 5% threshold. Term premium elevated on oil + fiscal supply. (Approximate — intraday.)",upd:true},
-    {name:"20yr − 30yr spread",value:"~7 bps",prev:"~4 bps",dir:"→ still compressed",signal:"alert",watch:"should be 20-30 bps; still very compressed with both tenors above 5% — fiscal-stress signal remains. (20yr level approximate.)",upd:true},
-    {name:"Curve shape",value:"Normal (+)",prev:"Normal (+)",dir:"→ steep",signal:"clear",watch:"inverted = recession risk. ~+42 bps and steep — an inflation-premium shape, not a recession signal."},
-    {name:"3mo T-bill",value:"~3.76%",prev:"~3.76%",dir:"→ stable",signal:"clear",watch:"rising = Fed hawkish. Steady — a July hold is firmly priced (hike odds ~15%)."},
-    {name:"2yr note",value:"~4.16%",prev:"~4.18%",dir:"↓ eased",signal:"watch",watch:"above 4.50% = hike risk. Eased ~2bps to ~4.16% intraday; well below the 4.50% line as this week's cool CPI/PPI keep the July hold in place.",upd:true},
+    {name:"10yr − 2yr spread",value:"~+40 bps",prev:"~+42 bps",dir:"→ steady",signal:"watch",watch:"10yr ~4.55%, 2yr ~4.15% — spread near ~+40bps. A steep, positive curve; the long end still pricing an inflation/fiscal premium, not recession."},
+    {name:"30yr yield",value:"~5.08%",prev:"~5.11%",dir:"↓ eased, still >5%",signal:"alert",watch:"Eased ~3bps to ~5.08% as a risk-off tape (chips selling off) brought a modest bid; still above the key 5% threshold. Term premium elevated on oil + fiscal supply. (Approximate — intraday.)",upd:true},
+    {name:"20yr − 30yr spread",value:"~1 bp",prev:"~7 bps",dir:"→ flat, compressed",signal:"alert",watch:"20yr and 30yr both ~5.08% — essentially flat to each other. An unusually compressed long end that reflects fiscal-supply / term-premium stress. (Approximate — intraday.)",upd:true},
+    {name:"Curve shape",value:"Normal (+)",prev:"Normal (+)",dir:"→ steep",signal:"clear",watch:"inverted = recession risk. ~+40 bps and steep — an inflation-premium shape, not a recession signal."},
+    {name:"3mo T-bill",value:"~3.79%",prev:"~3.76%",dir:"→ stable",signal:"clear",watch:"rising = Fed hawkish. Steady — a July hold is firmly priced (hike odds ~15%)."},
+    {name:"2yr note",value:"~4.15%",prev:"~4.16%",dir:"→ steady",signal:"watch",watch:"above 4.50% = hike risk. ~4.15%, well below the 4.50% line as this week's cool CPI/PPI keep the July hold in place."},
   ],
   "Equity Valuation":[
-    {name:"S&P 500 level",value:"~7,570",prev:"~7,572",dir:"→ mixed intraday",signal:"clear",watch:"Wavering near flat intraday (~2:30pm ET): most S&P names higher but another chip selloff capped the tape — TSM beat (a 77% annual earnings jump) yet fell ~4%, the semi group off ~3% and the Nasdaq ~1% on AI-valuation jitters. Financials strong (BlackRock +6.6%). No close yet.",upd:true},
-    {name:"S&P 500 fwd P/E",value:"~19.5x",prev:"~19.5x",dir:"→ stable",signal:"watch",watch:"above 22x = stretched. Still elevated near record highs."},
+    {name:"S&P 500 level",value:"~7,452",prev:"~7,570",dir:"↓ −1%, risk-off",signal:"clear",watch:"Slid ~1% intraday (~3:20pm ET) as the semiconductor selloff deepened toward a bear market (the chip index ~20% off its highs) on AI-spending doubts, and Netflix plunged ~7% on soft guidance. Energy and real estate led; tech and industrials lagged. No close yet.",upd:true},
+    {name:"S&P 500 fwd P/E",value:"~19.5x",prev:"~19.5x",dir:"→ stable",signal:"watch",watch:"above 22x = stretched. Still elevated near record highs, even after the two-day tech selloff."},
     {name:"CAPE (Shiller P/E)",value:"42.3x",prev:"42.3x",dir:"→ stable",signal:"alert",watch:"above 30x = stretched; 40x = extreme. Hist. avg ~17x — Source: multpl.com"},
-    {name:"Earnings yield vs 10yr",value:"~+0.28%",prev:"~+0.28%",dir:"→ thin",signal:"watch",watch:"Thin — with the 10yr ~4.58% and equities near records, the risk premium stays compressed; bonds remain competitive with stocks. Q2 consensus ~24% YoY S&P earnings growth (FactSet)."},
-    {name:"S&P 500 earnings growth",value:"+12% YoY",prev:"+12% YoY",dir:"✓ strong",signal:"clear",watch:"negative = contraction risk. Q2 season strong: big banks beat, with UnitedHealth and Netflix reporting today and TSM posting a 77% earnings jump. IBM (−22% on 7/14) the notable crack."},
-    {name:"% beating estimates",value:"84%",prev:"84%",dir:"✓ strong",signal:"clear",watch:"below 65% = deteriorating. Very high bar set for this quarter."},
-    {name:"VIX fear index",value:"~16",prev:"~16",dir:"→ low",signal:"clear",watch:"above 25 = Alert. Near a weekly low (~15.8) — this week's cool inflation data calmed rate fears; oil keeps a floor under vol. Well below 25. (Approximate.)"},
+    {name:"Earnings yield vs 10yr",value:"~+0.28%",prev:"~+0.28%",dir:"→ thin",signal:"watch",watch:"Thin — with the 10yr ~4.55% and equities still near records, the risk premium stays compressed; bonds remain competitive with stocks. Q2 consensus ~24% YoY S&P earnings growth (FactSet)."},
+    {name:"S&P 500 earnings growth",value:"+12% YoY",prev:"+12% YoY",dir:"✓ strong",signal:"clear",watch:"negative = contraction risk. Q2 season running strong — ~95% of the ~47 S&P names reported so far have topped EPS — though Netflix sank ~7% on soft forward guidance and IBM (−22% on 7/14) remains the notable crack."},
+    {name:"% beating estimates",value:"84%",prev:"84%",dir:"✓ strong",signal:"clear",watch:"below 65% = deteriorating. Very high bar this quarter — early reporters tracking even higher (~95% so far)."},
+    {name:"VIX fear index",value:"~18.5",prev:"~16",dir:"↑ rose ~10%",signal:"clear",watch:"above 25 = Alert. Rose ~10% to ~18.5 on the chip selloff and Iran escalation, but still well below the 25 line. (Approximate — intraday.)",upd:true},
   ],
   "Credit & Financial Stress":[
     {name:"HY credit spread",value:"~3.5%",prev:"~3.5%",dir:"→ stable",signal:"clear",watch:"above 5.0% = stress. Still tight — credit calm despite the geopolitical noise."},
@@ -833,7 +833,7 @@ const SIGNALS = {
     {name:"Private credit defaults",value:"Record high",prev:"Record high",dir:"↑ rising",signal:"watch",watch:"rising trend = early warn. The gap vs. calm public HY spreads is itself the signal."},
     {name:"Margin debt (May 2026)",value:"$1.415T",prev:"$1.415T",dir:"→ record high",signal:"alert",watch:"Record $1.415 trillion — +53.7% YoY. June data due mid-July. Source: FINRA."},
     {name:"Margin debt vs market cap",value:"1.88%",prev:"1.88%",dir:"→ stable",signal:"watch",watch:"50yr historical median: 1.5-2.0%. In range but speed of growth concerning."},
-    {name:"30yr fixed mortgage",value:"~6.7%",prev:"~6.7%",dir:"→ flat, >6.5%",signal:"alert",watch:"above 6.5% = affordability stress. Held ~6.7% with the 10yr near 4.58% (Freddie Mac's well-qualified weekly benchmark is 6.49%). Still above the stress line; housing already softening. (Approximate.)"},
+    {name:"30yr fixed mortgage",value:"~6.55%",prev:"~6.7%",dir:"→ >6.5%, ~1yr high",signal:"alert",watch:"above 6.5% = affordability stress. Freddie Mac's 30yr survey rose to 6.55% this week — its highest in almost a year — with the 10yr near 4.55%. Above the stress line; June housing starts beat but permits missed. (Approximate.)",upd:true},
   ],
   "Consumer & Business Demand":[
     {name:"ISM Services (June)",value:"54.0%",prev:"54.0%",dir:"→ steady",signal:"clear",watch:"Above 50 = expansion. 24th straight expansion month; employment back in expansion (51.2); prices eased to 67.7. Released Jul 6."},
@@ -842,14 +842,14 @@ const SIGNALS = {
     {name:"Atlanta Fed GDPNow (Q2)",value:"~1.4%",prev:"~1.4%",dir:"→ soft",signal:"watch",watch:"Nowcast — tracking ~1.4% for Q2, well below Q1's 2.0%, with the wider trade deficit, soft housing (existing home sales −2.4%), and a slip in consumer credit adding to the cooling picture. Advance Q2 GDP lands Jul 30."},
     {name:"Personal spending (May)",value:"+0.7% MoM",prev:"+0.7% MoM",dir:"↑ strong",signal:"clear",watch:"Nominal — beat forecast. Real spending is softer once inflation is stripped out. June data with PCE on Jul 30."},
     {name:"Personal saving rate",value:"3.0%",prev:"3.0%",dir:"→ low",signal:"watch",watch:"Low saving rate — thin buffer, a late-cycle signal."},
-    {name:"U. Mich Consumer Sentiment (June)",value:"49.5",prev:"49.5",dir:"→ depressed",signal:"watch",watch:"Final June reading — 2nd-lowest in ~50yr history, but improving off May's record low. Diverges from still-solid hard spending. July prelim: Jul 17."},
-    {name:"Jobless claims (wk Jul 11)",value:"208K",prev:"215K",dir:"↓ fell, below est.",signal:"clear",watch:"Fell 8K to 208K (wk ending Jul 11), below consensus — labor still solid even as payroll growth has slowed. Released 7/16.",upd:true},
+    {name:"U. Mich Consumer Sentiment (July prelim)",value:"54.4",prev:"49.5",dir:"↑ 5-month high",signal:"watch",watch:"July preliminary jumped to 54.4 from 49.5, beating the 51.0 forecast — a 5-month high on easing gas prices; the survey's 1yr inflation expectation eased to 4.2% (from 4.6%), 5yr steady at 3.3%. Still ~12% below a year ago, and the early-July field work predates this week's renewed oil surge. Released 7/17.",upd:true},
+    {name:"Jobless claims (wk Jul 11)",value:"208K",prev:"208K",dir:"→ steady, low",signal:"clear",watch:"Held at 208K (wk ending Jul 11), below trend — labor still solid even as payroll growth has slowed. Next weekly print Jul 23."},
   ],
   "Macro & Fed":[
-    {name:"Iran / Hormuz status",value:"Strikes continue",prev:"Blockade in effect",dir:"↓ escalating",signal:"alert",watch:"US strikes on Iran continued into a 4th day with the blockade still in force; Centcom said it disabled an unladen oil tanker headed for an Iranian port. Trump is weighing broader operations, including a possible seizure of Kharg Island — Iran's main oil-export terminal. EIA crude inventories −1.7M bbl. Still the live upside risk to July inflation.",upd:true},
-    {name:"Oil price (WTI)",value:"~$80",prev:"~$79.60",dir:"↑ back above $80",signal:"watch",watch:"WTI pushed back above $80 intraday, up a 4th straight session on the continued strikes — well above last month's ~$68. A standing upside inflation risk for July/August data. (Approximate — intraday.)",upd:true},
-    {name:"Oil price (Brent)",value:"~$84.50",prev:"~$84.95",dir:"→ just below $85",signal:"watch",watch:"Brent eased just below $85 after touching a one-month high; still up ~19% from pre-war levels and elevated on the blockade. (Approximate — intraday.)",upd:true},
-    {name:"Fed hike odds — Oct",value:"~60%",prev:"~60%",dir:"→ Oct; July hold priced",signal:"alert",watch:"Relabeled Sept→Oct to match the FedWatch framing. The July hold is firmly priced (hike odds ~15%); markets put a ~60% cumulative chance rates are higher by the OCTOBER meeting, with ~35bps of hikes priced by December. Fed Chair Warsh told Congress the Fed has 'no tolerance' for high inflation.",upd:true},
+    {name:"Iran / Hormuz status",value:"Escalating — 6th night",prev:"Strikes continue",dir:"↓ escalating",signal:"alert",watch:"US strikes hit a 6th consecutive night; Iran retaliated with attacks on US bases in Kuwait, Jordan and Bahrain, and reportedly told Yemen's Houthis to prepare to disrupt Red Sea shipping if the US targets Iranian power infrastructure — which Trump has threatened for next week absent a diplomatic breakthrough. Hormuz tanker traffic at 2-month lows. Still the live upside risk to July inflation.",upd:true},
+    {name:"Oil price (WTI)",value:"~$82",prev:"~$80",dir:"↑ +4% on the day",signal:"watch",watch:"WTI jumped ~4% to ~$82 on the 6th night of strikes; up more than 10% on the week and well above last month's ~$68. A standing upside inflation risk for July/August data. (Approximate — intraday.)",upd:true},
+    {name:"Oil price (Brent)",value:"~$86",prev:"~$84.50",dir:"↑ back above $85",signal:"watch",watch:"Brent rose ~2% to ~$86, back above $85 and up more than 10% on the week on the blockade/escalation; up ~24% from a year ago. (Approximate — intraday.)",upd:true},
+    {name:"Fed hike odds — Oct",value:"~60%",prev:"~60%",dir:"→ July hold priced",signal:"alert",watch:"The July hold is firmly priced (hike odds ~15%); markets put a ~60% cumulative chance rates are higher by the October meeting, with ~35bps of hikes priced by December. Fed Chair Warsh has told Congress the Fed has 'no tolerance' for high inflation."},
     {name:"FOMC minutes / dot plot",value:"3.8% median",prev:"3.8% median",dir:"→ hawkish",signal:"alert",watch:"June dots: Fed dropped its easing bias, upside inflation risks the core concern, committee split 9-9 on a 2026 hike. Chair Warsh's semiannual testimony reinforced the hawkish framing — 'no tolerance' for inflation, no forward guidance."},
     {name:"PCE headline (May)",value:"4.1% YoY",prev:"4.1% YoY",dir:"→ above 4%",signal:"alert",watch:"Core PCE 3.4%. June PCE (Jul 30) — the cool June CPI and PPI suggest June PCE should ease too, though the measures differ."},
     {name:"CPI headline (June)",value:"3.5% YoY",prev:"3.5% YoY",dir:"↓ cooled (7/14)",signal:"watch",watch:"June CPI (released 7/14) −0.4% MoM (biggest drop since Apr 2020), 3.5% YoY vs 3.8% expected; CORE 2.6%, flat on the month. Cool across the board — but June predates the oil surge, so July's print threatens to reverse it."},
@@ -863,21 +863,21 @@ const SIGNALS = {
 const SECTION_OPEN = {"Yield Curve":true,"Equity Valuation":true,"Credit & Financial Stress":false,"Consumer & Business Demand":true,"Macro & Fed":true};
 
 const UPCOMING = [
-  {date:"Jul 17",name:"U. Michigan Consumer Sentiment (July prelim)",priority:"watch"},
   {date:"Jul 29",name:"FOMC decision (Jul 28-29) — hold priced (~85%), Oct the hike risk",priority:"critical"},
   {date:"Jul 30",name:"Q2 GDP (advance) + PCE (June data)",priority:"high"},
+  {date:"Aug 1",name:"ISM Manufacturing (July) — first factory read since the oil surge",priority:"watch"},
   {date:"Aug 7",name:"Jobs report (July) — does the cooling continue?",priority:"high"},
   {date:"Aug 12",name:"CPI (July) — first read with the oil surge in it",priority:"critical"},
 ];
 
 const TAKEAWAY = {
-  updated:"July 16",
+  updated:"July 17",
   chain:[
-    {n:"1",q:"Is the economy still growing?",where:"Demand section",answer:"Yes — labor solid, Q2 earnings strong",detail:"Jobless claims fell to 208K (labor still solid) and June retail sales rose a light +0.2%. Q2 earnings are strong — big banks beat, UnitedHealth and Netflix report today, and TSM posted a 77% earnings jump. GDPNow ~1.4%.",tone:"watch"},
-    {n:"2",q:"Is inflation beaten?",where:"Price cluster",answer:"June cooled on both CPI and PPI — but likely the trough",detail:"This week's June CPI (3.5%) and PPI (5.5%) both cooled below forecasts — a clean disinflation read. But they predate the oil surge; with US strikes on Iran into a 4th day and WTI back above $80, July's data is the risk.",tone:"alert"},
-    {n:"3",q:"How are rates & markets positioned?",where:"Fed · Curve · Equity · Credit",answer:"July hold priced; Oct still the risk",detail:"The cool prints keep July a firmly-priced hold (~15%), but the 10yr sits ~4.58%, the 30yr holds above 5%, and ~60% of a hike is priced by October. Equities wavered near flat as chips sold off again.",tone:"alert"},
+    {n:"1",q:"Is the economy still growing?",where:"Demand section",answer:"Yes — sentiment jumped, labor solid",detail:"Consumer sentiment jumped to a 5-month high (54.4 vs 49.5) on cheaper gas, jobless claims held at 208K, and ~95% of early Q2 reporters have beaten EPS — though Netflix sank ~7% on soft guidance and chips are selling off hard. GDPNow ~1.4%.",tone:"watch"},
+    {n:"2",q:"Is inflation beaten?",where:"Price cluster",answer:"June cooled and expectations eased — but oil is the risk",detail:"June CPI (3.5%) and PPI (5.5%) cooled, and the UMich survey's 1yr inflation expectation eased to 4.2%. But that field work predates the renewed oil surge — WTI ~$82, up >10% on the week as the US-Iran conflict escalated — so July CPI (Aug 12) is the risk.",tone:"alert"},
+    {n:"3",q:"How are rates & markets positioned?",where:"Fed · Curve · Equity · Credit",answer:"July hold priced; Oct still the risk",detail:"July is a firmly-priced hold (~15% hike), but the 10yr sits ~4.55%, the 30yr holds above 5%, and ~60% of a hike is priced by October. Equities fell ~1% as the chip group slid toward a bear market.",tone:"alert"},
   ],
-  bottomLine:"A quiet day on the data calendar left the board unchanged at nine alerts. The constructive news: jobless claims fell to 208K, labor looks solid, and this week's cool CPI and PPI keep the July hike firmly off the table (~15%). The texture cutting the other way: another chip selloff (TSM beat but fell ~4%) on AI-valuation jitters, and a fourth straight day of oil gains — WTI back above $80 — as US strikes on Iran continued, with Trump now weighing a move on Kharg Island. Inflation relief is holding for now, but the oil-driven July risk is building; October hike odds are still ~60% and the 30yr holds above 5%.",
+  bottomLine:"The board is unchanged at nine alerts, but the day had real cross-currents. The bright spot: consumer sentiment jumped to a five-month high (54.4) on cheaper gas, its 1-year inflation expectation eased to 4.2%, and labor held (claims 208K). The other side: the tape turned risk-off — the semiconductor group slid toward a bear market on AI-spending doubts, Netflix plunged ~7% on soft guidance, and the S&P fell ~1% to ~7,452. Oil kept climbing (WTI ~$82, Brent ~$86, up >10% on the week) as US-Iran hostilities escalated to a sixth night of strikes with Iran retaliating on Gulf bases — keeping the July inflation risk alive even as June's data and survey expectations improved. October hike odds are still ~60% and the 30yr holds above 5%.",
 };
 
 const GLOSSARY = [
@@ -953,7 +953,7 @@ function renderMasthead(){
     </div>
     <div class="mh-date">
       <div class="mh-date-lbl">As of</div>
-      <div class="mh-date-val">July 14, 2026 · 3:00 PM ET</div>
+      <div class="mh-date-val">July 17, 2026 · 3:20 PM ET</div>
     </div>
   </div>
   <div class="mh-strap">A running read on U.S. macro conditions — yield curve, inflation, credit, equity valuation, and the Fed.</div>`;
@@ -990,7 +990,7 @@ function renderRead(){
 /* ---------- DECISION ---------- */
 function renderDecision(counts){
   return `<div class="decision"><span class="dh">Decision rule.</span> If 3+ signals turn red → consider reviewing equity exposure.
-    <strong>Currently ${counts.alert} alerts — unchanged from yesterday</strong>; no inflation prints today to move the board. This week's cool CPI and PPI keep the July hold firmly priced (~15%), and today's data was constructive — jobless claims fell to 208K, with labor still solid. The reds still cluster in inflation/rates and valuation: hot PCE, the 30yr above 5%, an elevated Oct hike (~60%), stretched valuations, record margin debt, mortgage above 6.5%, and the oil-driven Iran risk — now escalating, with WTI back above $80 on a 4th day of US strikes. Next inflation read: July CPI on Aug 12; UMich July prelim tomorrow.</div>`;
+    <strong>Currently ${counts.alert} alerts — unchanged from yesterday</strong>; no signal flipped colour today. The marquee release was UMich sentiment, which jumped to a 5-month high (54.4) with its 1yr inflation expectation easing to 4.2% — constructive, but the early-July survey predates this week's renewed oil surge. Cutting the other way, the tape turned risk-off: the chip group slid toward a bear market, Netflix fell ~7%, and WTI climbed to ~$82 (up more than 10% on the week) as US-Iran strikes hit a 6th night with Iran retaliating on Gulf bases. The reds still cluster in inflation/rates and valuation: hot PCE, the 30yr above 5%, an elevated Oct hike (~60%), stretched valuations, record margin debt, mortgage above 6.5%, and the oil-driven Iran risk. Next inflation read: July CPI on Aug 12; FOMC Jul 28-29 (hold priced ~85%).</div>`;
 }
 
 /* ---------- SECTIONS ---------- */
@@ -1014,7 +1014,7 @@ function renderRowsTable(rows){
       <td>${badge(r.signal)}</td>
     </tr>`).join("");
   return `<div class="tblwrap"><table>
-    <thead><tr><th>Indicator</th><th>Current</th><th>Prev (7/15)</th><th>Direction</th><th>Signal</th></tr></thead>
+    <thead><tr><th>Indicator</th><th>Current</th><th>Prev (7/16)</th><th>Direction</th><th>Signal</th></tr></thead>
     <tbody>${body}</tbody>
   </table></div>`;
 }
@@ -1034,37 +1034,37 @@ function mtile(l,v,s,color){return `<div class="mtile"><div class="ml">${l}</div
 function renderSpotlights(){
   const G="var(--clear-c)",R="var(--alert-c)",O="var(--watch-c)",GY="#555";
   return `
-  <div class="note note-green"><span class="h">July 16 — Quiet on data; labor holds, chips wobble, oil climbs again.</span> No new inflation prints today, so the board is unchanged. <strong>Jobless claims fell to 208K</strong> (labor still solid) and June retail sales were a touch light at <strong>+0.2%</strong>. This week's cool CPI and PPI keep the <strong>July hold firmly priced (~15%)</strong>. Cutting the other way: another <strong>chip selloff</strong> — TSM beat but fell ~4%, the Nasdaq off ~1% on AI-valuation jitters — and <strong>oil up a 4th day</strong> (WTI back above $80) as US strikes on Iran continued. The S&amp;P wavered near flat; the 10yr sits ~4.58%, the 30yr above 5%. Board unchanged at 9 alerts.</div>
+  <div class="note note-green"><span class="h">July 17 — Sentiment jumps to a 5-month high; chips slide into a bear market, oil climbs again.</span> The University of Michigan's preliminary July sentiment <strong>jumped to 54.4</strong> (from 49.5), a five-month high on easing gas prices, and the survey's <strong>1yr inflation expectation eased to 4.2%</strong> (from 4.6%). But the tape turned risk-off: the semiconductor group slid <strong>toward a bear market</strong> (~20% off its highs) on AI-spending doubts, <strong>Netflix sank ~7%</strong> on soft guidance, and the S&amp;P fell ~1% to ~7,452 with the VIX up to ~18.5. Oil climbed again — <strong>WTI ~$82</strong>, up more than 10% on the week — as US-Iran strikes hit a 6th night. Board unchanged at 9 alerts.</div>
 
   <div class="spot" style="border-color:var(--clear-b);border-left:3px solid var(--clear-c);">
-    <div><span class="lab" style="color:var(--clear-c);">Labor Holds — Jobless Claims Fall to 208K</span><span class="badge" style="background:var(--clear-d);">TODAY</span></div>
+    <div><span class="lab" style="color:var(--clear-c);">Consumer Sentiment Jumps to a 5-Month High</span><span class="badge" style="background:var(--clear-d);">TODAY</span></div>
     <div class="mgrid g4">
-      ${mtile("Initial claims","208K","↓ 8K, below consensus",G)}
-      ${mtile("Retail sales (June)","+0.2%","Light vs +0.3% exp",GY)}
-      ${mtile("Unemployment","4.2%","Steady",G)}
-      ${mtile("July hike odds","~15%","Hold firmly priced",G)}
+      ${mtile("UMich (July prelim)","54.4","\u2191 from 49.5; best since Feb",G)}
+      ${mtile("Current conditions","54.9","\u2191 sharply",GY)}
+      ${mtile("Expectations","54.0","\u2191",GY)}
+      ${mtile("1yr inflation exp.","4.2%","\u2193 from 4.6%",G)}
     </div>
-    <div class="mnote">A constructive, if quiet, data day. Weekly jobless claims fell 8,000 to 208,000 for the week ending July 11, below consensus — labor is still holding up even as payroll growth has slowed. June retail sales rose a softer-than-expected 0.2% (vs 0.3% expected), consistent with a consumer that is cooling but not cracking. With this week's CPI and PPI both cool, none of this changes the near-term Fed picture: a July hold stays firmly priced. Source: BLS / Census / CNBC, July 16, 2026.</div>
+    <div class="mnote">The University of Michigan's preliminary July reading rose to 54.4 from 49.5, beating every estimate in Bloomberg's survey (consensus 51.0) and marking a second straight monthly gain — the highest since February. All five components improved, led by durable-goods buying conditions, and the gain was broad-based across income, wealth, and political groups as gasoline prices moderated. The survey's year-ahead inflation expectation eased to 4.2% (from 4.6%), with the 5yr steady at 3.3%. Two caveats: sentiment is still ~12% below a year ago, and the early-July field work predates this week's renewed oil surge. Source: University of Michigan, July 17, 2026.</div>
   </div>
 
   <div class="spot" style="border-color:var(--alert-b);border-left:3px solid var(--alert-c);">
-    <div><span class="lab" style="color:var(--alert-c);">Oil Climbs a 4th Day as Iran Strikes Continue</span><span class="badge" style="background:var(--alert-d);">TODAY</span></div>
+    <div><span class="lab" style="color:var(--alert-c);">Chip Selloff Deepens Toward a Bear Market</span><span class="badge" style="background:var(--alert-d);">TODAY</span></div>
     <div class="mgrid g3">
-      ${mtile("WTI crude","~$80","Back above $80; 4th up day",R)}
-      ${mtile("Brent crude","~$84.50","Just below $85",O)}
-      ${mtile("Shows up in","July CPI","Released Aug 12",O)}
+      ${mtile("Semiconductor index","~\u221220%","From recent highs (bear mkt)",R)}
+      ${mtile("Netflix","\u22127%","Soft forward guidance",R)}
+      ${mtile("S&amp;P 500","~7,452","\u2193 ~1% intraday",O)}
     </div>
-    <div class="mnote">The standing risk to the inflation story keeps building. Oil rose for a fourth straight session — WTI back above $80, Brent just under $85 — as US forces continued striking Iran; Centcom said it disabled an unladen oil tanker headed for an Iranian port, and EIA data showed US crude inventories fell 1.7M barrels. President Trump is reportedly weighing broader operations, including a possible seizure of Kharg Island, Iran's main oil-export terminal. Because June CPI and PPI predate most of this move, the energy relief in the data is backward-looking; the risk is that the surge feeds into July CPI (out Aug 12), which is why the inflation cluster stays partly red and October hike odds hold near 60%. Source: CNBC / Bloomberg, July 16, 2026.</div>
+    <div class="mnote">The group that led this year's rally is now leading it lower. A second straight washout in semiconductors put the chip index on track for a ~20% drop from its highs — the conventional bear-market threshold — on growing doubts that AI hyperscalers can keep justifying their spending, with the release of a powerful new open-source AI model adding to the pressure. Netflix compounded the mood, plunging ~7% after disappointing forward guidance. The Nasdaq fell ~1.4% and the S&amp;P ~1% to ~7,452, though eight of eleven sectors (led by energy and real estate) held up — a selloff concentrated in high-growth tech rather than a broad-based risk event. Source: Yahoo Finance / Bloomberg, July 17, 2026.</div>
   </div>
 
-  <div class="spot" style="border-color:#ecdcb8;border-left:3px solid var(--watch-c);">
-    <div><span class="lab" style="color:var(--watch-c);">CAPE Ratio (Shiller P/E)</span></div>
+  <div class="spot" style="border-color:var(--alert-b);border-left:3px solid var(--alert-c);">
+    <div><span class="lab" style="color:var(--alert-c);">Oil Climbs Again as the US-Iran War Escalates</span><span class="badge" style="background:var(--alert-d);">TODAY</span></div>
     <div class="mgrid g3">
-      ${mtile("Current CAPE","42.3x","2nd highest ever",R)}
-      ${mtile("Historical avg (1881–)","17.3x","Current is 2.4× avg",GY)}
-      ${mtile("Dot-com peak (1999)","44.2x","Only higher reading",O)}
+      ${mtile("WTI crude","~$82","\u2191 ~4% today; +10% wk",R)}
+      ${mtile("Brent crude","~$86","\u2191 back above $85",O)}
+      ${mtile("Shows up in","July CPI","Released Aug 12",O)}
     </div>
-    <div class="mnote">Valuations remain at historic extremes even as this week's chip wobble takes some froth off the tape. With the 10yr ~4.58% the equity risk premium stays thin (~+0.28%) — bonds remain competitive with stocks. Source: multpl.com</div>
+    <div class="mnote">The standing risk to the inflation story keeps building. Oil rose again — WTI ~$82 (+4% on the day), Brent ~$86 — and is up more than 10% on the week after US Central Command completed a sixth consecutive night of strikes on Iran. Iran retaliated with attacks on US bases in Kuwait, Jordan and Bahrain and reportedly told Yemen's Houthis to prepare to disrupt Red Sea shipping if the US hits Iranian power infrastructure — which President Trump has threatened for next week absent a diplomatic breakthrough. Tanker traffic through the Strait of Hormuz has fallen to two-month lows. Because June's inflation data and the early-July sentiment survey predate most of this move, the energy relief they show is backward-looking; the risk is that the surge feeds into July CPI (out Aug 12), which is why the inflation cluster stays partly red and October hike odds hold near 60%. Source: TradingEconomics / CNBC, July 17, 2026.</div>
   </div>`;
 }
 
@@ -1086,8 +1086,8 @@ function renderChart(){
   const ref5=yAt(5.0).toFixed(1), ref45=yAt(4.5).toFixed(1);
   const midY=((plotTop+plotBottom)/2).toFixed(1);
   return `<div class="chartcard">
-    <div class="chart-h"><span class="chart-title">U.S. Treasury Yield Curve</span><span class="chart-when">July 14, 2026 · post-CPI</span></div>
-    <div class="chart-sub">10–2 spread +37 bps · 10yr 4.55% · 2yr ~4.18% · 30yr above 5%</div>
+    <div class="chart-h"><span class="chart-title">U.S. Treasury Yield Curve</span><span class="chart-when">July 17, 2026 · intraday</span></div>
+    <div class="chart-sub">10–2 spread ~+40 bps · 10yr ~4.55% · 2yr ~4.15% · 30yr ~5.08% (>5%)</div>
     <div class="chart-leg"><span style="color:#2f5c8f;">— Current</span><span style="color:#bbb;">-- 1yr ago (approx)</span><span style="color:var(--alert-c);">·· threshold</span></div>
     <svg viewBox="0 0 ${W} ${H}" width="100%" style="height:auto;display:block;" xmlns="http://www.w3.org/2000/svg">
       ${grid}
@@ -1104,7 +1104,7 @@ function renderChart(){
       <text transform="rotate(-90 14 ${midY})" x="14" y="${midY}" font-size="10" fill="#77746b" text-anchor="middle" font-family="Georgia,serif" font-style="italic">Yield (%)</text>
       <text x="${(padL+(W-padR))/2}" y="${H-4}" font-size="10" fill="#77746b" text-anchor="middle" font-family="Georgia,serif" font-style="italic">Maturity</text>
     </svg>
-    <div class="curveread"><strong>Curve read.</strong> The cool CPI pulled the whole curve down a notch — 2yr −8bps to 4.18% (July hike off the table), 10yr −6bps to 4.55%. But the 30yr only eased 3bps and held above the red 5% line: the front end rallied on softer near-term inflation while the long end kept its premium against the oil-driven forward risk. Spread steady at +37 bps.</div>
+    <div class="curveread"><strong>Curve read.</strong> The curve barely moved on the day: a modest risk-off bid (chips selling off, Netflix sinking) nudged the 10yr down ~2bps to ~4.55% and the 30yr ~3bps to ~5.08%, which still holds above the red 5% line. The front end is steady with the July hold firmly priced (2yr ~4.15%). The tell is at the very long end — the 20yr and 30yr sit essentially on top of each other (~5.08%), an unusually compressed spread that reflects the fiscal-supply and term-premium pressure the oil surge keeps reinforcing. Spread ~+40 bps.</div>
   </div>`;
 }
 
@@ -1125,7 +1125,7 @@ function renderGlossary(){
 function build(){
   const counts=countAll();
   const html=`
-    <div class="pdate">As of July 16, 2026 · 2:30 PM ET</div>
+    <div class="pdate">As of July 17, 2026 · 3:20 PM ET</div>
     ${renderStatus(counts)}
     ${renderRead()}
     ${renderDecision(counts)}
