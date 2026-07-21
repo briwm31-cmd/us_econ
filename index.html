@@ -67,8 +67,8 @@
   .otab:hover { color:var(--ink); }
   .otab.active { color:var(--ink); border-bottom-color:var(--accent); }
 
-  #us-root, #nyc-root, #fxdebt-root, #tools-root { display:none; }
-  #us-root.active, #nyc-root.active, #fxdebt-root.active, #tools-root.active { display:block; animation:fade .25s ease; }
+  #brief-root, #us-root, #nyc-root, #fxdebt-root, #tools-root { display:none; }
+  #brief-root.active, #us-root.active, #nyc-root.active, #fxdebt-root.active, #tools-root.active { display:block; animation:fade .25s ease; }
 
   /* per-panel "As of" dateline (each dashboard refreshes independently) */
   .pdate { font-family:var(--serif); font-style:italic; font-size:13px;
@@ -88,7 +88,7 @@
   @media print {
     body { border-top:none; }
     .otabs { display:none; }
-    #us-root, #nyc-root, #fxdebt-root, #tools-root { display:block !important; animation:none; }
+    #brief-root, #us-root, #nyc-root, #fxdebt-root, #tools-root { display:block !important; animation:none; }
   }
   @media (max-width:640px) {
     .mast-title { font-size:24px; }
@@ -401,6 +401,32 @@
 #fxdebt-root .pdate {font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.09em;font-weight:600;margin-bottom:16px;}
 #fxdebt-root .fx-read {background:var(--card);border:1px solid var(--rule);border-left:3px solid var(--accent);border-radius:8px;padding:16px 20px;margin-bottom:8px;}
 #fxdebt-root .fx-read-h {font-family:var(--serif);font-size:18px;font-weight:700;color:var(--ink);margin-bottom:6px;}
+/* ============ DAILY BRIEF (scoped #brief-root) ============ */
+#brief-root .wrap {max-width:760px;margin:0 auto;padding:0 20px 40px;}
+#brief-root .pdate {font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.09em;font-weight:600;margin-bottom:16px;}
+#brief-root .br-head {border-bottom:1px solid var(--rule-strong);padding-bottom:12px;margin-bottom:16px;}
+#brief-root .br-h {font-family:var(--serif);font-size:22px;font-weight:700;color:var(--ink);letter-spacing:-.01em;margin-bottom:3px;}
+#brief-root .br-sub {font-family:var(--serif);font-style:italic;font-size:12.5px;color:var(--muted);}
+#brief-root .br-bar {display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:12px 16px;margin-bottom:18px;}
+#brief-root .br-btn {font-family:var(--sans);font-size:12px;font-weight:600;letter-spacing:.03em;padding:8px 18px;border-radius:6px;border:1px solid var(--accent);background:var(--accent);color:#fff;cursor:pointer;transition:background .12s;}
+#brief-root .br-btn:hover {background:var(--accent-deep);border-color:var(--accent-deep);}
+#brief-root .br-btn.sec {background:none;color:var(--body);border-color:var(--rule-strong);}
+#brief-root .br-btn.sec:hover {background:#f0eee7;}
+#brief-root .br-vlab {font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;font-weight:600;}
+#brief-root select.br-voice {font-family:var(--sans);font-size:11.5px;padding:6px 8px;border:1px solid var(--rule-strong);border-radius:5px;background:#fff;color:var(--body);max-width:230px;}
+#brief-root .br-status {font-family:var(--serif);font-style:italic;font-size:11.5px;color:var(--faint);margin-left:auto;}
+#brief-root .br-body {background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:22px 26px;}
+#brief-root .br-body p {font-size:14.5px;line-height:1.75;color:var(--body);margin-bottom:14px;}
+#brief-root .br-body p:last-child {margin-bottom:0;}
+#brief-root .br-body p:first-child {font-family:var(--serif);font-size:15px;color:var(--ink);}
+#brief-root .br-note {margin-top:14px;font-size:10.5px;color:var(--faint);line-height:1.55;font-style:italic;font-family:var(--serif);}
+#brief-root code {font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;background:#f0eee7;padding:1px 5px;border-radius:3px;color:var(--body);font-style:normal;}
+@media print {
+  #brief-root .br-bar {display:none;}
+}
+@media (max-width:640px) {
+  #brief-root .br-status {margin-left:0;width:100%;}
+}
 #fxdebt-root .fx-read-b {font-size:13px;color:var(--body);line-height:1.6;}
 #fxdebt-root .fx-h {font-family:var(--serif);font-size:16px;font-weight:700;color:var(--ink);margin:26px 0 12px;padding-bottom:7px;border-bottom:1px solid var(--rule-strong);}
 #fxdebt-root .fx-h-sub {font-family:var(--sans);font-size:10.5px;font-weight:600;color:var(--faint);text-transform:uppercase;letter-spacing:.07em;margin-left:8px;}
@@ -492,13 +518,33 @@
 </header>
 <div class="mast-strap">A running read on U.S. macro and New York City economic conditions — updated independently.</div>
 <nav class="otabs"><div class="otabs-in">
-  <button class="otab active" data-dash="us">United States</button>
+  <button class="otab active" data-dash="brief">Daily Brief</button>
+  <button class="otab" data-dash="us">United States</button>
   <button class="otab" data-dash="fxdebt">FX &amp; Debt</button>
   <button class="otab" data-dash="nyc">New York City</button>
   <button class="otab" data-dash="tools">Tools</button>
 </div></nav>
 
-<section id="us-root" class="active">
+<section id="brief-root" class="active">
+<div class="wrap">
+  <div class="pdate">As of July 21, 2026 &middot; 3:51 PM ET</div>
+  <div class="br-head">
+    <div class="br-h">Daily Brief</div>
+    <div class="br-sub">A spoken summary of what moved on the board today &mdash; roughly two and a half minutes.</div>
+  </div>
+  <div class="br-bar">
+    <button class="br-btn" id="br-play">Play</button>
+    <button class="br-btn sec" id="br-copy">Copy text</button>
+    <span class="br-vlab">Voice</span>
+    <select class="br-voice" id="br-voice"><option>Loading&hellip;</option></select>
+    <span class="br-status" id="br-status">Ready</span>
+  </div>
+  <div class="br-body" id="br-body"></div>
+  <div class="br-note">Playback uses your browser&rsquo;s built-in speech engine and your machine&rsquo;s installed voices &mdash; nothing is downloaded and no audio file is produced. Voice quality varies by browser and operating system; on macOS the Enhanced and Premium voices under System Settings &rarr; Accessibility &rarr; Spoken Content are markedly better than the defaults. For a portable file, use <strong>Copy text</strong> and run <code>say -f brief.txt -o brief.aiff</code>, then convert with ffmpeg.</div>
+</div>
+</section>
+
+<section id="us-root">
   <div class="wrap" id="app"></div>
 </section>
 
@@ -837,7 +883,7 @@ const SIGNALS = {
   "Equity Valuation":[
     {name:"S&P 500 level",value:"~7,504",prev:"7,443.28",dir:"↑ ~+0.8% intraday",signal:"clear",watch:"Monday's confirmed close was 7,443.28, down 0.19%, with breadth weaker than the headline (equal-weight −0.50%). Today the tape has rebounded on a strong start to earnings — GM beat and raised its 2026 profit outlook, and 3M, Northrop Grumman, Schwab, DR Horton and MSCI all beat. The Nasdaq 100 leads, up ~1.4%. (Monday close confirmed; today's move approximate — no close yet.)",upd:true},
     {name:"S&P 500 fwd P/E",value:"~19.5x",prev:"~19.4x",dir:"→ stable",signal:"watch",watch:"above 22x = stretched. Nudged back up with today's rebound in the index; still elevated. (Approximate.)",upd:true},
-    {name:"CAPE (Shiller P/E)",value:"42.3x",prev:"42.3x",dir:"→ stable",signal:"alert",watch:"above 30x = stretched; 40x = extreme. Hist. avg ~17x — Source: multpl.com"},
+    {name:"CAPE (Shiller P/E)",value:"41.45x",prev:"42.3x",dir:"↓ restruck to source",signal:"alert",watch:"above 30x = stretched; 40x = extreme. Re-pulled from multpl.com on 7/21: 41.45x as of the Mon Jul 20 close, down 0.07 on the day. The prior 42.3x had been carried forward across several refreshes and was overstated by about 0.85 turns. Long-run mean 17.39x, median 16.10x; the all-time high is 44.19x (Dec 1999). Multpl restrikes at 4pm ET, so today's value posts after the close.",upd:true},
     {name:"Earnings yield vs 10yr",value:"~+0.20%",prev:"~+0.23%",dir:"↓ thinner",signal:"watch",watch:"Thinner again — the 10yr rose to ~4.63% while equities rallied, compressing the risk premium further. Bonds remain competitive with stocks. Q2 consensus ~24% YoY S&P earnings growth (FactSet). (Approximate.)",upd:true},
     {name:"S&P 500 earnings growth",value:"+12% YoY",prev:"+12% YoY",dir:"✓ strong",signal:"clear",watch:"negative = contraction risk. Q2 season running strong on beats — GM, 3M, Northrop, Schwab, DR Horton and MSCI all cleared estimates this morning. Netflix (−7% on 7/17) and IBM (−22% on 7/14) remain the notable cracks. Tesla, Alphabet and Intel report later this week.",upd:true},
     {name:"% beating estimates",value:"84%",prev:"84%",dir:"✓ strong",signal:"clear",watch:"below 65% = deteriorating. Very high bar this quarter — early reporters tracking even higher (~95% so far)."},
@@ -1439,9 +1485,105 @@ document.getElementById('nyc-log-add').addEventListener('click', addLog);
 })();
 </script>
 <script>
+/* ==================== DAILY BRIEF ==================== */
+(function(){
+
+const BRIEF = {
+  date:"July 21, 2026",
+  paras:[
+    "Signal Dashboard. Tuesday, July twenty-first, twenty twenty-six.",
+    "The board moved to ten alerts today, up one from nine. One thing changed, and it was oil.",
+    "Brent crude rose about two percent to ninety-one dollars a barrel, its highest since June tenth and a third straight session of gains. That crosses the ninety-dollar line, so Brent flips from watch to alert. West Texas Intermediate is near eighty-four.",
+    "But the price is not really the story. The story is where the disruption is happening. Until today, this was a Strait of Hormuz problem, and the argument for staying calm was that other export routes could absorb it. That argument broke. A products tanker was struck near the strait. Houthi militants threatened to block Saudi shipping in the Red Sea, which is precisely the route Saudi Arabia uses to bypass Hormuz, and at least one Saudi tanker turned around. And separately, attacks on a pipeline terminal on Russia's Black Sea coast disrupted exports from Kazakhstan, entirely outside the Gulf. Three routes impaired at once, on the tenth consecutive day of American strikes.",
+    "The bond market responded. Yields rose two to four basis points across every maturity. The ten-year Treasury reached four point six three percent, a two-month high and its strongest since the middle of May. The thirty-year sits at five point one three. Traders now put roughly sixty-eight percent odds on a rate hike by the September meeting, up from about fifty-three percent on Monday. Treat that as a direction rather than a precise number. Next week's hold is eighty-three percent priced.",
+    "Now, the counterweight, because the equity market spent today arguing the other side. Earnings season opened strong. General Motors beat and raised its full-year profit outlook. Three M, Northrop Grumman, Schwab, D R Horton and M S C I all beat. The S and P five hundred is up about eight tenths of a percent, and volatility eased.",
+    "So hold the tension. An equity market pricing a good earnings season, against a bond market pricing an oil-driven inflation problem. The bond market has the harder evidence.",
+    "Ahead this week. Jobless claims and the mortgage survey Thursday. Flash P M I Friday. Then the Fed, next Wednesday."
+  ]
+};
+
+const bodyEl=document.getElementById("br-body");
+const playEl=document.getElementById("br-play");
+const copyEl=document.getElementById("br-copy");
+const voiceEl=document.getElementById("br-voice");
+const statEl=document.getElementById("br-status");
+if(!bodyEl) return;
+
+function esc(t){return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+bodyEl.innerHTML=BRIEF.paras.map(p=>`<p>${esc(p)}</p>`).join("");
+const fullText=BRIEF.paras.join("\n\n");
+
+const synth=window.speechSynthesis;
+if(!synth){
+  playEl.disabled=true;
+  playEl.style.opacity=".45";
+  playEl.style.cursor="default";
+  voiceEl.style.display="none";
+  statEl.textContent="Speech not supported in this browser";
+}else{
+  let voices=[],speaking=false;
+  function loadVoices(){
+    voices=synth.getVoices().filter(v=>/^en/i.test(v.lang));
+    if(!voices.length) voices=synth.getVoices();
+    if(!voices.length) return;
+    voiceEl.innerHTML=voices.map((v,i)=>`<option value="${i}">${esc(v.name)}</option>`).join("");
+    const pref=voices.findIndex(v=>/(ava|samantha|serena|zoe|allison|google us english|jenny|aria)/i.test(v.name));
+    voiceEl.value=String(pref>-1?pref:0);
+  }
+  loadVoices();
+  synth.addEventListener?synth.addEventListener("voiceschanged",loadVoices):(synth.onvoiceschanged=loadVoices);
+
+  function stop(){
+    synth.cancel();
+    speaking=false;
+    playEl.textContent="Play";
+    statEl.textContent="Ready";
+  }
+  playEl.addEventListener("click",function(){
+    if(speaking){stop();return;}
+    synth.cancel();
+    const u=new SpeechSynthesisUtterance(fullText);
+    const v=voices[parseInt(voiceEl.value,10)];
+    if(v) u.voice=v;
+    u.rate=0.96;
+    u.pitch=1;
+    u.onend=stop;
+    u.onerror=function(){speaking=false;playEl.textContent="Play";statEl.textContent="Playback error";};
+    speaking=true;
+    playEl.textContent="Stop";
+    statEl.textContent="Playing \u2014 "+BRIEF.date;
+    synth.speak(u);
+  });
+  window.addEventListener("beforeunload",function(){synth.cancel();});
+}
+
+copyEl.addEventListener("click",function(){
+  const done=function(ok){
+    copyEl.textContent=ok?"Copied":"Copy failed";
+    setTimeout(function(){copyEl.textContent="Copy text";},1600);
+  };
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(fullText).then(function(){done(true);},function(){done(false);});
+  }else{
+    try{
+      const ta=document.createElement("textarea");
+      ta.value=fullText;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+      done(true);
+    }catch(e){done(false);}
+  }
+});
+
+})();
+</script>
+<script>
 /* ---------- OUTER US / NYC TAB SWITCH ---------- */
 (function(){
-  const roots = { us: document.getElementById('us-root'),
+  const roots = { brief: document.getElementById('brief-root'),
+                  us: document.getElementById('us-root'),
                   fxdebt: document.getElementById('fxdebt-root'),
                   tools: document.getElementById('tools-root'),
                   nyc: document.getElementById('nyc-root') };
